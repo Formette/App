@@ -1,2 +1,2 @@
-# App
-Forms as a Service
+# Formette
+Forms as a service

@@ -1,0 +1,32 @@
+{
+  "name": "Formette",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "flow-bin": "^0.51.0",
+    "react-scripts": "1.0.10",
+    "react-test-renderer": "^15.6.1"
+  },
+  "dependencies": {
+    "apollo-client": "^1.7.0",
+    "auth0-js": "^8.8.0",
+    "graphql-tag": "^2.4.2",
+    "polished": "^1.3.0",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-alert": "^2.2.0",
+    "react-apollo": "^1.4.3",
+    "react-copy-to-clipboard": "^5.0.0",
+    "react-dom": "^15.6.1",
+    "react-json-table": "^0.1.1",
+    "react-router": "^3.0.2",
+    "react-syntax-highlighter": "^5.6.2",
+    "styled-components": "^2.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

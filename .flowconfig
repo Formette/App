@@ -1,0 +1,11 @@
+[ignore]
+.*/node_modules/.*
+
+[include]
+
+
+[libs]
+
+
+[options]
+module.name_mapper='\(react-apollo\)' -> '<PROJECT_ROOT>/flow/GeneralStub.js.flow'

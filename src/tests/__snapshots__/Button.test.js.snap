@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button changes the state when hovered 1`] = `
+<button
+  className="sc-bdVaJa bsTRbD"
+  color="#000"
+  type="button"
+>
+  Hello
+</button>
+`;
+
+exports[`Button changes the state when hovered 2`] = `
+<button
+  className="sc-bdVaJa bsTRbD"
+  color="#000"
+  type="button"
+>
+  Hello
+</button>
+`;
