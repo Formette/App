@@ -10,7 +10,7 @@ class App extends Component {
   render() {
     return (
       <div className={this.props.className}>
-        <Navbar brand="Formette β" username={_getUsername() || "username"}/>
+        <Navbar brand="Formette β grande cena" username={_getUsername() || "username"}/>
             <div className="container content">
                 {this.props.children}
             </div>
