@@ -8,5 +8,4 @@ cache:
 after_success:
   deploy:
     provider: surge
-    project: ./build/
     domain: app.formette.com

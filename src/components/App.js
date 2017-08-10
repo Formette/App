@@ -22,6 +22,7 @@ class App extends Component {
 
 const AppWithStyles = styled(App)`
     .content{
+         background: red;   
          min-height: calc(88vh - 70px);
     }
 `;
