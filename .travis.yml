@@ -5,8 +5,5 @@ node_js:
 cache:
   directories:
   - node_modules
-  - packages/create-react-app/node_modules
-  - packages/react-scripts/node_modules
-install: true
 after_success:
   - surge --project ./path/to/your-project --domain app.formette.com
