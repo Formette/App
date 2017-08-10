@@ -8,6 +8,6 @@ cache:
 after_success:
   deploy:
     provider: surge
-    project: ./static/
+    project: ./build/
     domain: app.formette.com
     skip_cleanup: true
