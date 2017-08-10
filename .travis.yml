@@ -9,5 +9,6 @@ script: npm run build
 after_success:
   deploy:
     provider: surge
+    project: /home/travis/build/Formette/App
     domain: app.formette.com
     skip_cleanup: true
