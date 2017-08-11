@@ -8,6 +8,5 @@ script:
   - npm test
   - npm run build
 skip_cleanup: true
-after_script: cd build
 after_success:
-   - surge --project ./home/travis/build/Formette/App --domain app.formette.com
+   - surge --project ./build/ --domain app.formette.com
