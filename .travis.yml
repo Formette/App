@@ -8,4 +8,9 @@ script:
   - npm test
   - npm run build
 after_success:
-  - surge --project ./build/ --domain app.formette.com
+  deploy:
+    provider: surge
+    domain: app.formette.com
+    project: ./build/
+    skip_cleanup: true
+
