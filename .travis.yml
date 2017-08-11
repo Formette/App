@@ -8,10 +8,4 @@ script:
   - npm test
   - npm run build
 after_success:
-  deploy:
-    provider: surge
-    domain: app.formette.com
-    skip_cleanup: true
-    local_dir: build
-    on:
-      branch: master
+  - surge --project ./build/ --domain app.formette.com
