@@ -10,7 +10,7 @@ class App extends Component {
   render() {
     return (
       <div className={this.props.className}>
-        <Navbar brand="Formette β grande cena" username={_getUsername() || "username"}/>
+        <Navbar brand="Formette β" username={_getUsername() || "username"}/>
             <div className="container content">
                 {this.props.children}
             </div>
@@ -22,7 +22,6 @@ class App extends Component {
 
 const AppWithStyles = styled(App)`
     .content{
-         background: red;   
          min-height: calc(88vh - 70px);
     }
 `;
