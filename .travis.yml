@@ -11,6 +11,11 @@ after_success:
   deploy:
     provider: surge
     domain: app.formette.com
-    project: ./build/
     skip_cleanup: true
+    project: /home/travis/build/Formette/App
+    on:
+      branch: master
+
+
+
 
