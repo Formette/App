@@ -1,6 +1,6 @@
 {
   "name": "Formette",
-  "homepage" : "http://app.formette.com",
+  "homepage" : "app.formette.com",
   "version": "0.0.1",
   "private": false,
   "devDependencies": {

@@ -1,12 +1,16 @@
 language: node_js
 node_js:
-  - "7"
-  - "lts/*"
+  - "stable"
 cache:
   directories:
   - node_modules
-script: npm run build
-skip_cleanup: true
-after_success:
-  - surge --project ./path/to/your-project --domain app.formette.com
-    
+script:
+  - npm test
+  - npm run build
+deploy:
+  provider: surge
+  domain: app.formette.com
+  skip_cleanup: true
+  local_dir: build
+  on:
+    branch: master
