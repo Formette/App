@@ -7,12 +7,11 @@ cache:
 script:
   - npm test
   - npm run build
-after_success:
-  deploy:
-    provider: surge
-    domain: app.formette.com
-    skip_cleanup: true
-    local_dir: build
-    on:
-      branch: master
-      
+deploy:
+  provider: surge
+  domain: app.formette.com
+  skip_cleanup: true
+  local_dir: build
+  on:
+    branch: master
+
