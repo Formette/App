@@ -14,6 +14,7 @@ import {USER_QUERY, USERNAME_VALIDATION_QUERY} from '../api/Queries';
 import {UPDATE_USER_MUTATION} from '../api/Mutations';
 
 class Profile extends PureComponent {
+    msg: any;
     props: {
         userQuery: any,
         updateUser: any,
@@ -97,10 +98,10 @@ class Profile extends PureComponent {
     }
     render(){
         if(this.props.userQuery && this.props.userQuery.loading){
-            return <div>A carregar</div>
+            return <div>Loading</div>
         }
         if(this.props.userQuery && this.props.userQuery.error){
-            return <div>Aconteceu um erro!</div>
+            return <div>Ups! Something went wrong try again.</div>
         }
         const {userName, _formsesMeta} = this.props.userQuery.user;
         const {error, errorMsg, username} = this.state;
@@ -115,7 +116,7 @@ class Profile extends PureComponent {
                 <div className="row">
                     <div className="col-md-6">
                         <form>
-                            <div className={`form-group ${error? "has-danger" : null}`}>
+                            <div className={`form-group ${error? "has-danger" : ""}`}>
                                 <SubTitle text="Username:" color={Colors.text.secondary}/>
                                 <Input placeholder="username"
                                        defaultValue={userName}

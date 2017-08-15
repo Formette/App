@@ -18,6 +18,7 @@ let items = [
 ];
 
 class FormDetails extends PureComponent{
+    msg: any;
     showAlert(type: string = "success", text: string = "Some Text", color: string = Colors.green, icon: string = "fa-link"){
         this.msg.show(text, {
             time: 3000,

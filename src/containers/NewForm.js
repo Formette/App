@@ -16,6 +16,7 @@ const generateID = guid();
 const generateEndpoint = `http://www.formette.com/api/${_getUsername()}/`;
 
 class NewForm extends PureComponent {
+    msg: any;
     state = {
         name: "",
         description: "",
@@ -26,7 +27,7 @@ class NewForm extends PureComponent {
     showAlert(type: string = "success", text: string = "Some Text", color: string = Colors.green, icon: string = "fa-link"){
         this.msg.show(text, {
             time: 3000,
-            type: type,
+            type,
             icon: <Icon name={icon} color={color}/>
         })
     }
