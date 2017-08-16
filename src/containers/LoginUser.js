@@ -10,7 +10,7 @@ import Colors from '../styles/Colors';
 //API
 import {SIGIN_USER_MUTATION} from '../api/Mutations';
 //Utilities
-import {_saveUsername} from '../services/utilities';
+import {_saveUsername, _saveUserId} from '../services/utilities';
 
 class LoginUser extends React.PureComponent {
     props: {
@@ -32,6 +32,7 @@ class LoginUser extends React.PureComponent {
                 .then((res) => {
                     window.localStorage.setItem('graphcoolToken', res.data.signinUser.token);
                     _saveUsername(res.data.signinUser.user.userName);
+                    _saveUserId(res.data.signinUser.user.id);
                 }).then(_ => this.props.router.replace('/'))
                 .catch((e) => {
                     console.log(e);

@@ -12,6 +12,7 @@
     "apollo-client": "^1.7.0",
     "auth0-js": "^8.8.0",
     "graphql-tag": "^2.4.2",
+    "moment": "^2.18.1",
     "polished": "^1.3.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",

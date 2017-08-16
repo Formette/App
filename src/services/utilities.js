@@ -1,35 +1,44 @@
 // @flow
 module.exports = {
-  random(min: number, max: number){
-      return Math.floor(Math.random() * (max - min) + min);
+  random(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min) + min);
   },
   _isLoggedIn() {
-      return window.localStorage.getItem('graphcoolToken');
+    return window.localStorage.getItem("graphcoolToken");
   },
   _logout() {
-        // remove token from local storage and reload page to reset apollo client
-        window.localStorage.removeItem('graphcoolToken');
-        module.exports._deleteUsername();
-            setTimeout(() => {
-                window.location.reload();
-            }, 200);
+    // remove token from local storage and reload page to reset apollo client
+    window.localStorage.removeItem("graphcoolToken");
+    module.exports._deleteUsername();
+    module.exports._deleteUserId();
+    setTimeout(() => {
+      window.location.reload();
+    }, 200);
   },
   _saveUsername(username: string) {
-      window.localStorage.setItem("username", username);
+    window.localStorage.setItem("username", username);
   },
   _deleteUsername() {
-      window.localStorage.removeItem('username');
+    window.localStorage.removeItem("username");
   },
   _getUsername() {
-     return window.localStorage.getItem('username');
+    return window.localStorage.getItem("username");
+  },
+  _saveUserId(userId: string) {
+    window.localStorage.setItem("userId", userId);
+  },
+  _deleteUserId() {
+    window.localStorage.removeItem("userId");
+  },
+  _getUserId() {
+    return window.localStorage.getItem("userId");
   },
   guid() {
-      function s4() {
-           return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
-        }
-      return s4() + '' + s4() + '' +
-           s4() + '' + s4();
-  },
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    }
+    return s4() + "" + s4() + "" + s4() + "" + s4();
+  }
 };
