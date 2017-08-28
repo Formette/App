@@ -65,26 +65,8 @@ class NewForm extends PureComponent {
       disableForm: isDisabled,
       error
     } = this.state;
-
-    const userId = _getUserId();
-
-    let endpoint = customEndpoint
-      ? `${_getUsername()}/${customEndpoint}`
-      : `${_getUsername()}/${generateID}`;
-
-    await this.props.createLinkMutation({
-      variables: {
-        userId,
-        name,
-        description,
-        endpoint,
-        isDisabled
-      }
-    });
-    this.props.router.push("/");
-
     //Verifies if the inputs are empty or not
-    /*if (name) {
+    if (name) {
       if (error) return;
       const userId = _getUserId();
       let endpoint = customEndpoint
@@ -99,7 +81,7 @@ class NewForm extends PureComponent {
           console.log(res);
           //Shows feedback and updates the store
           this.showAlert("success", "Form created successfully");
-          this.props.router.push("/")
+          this.props.router.push("/");
         })
         .catch(e => {
           console.error(e);
@@ -119,7 +101,7 @@ class NewForm extends PureComponent {
         error: true,
         errorMsg: "This form is feeling lonely, needs affection, needs data."
       });
-    }*/
+    }
   };
   render() {
     const {
