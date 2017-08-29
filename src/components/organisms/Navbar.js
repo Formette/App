@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link, withRouter } from "react-router";
+import {Link, withRouter} from 'react-router-dom';
 //Styles
 import styled from "styled-components";
 import Colors from "../../styles/Colors";
@@ -12,7 +12,7 @@ const Navbar = props => {
   return (
     <div className="container-fluid">
       <nav
-        className={`navbar navbar-expand-lg navbar-light bg-light ${props.className}`}
+        className={`navbar navbar-expand-sm navbar-light bg-light ${props.className}`}
       >
         <a className="navbar-brand" href="/">
           {props.brand}
@@ -20,21 +20,20 @@ const Navbar = props => {
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <Link className="nav-link" to="/" activeClassName="active">
+              <Link className="nav-link" to="/">
                 My forms
               </Link>
             </li>
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link" onClick={_ => _logout()}>
+              <Link className="nav-link" to="/signin" onClick={_ => _logout()}>
                 Log Out
               </Link>
             </li>
             <li className="nav-item">
               <Link
                 className="nav-link user-link"
-                activeClassName="active"
                 to="/profile"
               >
                 Hello, {props.username}

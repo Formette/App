@@ -3,12 +3,17 @@ import React, { Component } from "react";
 import { graphql, compose } from "react-apollo";
 import * as moment from "moment";
 //Components
-import { Header } from "../components/atoms/index";
+import { Header, Button } from "../components/atoms/index";
 import {
   Placeholder,
   PlaceholderAnimation,
-  Card
+  Card,
+   Graphic
 } from "../components/molecules/index";
+//Utils
+import {_refreshPage} from "../services/utilities";
+//Styles
+import Colors from '../styles/Colors';
 //API
 import { ALL_FORMS_QUERY } from "../api/Queries";
 
@@ -49,9 +54,10 @@ class MyForms extends Component {
             key={res.id}
             title={res.name}
             date={moment(res.createdAt).format("ll")}
-            onClick={() => this.props.router.push(`/form/${res.id}`)}
+            onClick={() => this.props.history.push(`/form/${res.id}`)}
           />
         );
+        return true;
       });
       //for interface
       if (_formsesMeta.count < 6) {
@@ -60,9 +66,18 @@ class MyForms extends Component {
       return content.concat(this._LoadingAnimationContent("normal", length));
     }
   };
+  _goToNew = _ => {
+      this.props.history.push("/new");
+  };
   render() {
     if (this.props.allFormsQuery && this.props.allFormsQuery.error) {
-      return <div>Ups! Something went wrong try again.</div>;
+        return <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
+            <Button className="btn btn-lg btn-primary"
+                    color={Colors.primary}
+                    onClick={_refreshPage}>
+                Try Again
+            </Button>
+        </Graphic>
     }
     return (
       <div className="row">
@@ -72,7 +87,7 @@ class MyForms extends Component {
             icon="fa-plus"
             title="New Form"
             date="Create from scratch"
-            onClick={() => this.props.router.push("/new")}
+            onClick={this._goToNew}
             new
           />
           {this.props.allFormsQuery.loading

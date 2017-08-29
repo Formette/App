@@ -1,9 +1,10 @@
 // @flow
 import React from 'react';
-import { graphql, compose, withApollo } from 'react-apollo'
+import { graphql, compose, withApollo } from 'react-apollo';
+import {Link} from 'react-router-dom';
 //Components
 import AuthLayout from '../components/organisms/AuthLayout';
-import {Input, Button, Link} from '../components/atoms/index';
+import {Input, Button} from '../components/atoms/index';
 import Error from '../components/molecules/Error';
 //Styles
 import Colors from '../styles/Colors';
@@ -57,7 +58,7 @@ class CreateUser extends React.PureComponent {
             .then((res) => {
                 window.localStorage.setItem('graphcoolToken', res.data.signinUser.token);
                 _saveUsername(res.data.signinUser.user.userName);
-            }).then(_ => this.props.router.replace('/'))
+            }).then(_ => this.props.history.push('/'))
             .catch((e) => {
                 console.error(e);
                 this.setState({error: true, errorMsg: "Ops! Something went wrong, try again."});
@@ -139,7 +140,7 @@ class CreateUser extends React.PureComponent {
                         style={{marginTop: 10, marginBottom: 10}}
                         color={Colors.primary}>Create Account</Button>
 
-                <Link href="/signin">Already have an account? Your forms miss you. <u><strong>Sign In</strong></u></Link>
+                <Link to="/signin">Already have an account? Your forms miss you. <u><strong>Sign In</strong></u></Link>
                 <Error show={error}>{errorMsg}</Error>
             </AuthLayout>
         )

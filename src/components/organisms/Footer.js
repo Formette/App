@@ -4,16 +4,17 @@ import {Link} from '../atoms/index';
 //Styles
 import styled from 'styled-components';
 
+const url = "http://www.formette.com";
 const Footer = (props) => {
     return(
         <div className={`container-fluid ${props.className}`}>
             <ul>
-                <li><Link href="/about">About</Link></li>
-                <li><Link href="/docs">Docs</Link></li>
-                <li><Link href="/roadmap">Roadmap</Link></li>
-                <li><Link href="/terms">Terms</Link></li>
-                <li><Link href="/privacy">Privacy Policy</Link></li>
-                <li><Link href="/feedback">Feedback</Link></li>
+                <li><Link href={`${url}/about`} target="_blank">About</Link></li>
+                <li><Link href={`${url}/docs`} target="_blank">Docs</Link></li>
+                <li><Link href={`${url}/roadmap`} target="_blank">Roadmap</Link></li>
+                <li><Link href={`${url}/terms`} target="_blank">Terms</Link></li>
+                <li><Link href={`${url}/privacy`} target="_blank">Privacy Policy</Link></li>
+                <li><Link href={`${url}/feedback`} target="_blank">Feedback</Link></li>
             </ul>
         </div>
     )

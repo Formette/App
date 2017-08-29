@@ -38,6 +38,7 @@ class Profile extends PureComponent {
   };
   componentDidMount() {
     this.setState({ username: _getUsername() });
+    console.log(this.props);
   }
   showAlert(
     type: string = "success",
@@ -193,10 +194,10 @@ class Profile extends PureComponent {
                 />
                 <ul className="list-inline">
                   <li>
-                    <Link onClick={_ => _logout()}>Log Out</Link>
+                    <Link onClick={_logout}>Log Out</Link>
                   </li>
                   <li>
-                    <Link>Help</Link>
+                    <Link href="http://www.formette.com/docs" target="_blank">Help</Link>
                   </li>
                   <li>
                     <Link color={Colors.red}>Delete Account</Link>

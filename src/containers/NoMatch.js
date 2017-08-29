@@ -17,7 +17,7 @@ const NoMatch = (props) => {
                    <Text text="Omg 😣 No form found to fill! The page you are trying to find is not available" color={Colors.text.secondary}/>
                    <Button className="btn btn-lg btn-primary"
                            color={Colors.primary}
-                           onClick={_ => props.router.push('/')}>
+                           onClick={_ => props.history.push('/')}>
                        Go back home
                    </Button>
                </div>

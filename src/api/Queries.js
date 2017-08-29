@@ -48,9 +48,21 @@ const ALL_FORMS_QUERY = gql`
   }
 `;
 
+const FORM_DATA_QUERY = gql`
+  query form($id: ID!) {
+    Forms(id: $id) {
+        id
+        name
+        endpoint
+        data
+    }
+  }
+`;
+
 export {
-  USER_QUERY,
-  USERNAME_QUERY,
-  USERNAME_VALIDATION_QUERY,
-  ALL_FORMS_QUERY
+    USER_QUERY,
+    USERNAME_QUERY,
+    USERNAME_VALIDATION_QUERY,
+    ALL_FORMS_QUERY,
+    FORM_DATA_QUERY
 };

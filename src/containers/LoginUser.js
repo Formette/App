@@ -1,9 +1,10 @@
 // @flow
 import React from 'react';
-import { graphql, compose } from 'react-apollo'
+import { graphql, compose } from 'react-apollo';
+import {Link} from 'react-router-dom';
 //Components
 import AuthLayout from '../components/organisms/AuthLayout';
-import {Input, Button, Link} from '../components/atoms/index';
+import {Input, Button} from '../components/atoms/index';
 import Error from '../components/molecules/Error';
 //Styles
 import Colors from '../styles/Colors';
@@ -33,7 +34,7 @@ class LoginUser extends React.PureComponent {
                     window.localStorage.setItem('graphcoolToken', res.data.signinUser.token);
                     _saveUsername(res.data.signinUser.user.userName);
                     _saveUserId(res.data.signinUser.user.id);
-                }).then(_ => this.props.router.replace('/'))
+                }).then(_ => this.props.history.push('/'))
                 .catch((e) => {
                     console.log(e);
                     this.setState({error: true, errorMsg: "Ops! Invalid Email or password."});
@@ -72,7 +73,7 @@ class LoginUser extends React.PureComponent {
                        style={{marginTop: 10, marginBottom: 10}}
                        color={Colors.primary}>Sign In</Button>
 
-               <Link href="/signup">Do not have an account yet? Omg is free. <u><strong>Create here!</strong></u></Link>
+               <Link to="/signup">Do not have an account yet? Omg is free. <u><strong>Create here!</strong></u></Link>
                <Error show={error}>{errorMsg}</Error>
            </AuthLayout>
         )

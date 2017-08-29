@@ -25,7 +25,6 @@ import { _getUsername, guid, _getUserId } from "../services/utilities";
 import { ALERT_OPTIONS } from "../services/Constants";
 //API
 import { CREATE_FORM_MUTATION } from "../api/Mutations";
-
 const generateID = guid();
 const generateEndpoint = `api.formette.com/${_getUsername()}/`;
 
@@ -81,7 +80,7 @@ class NewForm extends PureComponent {
           console.log(res);
           //Shows feedback and updates the store
           this.showAlert("success", "Form created successfully");
-          this.props.router.push("/");
+          this.props.history.push("/");
         })
         .catch(e => {
           console.error(e);
