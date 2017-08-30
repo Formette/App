@@ -31,7 +31,7 @@ class MyForms extends Component {
     const content = [];
     for (let i = 0; i <= length; i++) {
       if (type !== "loading") {
-        content.push(<Placeholder key={i} width={208} height={192} />);
+        content.push(<Placeholder key={i} width={208} height={193} />);
       } else {
         content.push(<PlaceholderAnimation key={i} />);
       }

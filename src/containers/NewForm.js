@@ -41,7 +41,7 @@ class NewForm extends PureComponent {
     disableForm: false,
     onModeEdit: false,
     error: false,
-    errorMsg: ""
+    errorMsg: "",
   };
   showAlert(
     type: string = "success",
@@ -72,29 +72,27 @@ class NewForm extends PureComponent {
         ? `${_getUsername()}/${customEndpoint}`
         : `${_getUsername()}/${generateID}`;
       //saves the new form in the DB
-      this.props
-        .createFormMutation({
-          variables: { userId, name, description, endpoint, isDisabled }
-        })
-        .then(res => {
-          console.log(res);
-          //Shows feedback and updates the store
-          this.showAlert("success", "Form created successfully");
-          this.props.history.push("/");
-        })
-        .catch(e => {
-          console.error(e);
-          this.setState({
-            error: true,
-            errorMsg: "This endpoint already exists, try another."
-          });
-          this.showAlert(
-            "error",
-            "Something went wrong, try again ...",
-            Colors.red,
-            "fa-times"
-          );
-        });
+        try{
+            const request = await this.props.createFormMutation({
+                variables: {
+                    userId,
+                    name,
+                    description,
+                    endpoint,
+                    isDisabled
+                }
+            });
+                //Shows feedback and updates the store
+                //this.showAlert("success", "Form created successfully");
+                this.props.history.push("/");
+                console.log(request);
+        }catch(e){
+            console.error(e);
+            this.setState({
+                error: true,
+                errorMsg: "This endpoint already exists, try another."
+            });
+        }
     } else {
       this.setState({
         error: true,

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Link, withRouter} from 'react-router-dom';
+import {NavLink, withRouter} from 'react-router-dom';
 //Styles
 import styled from "styled-components";
 import Colors from "../../styles/Colors";
@@ -20,24 +20,25 @@ const Navbar = props => {
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <Link className="nav-link" to="/">
+              <NavLink className="nav-link" activeClassName="active" to="/">
                 My forms
-              </Link>
+              </NavLink>
             </li>
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link" to="/signin" onClick={_ => _logout()}>
+              <NavLink className="nav-link" to="/signin" onClick={_ => _logout()}>
                 Log Out
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <Link
+              <NavLink
                 className="nav-link user-link"
+                activeClassName="active"
                 to="/profile"
               >
                 Hello, {props.username}
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </div>

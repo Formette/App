@@ -1,4 +1,5 @@
 const API_URL = "https://api.graph.cool/simple/v1/formette";
+const SUBSCRIPTION_URL = "wss://subscriptions.graph.cool/v1/formette";
 const TOKEN = "graphcoolToken";
 
 const ALERT_OPTIONS = {
@@ -11,6 +12,7 @@ const ALERT_OPTIONS = {
 
 export {
   API_URL,
+  SUBSCRIPTION_URL,
   TOKEN,
   ALERT_OPTIONS
 };

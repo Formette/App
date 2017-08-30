@@ -2,16 +2,18 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
+//GraphQL
 import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apollo';
-import { injectGlobal } from 'styled-components';
+import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 //Containers
 import App from './components/App';
 import LoginUser from './containers/LoginUser';
 import CreateUser from './containers/CreateUser';
 //Styles
+import { injectGlobal } from 'styled-components';
 import Colors from './styles/Colors';
 //Utilities
-import {API_URL, TOKEN} from './services/Constants';
+import {API_URL, SUBSCRIPTION_URL, TOKEN} from './services/Constants';
 
 const networkInterface = createNetworkInterface({ uri: API_URL });
 
@@ -30,7 +32,23 @@ networkInterface.use([{
     },
 }]);
 
-const client = new ApolloClient({ networkInterface });
+// Create WebSocket client
+const wsClient = new SubscriptionClient(SUBSCRIPTION_URL, {
+    reconnect: true,
+    connectionParams: {
+        Authorization: `Bearer ${localStorage.getItem(TOKEN)}`,
+    },
+});
+
+// Extend the network interface with the WebSocket
+const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
+    networkInterface,
+    wsClient
+);
+
+const client = new ApolloClient({
+    networkInterface: networkInterfaceWithSubscriptions
+});
 
 ReactDOM.render((
         <ApolloProvider client={client}>

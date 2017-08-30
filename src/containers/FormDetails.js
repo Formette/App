@@ -13,6 +13,7 @@ import {ALERT_OPTIONS} from '../services/Constants';
 import { _getUsername, _refreshPage} from "../services/utilities";
 //API
 import { FORM_DATA_QUERY } from "../api/Queries";
+import { FORM_DATA_SUBSCRIPTION } from "../api/Subscriptions";
 
 const url = `api.formette.com/${_getUsername()}/`;
 
@@ -20,6 +21,28 @@ class FormDetails extends PureComponent{
     msg: any;
     props: {
         formDataQuery: any,
+    };
+    componentWillMount() {
+        this._subscribeToNewLinks();
+    }
+    _subscribeToNewLinks = () => {
+        this.props.formDataQuery.subscribeToMore({
+            document: FORM_DATA_SUBSCRIPTION,
+            variables: { id: this.props.match.params.id },
+            updateQuery: (previous, { subscriptionData }) => {
+                console.log("subscriptionData = ", subscriptionData);
+                console.log("previous = ", previous);
+                const newItems = [
+                    subscriptionData.data.Forms.node,
+                    ...previous.Forms
+                ];
+                const result = {
+                    ...previous,
+                    Forms: newItems
+                };
+                return result
+            }
+        });
     };
     showAlert(type: string = "success", text: string = "Some Text", color: string = Colors.green, icon: string = "fa-link"){
         this.msg.show(text, {
@@ -29,6 +52,7 @@ class FormDetails extends PureComponent{
         })
     }
     render(){
+        console.log(this.props.formDataQuery);
         if (this.props.formDataQuery && this.props.formDataQuery.loading) {
             return <div>Loading</div>;
         }
@@ -54,18 +78,19 @@ class FormDetails extends PureComponent{
                 </Graphic>
         }
         const {data: items, name, endpoint} = this.props.formDataQuery.Forms;
+        const point = endpoint.split("/");
         return(
             <div>
                 <AlertContainer ref={a => this.msg = a} {...ALERT_OPTIONS} />
                 <div className="row">
                     <div className="col-md-6 col-sm-6">
                         <SubTitle text="All the data for" color={Colors.text.secondary}/>
-                        <Header text={name}/>
+                        <Header className="text-truncate" text={name}/>
                     </div>
                     <div className="col-md-6 col-sm-6">
                         <HorizontalList className="float-right">
                             <li>
-                                <CopyToClipboard text={`${url}${endpoint}`}
+                                <CopyToClipboard text={`${url}${point[1]}`}
                                                  style={{cursor: "pointer"}}
                                                  onCopy={_ => this.showAlert("success", "Endpoint copied to clipboard")}>
                                     <Button className="btn" color={Colors.default}>

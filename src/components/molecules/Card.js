@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 //Components
-import {SubTitle, Icon} from "../atoms/index";
-import Truncate from 'react-truncate';
+import {Title, SubTitle, Icon} from "../atoms/index";
+
 //Styles
 import Colors from "../../styles/Colors";
 import styled from "styled-components";
@@ -25,9 +25,11 @@ const Card = props => {
                     size={70}
                 />
 
-                <Truncate lines={1} ellipsis="..." style={{color: props.new ? Colors.text.white : Colors.text.normal}}>
-                    {props.title}
-                </Truncate>
+                <Title
+                    className="card-title text-truncate"
+                    color={`${props.new ? Colors.text.white : Colors.text.normal}`}
+                    text={props.title}
+                />
 
                 <SubTitle
                     className={`card-subtitle mb-2 ${props.new ? "" : "text-muted"}`}
