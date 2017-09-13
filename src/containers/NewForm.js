@@ -25,7 +25,7 @@ import { _getUsername, guid, _getUserId } from "../services/utilities";
 import { ALERT_OPTIONS } from "../services/Constants";
 //API
 import { CREATE_FORM_MUTATION } from "../api/Mutations";
-const generateID = guid();
+import { ALL_FORMS_QUERY } from "../api/Queries";
 const generateEndpoint = `api.formette.com/${_getUsername()}/`;
 
 class NewForm extends PureComponent {
@@ -38,6 +38,7 @@ class NewForm extends PureComponent {
     name: "",
     description: "",
     customEndpoint: "",
+    generateID:  guid(),
     disableForm: false,
     onModeEdit: false,
     error: false,
@@ -56,13 +57,13 @@ class NewForm extends PureComponent {
     });
   }
   _createForm = async () => {
-    console.log("userid = ", _getUserId());
     const {
       name,
       description,
       customEndpoint,
       disableForm: isDisabled,
-      error
+      error,
+      generateID
     } = this.state;
     //Verifies if the inputs are empty or not
     if (name) {
@@ -73,19 +74,30 @@ class NewForm extends PureComponent {
         : `${_getUsername()}/${generateID}`;
       //saves the new form in the DB
         try{
-            const request = await this.props.createFormMutation({
+             await this.props.createFormMutation({
                 variables: {
                     userId,
                     name,
                     description,
                     endpoint,
                     isDisabled
+                },
+                update: (store, { data: {createForms} }) => {
+                    try {
+                        //reads the query from the cache
+                        const data = store.readQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId} });
+                        //pushes the new data
+                        data.allFormses.push(createForms);
+                        //writes the new data to the store
+                        store.writeQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId}, data });
+                    } catch (e) {
+                        console.error(e);
+                    }
                 }
             });
                 //Shows feedback and updates the store
                 //this.showAlert("success", "Form created successfully");
                 this.props.history.push("/");
-                console.log(request);
         }catch(e){
             console.error(e);
             this.setState({
@@ -108,7 +120,8 @@ class NewForm extends PureComponent {
       disableForm,
       onModeEdit,
       error,
-      errorMsg
+      errorMsg,
+      generateID
     } = this.state;
     return (
       <div>
@@ -226,9 +239,7 @@ class NewForm extends PureComponent {
                     color={Colors.text.secondary}
                   />
                   <SyntaxHighlighter language="javascript" style={docco}>
-                    {'<form action="' +
-                      generateEndpoint +
-                      '" method="post" target="_blank">\n' +
+                    {'<form action="' + `${generateEndpoint}${customEndpoint ? customEndpoint : generateID}` + '" method="post" target="_blank">\n' +
                       '  <input type="text" name="email" placeholder="Email" />\n' +
                       '  <input type="text" name="message" placeholder="Message" />\n' +
                       '  <button class="button" type="submit">Submit</button>\n' +

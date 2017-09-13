@@ -18,6 +18,7 @@ const USER_QUERY = gql`
 const USERNAME_QUERY = gql`
   query usernameQuery {
     user {
+      id
       userName
     }
   }
@@ -41,22 +42,6 @@ const ALL_FORMS_QUERY = gql`
     name
     createdAt
    }
-  }
-`;
-
-//
-const ALL_FORMS_COUNT_QUERY = gql`
-  query allFormses {
-    user {
-      formses {
-        id
-        name
-        createdAt
-      }
-      _formsesMeta {
-        count
-      }
-    }
   }
 `;
 

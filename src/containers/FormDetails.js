@@ -10,9 +10,9 @@ import {HorizontalList, Table, Graphic} from '../components/molecules/index';
 import Colors from '../styles/Colors';
 //Utils
 import {ALERT_OPTIONS} from '../services/Constants';
-import { _getUsername, _refreshPage} from "../services/utilities";
+import { _getUsername, _refreshPage, _getUserId} from "../services/utilities";
 //API
-import { FORM_DATA_QUERY } from "../api/Queries";
+import { FORM_DATA_QUERY, ALL_FORMS_QUERY } from "../api/Queries";
 import { DELETE_FORM_MUTATION } from "../api/Mutations";
 import { FORM_DATA_SUBSCRIPTION } from "../api/Subscriptions";
 
@@ -57,15 +57,31 @@ class FormDetails extends PureComponent{
         //deletes the form in the DB
         try{
             const {id} = this.props.match.params;
-            const request = await this.props.deleteFormMutation({
+            const userId = _getUserId();
+            await this.props.deleteFormMutation({
                 variables: {
                     id,
+                },
+                update: (store, { data: {deleteForms} }) => {
+                    try {
+                        //reads the query from the cache
+                        const data = store.readQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId} });
+                        //finds and removes the form from the object
+                        data.allFormses.forEach((value, index) => {
+                            if (value.id === deleteForms.id) {
+                                data.allFormses.splice(index, 1);
+                            }
+                        });
+                        //updates the new data to the store
+                        store.writeQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId}, data });
+                    } catch (e) {
+                        console.error(e);
+                    }
                 }
             });
             //Shows feedback and updates the store
             //this.showAlert("success", "Form created successfully");
             this.props.history.push("/");
-            console.log(request);
         }catch(e){
             console.error(e);
         }

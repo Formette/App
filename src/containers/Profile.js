@@ -12,11 +12,12 @@ import {
   Link,
   Icon
 } from "../components/atoms/index";
+import {Graphic} from '../components/molecules/index';
 import AlertContainer from "react-alert";
 //Styles
 import Colors from "../styles/Colors";
 //Utils
-import { _getUsername, _logout, _saveUsername } from "../services/utilities";
+import { _getUsername, _logout, _saveUsername, _refreshPage } from "../services/utilities";
 import { ALERT_OPTIONS } from "../services/Constants";
 //API
 import { USER_QUERY, USERNAME_VALIDATION_QUERY } from "../api/Queries";
@@ -61,21 +62,25 @@ class Profile extends PureComponent {
       if (error) return;
       const userId = this.props.userQuery.user.id;
       //updates the user username and some else info in the DB
-      this.props
-        .updateUser({ variables: { userId, username } })
-        .then(_ => {
-          _saveUsername(username);
-          this.showAlert();
-        })
-        .catch(e => {
-          console.error(e);
-          this.showAlert(
-            "error",
-            "Something went wrong, try again ...",
-            Colors.red,
-            "fa-times"
-          );
-        });
+        try{
+            await this.props.updateUser({
+                variables: {
+                    userId,
+                    username
+                },
+            });
+            //Shows feedback and updates the store
+            _saveUsername(username);
+            this.showAlert();
+        }catch(e){
+            console.error(e);
+            this.showAlert(
+                "error",
+                "Something went wrong, try again ...",
+                Colors.red,
+                "fa-times"
+            );
+        }
     } else {
       this.setState({
         error: true,
@@ -125,7 +130,13 @@ class Profile extends PureComponent {
       return <div>Loading</div>;
     }
     if (this.props.userQuery && this.props.userQuery.error) {
-      return <div>Ups! Something went wrong try again.</div>;
+        return <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
+            <Button className="btn btn-lg btn-primary"
+                    color={Colors.primary}
+                    onClick={_refreshPage}>
+                Try Again
+            </Button>
+        </Graphic>
     }
     const { userName, _formsesMeta } = this.props.userQuery.user;
     const { error, errorMsg, username } = this.state;
