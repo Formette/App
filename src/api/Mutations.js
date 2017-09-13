@@ -39,7 +39,7 @@ const UPDATE_USER_MUTATION = gql`
 
 // NEW FORM MUTATIONS
 
-//this updates the user username and other informations
+//this creates a new form
 const CREATE_FORM_MUTATION = gql`
   mutation(
     $userId: ID!
@@ -62,9 +62,19 @@ const CREATE_FORM_MUTATION = gql`
   }
 `;
 
+//this deletes the selected form and all of is data
+const DELETE_FORM_MUTATION = gql`
+    mutation($id: ID!){
+      deleteForms(id: $id){
+        id
+      }
+    }
+`;
+
 export {
   SIGIN_USER_MUTATION,
   CREATE_USER_MUTATION,
   UPDATE_USER_MUTATION,
-  CREATE_FORM_MUTATION
+  CREATE_FORM_MUTATION,
+  DELETE_FORM_MUTATION
 };

@@ -13,6 +13,7 @@ import {ALERT_OPTIONS} from '../services/Constants';
 import { _getUsername, _refreshPage} from "../services/utilities";
 //API
 import { FORM_DATA_QUERY } from "../api/Queries";
+import { DELETE_FORM_MUTATION } from "../api/Mutations";
 import { FORM_DATA_SUBSCRIPTION } from "../api/Subscriptions";
 
 const url = `api.formette.com/${_getUsername()}/`;
@@ -21,6 +22,7 @@ class FormDetails extends PureComponent{
     msg: any;
     props: {
         formDataQuery: any,
+        deleteFormMutation: any,
     };
     componentWillMount() {
         this._subscribeToNewLinks();
@@ -33,12 +35,12 @@ class FormDetails extends PureComponent{
                 console.log("subscriptionData = ", subscriptionData);
                 console.log("previous = ", previous);
                 const newItems = [
-                    subscriptionData.data.Forms.node,
-                    ...previous.Forms
+                    subscriptionData.data.Forms.node.data,
+                    ...previous.Forms.data
                 ];
                 const result = {
                     ...previous,
-                    Forms: newItems
+                    data: newItems
                 };
                 return result
             }
@@ -51,8 +53,28 @@ class FormDetails extends PureComponent{
             icon: <Icon name={icon} color={color}/>
         })
     }
+    _deleteForm = async () => {
+        //deletes the form in the DB
+        try{
+            const {id} = this.props.match.params;
+            const request = await this.props.deleteFormMutation({
+                variables: {
+                    id,
+                }
+            });
+            //Shows feedback and updates the store
+            //this.showAlert("success", "Form created successfully");
+            this.props.history.push("/");
+            console.log(request);
+        }catch(e){
+            console.error(e);
+        }
+    };
+    _editForm = _ => {
+        this.props.history.push(`/edit/${this.props.match.params.id}`)
+    };
     render(){
-        console.log(this.props.formDataQuery);
+        console.log("data = ",this.props.formDataQuery);
         if (this.props.formDataQuery && this.props.formDataQuery.loading) {
             return <div>Loading</div>;
         }
@@ -79,6 +101,7 @@ class FormDetails extends PureComponent{
         }
         const {data: items, name, endpoint} = this.props.formDataQuery.Forms;
         const point = endpoint.split("/");
+       // const point = "teste";
         return(
             <div>
                 <AlertContainer ref={a => this.msg = a} {...ALERT_OPTIONS} />
@@ -99,12 +122,12 @@ class FormDetails extends PureComponent{
                                 </CopyToClipboard>
                             </li>
                             <li>
-                                <Button className="btn" color={Colors.default}>
+                                <Button className="btn" color={Colors.default} onClick={this._editForm}>
                                     <Icon color={Colors.white} name="fa-pencil"/>
                                 </Button>
                             </li>
                             <li>
-                                <Button className="btn" color={Colors.red}>
+                                <Button className="btn" color={Colors.red} onClick={this._deleteForm}>
                                     <Icon color={Colors.white} name="fa-trash-o"/>
                                 </Button>
                             </li>
@@ -135,7 +158,8 @@ const FormDetailsWithData = compose(
         options: (props) => ({
             variables: {id: props.match.params.id}
         })
-    })
+    }),
+    graphql(DELETE_FORM_MUTATION, { name: "deleteFormMutation" })
 )(FormDetails);
 
 export default FormDetailsWithData;

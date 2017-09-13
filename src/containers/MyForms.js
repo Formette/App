@@ -11,7 +11,7 @@ import {
    Graphic
 } from "../components/molecules/index";
 //Utils
-import {_refreshPage} from "../services/utilities";
+import {_refreshPage, _getUserId} from "../services/utilities";
 //Styles
 import Colors from '../styles/Colors';
 //API
@@ -39,16 +39,18 @@ class MyForms extends Component {
     return content;
   };
   _loadContent = _ => {
-    const { _formsesMeta, formses } = this.props.allFormsQuery.user;
+      console.log(this.props.allFormsQuery);
+    const { allFormses } = this.props.allFormsQuery;
+    const formsCount = Object.keys(allFormses).length;
     const content = [];
     let length = 0;
     //checks if the number of forms created from the user
-    if (_formsesMeta.count <= 0 && Object.keys(formses).length === 0) {
+    if (formsCount === 0) {
       return this._LoadingAnimationContent("normal");
     }
     //Checks if the object data is not empty
-    if (Object.keys(formses).length >= 0) {
-      formses.map(res => {
+    if (formsCount >= 0) {
+        allFormses.map(res => {
         content.push(
           <Card
             key={res.id}
@@ -60,8 +62,8 @@ class MyForms extends Component {
         return true;
       });
       //for interface
-      if (_formsesMeta.count < 6) {
-        length = 6 - Number(_formsesMeta.count);
+      if (formsCount < 6) {
+        length = 6 - Number(formsCount);
       }
       return content.concat(this._LoadingAnimationContent("normal", length));
     }
@@ -102,7 +104,11 @@ class MyForms extends Component {
 }
 
 const MyFormsWithData = compose(
-  graphql(ALL_FORMS_QUERY, { name: "allFormsQuery" }),
+  graphql(ALL_FORMS_QUERY, { name: "allFormsQuery",
+      options: (props) => ({
+          variables: {userId: _getUserId()}
+      })
+  }),
 )(MyForms);
 
 export default MyFormsWithData;

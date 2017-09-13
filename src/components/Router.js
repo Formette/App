@@ -13,6 +13,7 @@ const Main = (props) => (
         <Switch>
             <PrivateRoute exact path='/' component={MyForms}/>
             <PrivateRoute exact path='/new' component={NewForm}/>
+            <PrivateRoute exact path='/edit/:id' component={NewForm}/>
             <PrivateRoute exact path='/form/:id' component={FormDetails}/>
             <PrivateRoute exact path='/profile' component={Profile} {...props}/>
             <PrivateRoute component={NoMatch}/>

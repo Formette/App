@@ -33,7 +33,19 @@ const USERNAME_VALIDATION_QUERY = gql`
 
 // FORMS QUERIES
 
+//gets all the forms from that user
 const ALL_FORMS_QUERY = gql`
+  query allFormses($userId: ID!) {
+   allFormses(filter: {user: {id: $userId}}) {
+    id
+    name
+    createdAt
+   }
+  }
+`;
+
+//
+const ALL_FORMS_COUNT_QUERY = gql`
   query allFormses {
     user {
       formses {
@@ -58,6 +70,21 @@ const FORM_DATA_QUERY = gql`
     }
   }
 `;
+
+/*const ALL_FORMS_COUNT_QUERY = gql`
+  query allFormses {
+    user {
+      formses {
+        id
+        name
+        createdAt
+      }
+      _formsesMeta {
+        count
+      }
+    }
+  }
+`;*/
 
 export {
     USER_QUERY,
