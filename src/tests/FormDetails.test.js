@@ -7,7 +7,7 @@ import {FormDetails} from '../containers/FormDetails';
 import { mount } from 'enzyme';
 
 describe('Form Details', () => {
-    it.skip('UI renders correctly', () => {
+    it.skip('wUI renders correctly', () => {
         const url = {
             params: {
                 id: "cj6e1w3rd0loh0148839kzl2q"

@@ -239,7 +239,7 @@ class NewForm extends PureComponent {
                     color={Colors.text.secondary}
                   />
                   <SyntaxHighlighter language="javascript" style={docco}>
-                    {'<form action="' + `${generateEndpoint}${customEndpoint ? customEndpoint : generateID}` + '" method="post" target="_blank">\n' +
+                    {'<form action="'+generateEndpoint+''+(customEndpoint ? customEndpoint : generateID)+'" method="post" target="_blank">\n' +
                       '  <input type="text" name="email" placeholder="Email" />\n' +
                       '  <input type="text" name="message" placeholder="Message" />\n' +
                       '  <button class="button" type="submit">Submit</button>\n' +
