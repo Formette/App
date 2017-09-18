@@ -23,7 +23,7 @@ import { ALERT_OPTIONS } from "../services/Constants";
 import { USER_QUERY, USERNAME_VALIDATION_QUERY } from "../api/Queries";
 import { UPDATE_USER_MUTATION } from "../api/Mutations";
 
-class Profile extends PureComponent {
+export class Profile extends PureComponent {
   msg: any;
   props: {
     userQuery: any,

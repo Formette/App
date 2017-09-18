@@ -1,11 +1,13 @@
-// Button.test.js
+// CreateUser.test.js
 import React from 'react';
-import MyForms from '../containers/MyForms';
+import {CreateUser} from '../containers/CreateUser';
 import renderer from 'react-test-renderer';
 
-test('My Forms UI renders correctly', () => {
-    const tree = renderer.create(
-        <MyForms/>
-    ).toJSON();
-    expect(tree).toMatchSnapshot();
+describe('Create User', () => {
+    it('UI renders correctly', () => {
+        const tree = renderer.create(
+            <CreateUser/>
+        ).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 });

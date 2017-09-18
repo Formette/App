@@ -1,10 +1,9 @@
 // @flow
 import React from 'react';
 import { graphql, compose } from 'react-apollo';
-import {Link} from 'react-router-dom';
 //Components
 import AuthLayout from '../components/organisms/AuthLayout';
-import {Input, Button} from '../components/atoms/index';
+import {Input, Button, Link} from '../components/atoms/index';
 import Error from '../components/molecules/Error';
 //Styles
 import Colors from '../styles/Colors';
@@ -48,6 +47,7 @@ class LoginUser extends React.PureComponent {
     };
     render(){
         const {email, password, error, errorMsg} = this.state;
+        const {history} = this.props;
         return(
            <AuthLayout description="Welcome back, Come quick! Your forms are waiting for you">
                <label htmlFor="signinEmail" className="sr-only">Email address</label>
@@ -73,7 +73,7 @@ class LoginUser extends React.PureComponent {
                        style={{marginTop: 10, marginBottom: 10}}
                        color={Colors.primary}>Sign In</Button>
 
-               <Link to="/signup">Do not have an account yet? Omg is free. <u><strong>Create here!</strong></u></Link>
+               <Link onClick={() => history.push('/signup')}>Do not have an account yet? Omg is free. <u><strong>Create here!</strong></u></Link>
                <Error show={error}>{errorMsg}</Error>
            </AuthLayout>
         )

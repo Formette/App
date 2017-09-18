@@ -17,7 +17,7 @@ import Colors from '../styles/Colors';
 //API
 import { ALL_FORMS_QUERY } from "../api/Queries";
 
-class MyForms extends Component {
+export class MyForms extends Component {
   props: {
     allFormsQuery: any,
   };

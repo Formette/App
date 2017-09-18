@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Login UI renders correctly 1`] = `
+exports[`Create User UI renders correctly 1`] = `
 <div
   className="container sc-gZMcBi kEyREm"
 >
@@ -15,18 +15,35 @@ exports[`Login UI renders correctly 1`] = `
     <h6
       className="sc-bZQynM hFGzSH"
     >
-      Welcome back, Come quick! Your forms are waiting for you
+      Seriously? Your forms do not have a home for the data? Do not worry, they will not be without shelter.
     </h6>
     <label
       className="sr-only"
-      htmlFor="signinEmail"
+      htmlFor="signupUsername"
+    >
+      Username
+    </label>
+    <input
+      autoFocus={true}
+      className="form-control sc-bwzfXH izjiAr"
+      id="signupUsername"
+      onChange={[Function]}
+      onKeyUp={[Function]}
+      placeholder="Username"
+      required={true}
+      type="text"
+      value=""
+    />
+    <label
+      className="sr-only"
+      htmlFor="signupEmail"
     >
       Email address
     </label>
     <input
       autoFocus={true}
       className="form-control sc-bwzfXH izjiAr"
-      id="signinEmail"
+      id="signupEmail"
       onChange={[Function]}
       placeholder="Email address"
       required={true}
@@ -35,15 +52,16 @@ exports[`Login UI renders correctly 1`] = `
     />
     <label
       className="sr-only"
-      htmlFor="signinPassword"
+      htmlFor="signupPassword"
     >
       Password
     </label>
     <input
       autoFocus={true}
       className="form-control sc-bwzfXH izjiAr"
-      id="signinPassword"
+      id="signupPassword"
       onChange={[Function]}
+      onKeyUp={[Function]}
       placeholder="Password"
       required={true}
       type="password"
@@ -61,16 +79,16 @@ exports[`Login UI renders correctly 1`] = `
       }
       type="button"
     >
-      Sign In
+      Create Account
     </button>
     <a
       className="sc-htpNat fwULHq"
       onClick={[Function]}
     >
-      Do not have an account yet? Omg is free. 
+      Already have an account? Your forms miss you. 
       <u>
         <strong>
-          Create here!
+          Sign In
         </strong>
       </u>
     </a>

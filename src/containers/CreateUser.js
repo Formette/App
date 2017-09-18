@@ -1,10 +1,9 @@
 // @flow
 import React from 'react';
 import { graphql, compose, withApollo } from 'react-apollo';
-import {Link} from 'react-router-dom';
 //Components
 import AuthLayout from '../components/organisms/AuthLayout';
-import {Input, Button} from '../components/atoms/index';
+import {Input, Button, Link} from '../components/atoms/index';
 import Error from '../components/molecules/Error';
 //Styles
 import Colors from '../styles/Colors';
@@ -14,7 +13,7 @@ import {SIGIN_USER_MUTATION, CREATE_USER_MUTATION} from '../api/Mutations';
 //Utilities
 import {_saveUsername} from '../services/utilities';
 
-class CreateUser extends React.PureComponent {
+export class CreateUser extends React.PureComponent {
     props: {
         createUser: any,
         signinUser: any,
@@ -106,6 +105,7 @@ class CreateUser extends React.PureComponent {
     }
     render(){
         const {email, password, username, error, errorMsg} = this.state;
+        const {history} = this.props;
         return(
             <AuthLayout description="Seriously? Your forms do not have a home for the data? Do not worry, they will not be without shelter.">
                 <label htmlFor="signupUsername" className="sr-only">Username</label>
@@ -140,7 +140,7 @@ class CreateUser extends React.PureComponent {
                         style={{marginTop: 10, marginBottom: 10}}
                         color={Colors.primary}>Create Account</Button>
 
-                <Link to="/signin">Already have an account? Your forms miss you. <u><strong>Sign In</strong></u></Link>
+                <Link onClick={() => history.push('/signin')}>Already have an account? Your forms miss you. <u><strong>Sign In</strong></u></Link>
                 <Error show={error}>{errorMsg}</Error>
             </AuthLayout>
         )

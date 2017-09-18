@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": false,
   "devDependencies": {
+    "enzyme": "^2.9.1",
     "flow-bin": "^0.51.0",
     "react-scripts": "1.0.10",
     "react-test-renderer": "^15.6.1",
@@ -10,7 +11,6 @@
   },
   "dependencies": {
     "apollo-client": "^1.7.0",
-    "auth0-js": "^8.8.0",
     "graphql-tag": "^2.4.2",
     "moment": "^2.18.1",
     "polished": "^1.3.0",
@@ -29,7 +29,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test  --env=jsdom",
     "eject": "react-scripts eject"
   }
 }

@@ -18,7 +18,7 @@ import { FORM_DATA_SUBSCRIPTION } from "../api/Subscriptions";
 
 const url = `api.formette.com/${_getUsername()}/`;
 
-class FormDetails extends PureComponent{
+export class FormDetails extends PureComponent{
     msg: any;
     props: {
         formDataQuery: any,
