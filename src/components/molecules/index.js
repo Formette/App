@@ -6,6 +6,7 @@ import PlaceholderAnimation from './PlaceholderAnimation';
 import HorizontalList from './HorizontalList';
 import Table from './Table';
 import Graphic from './Graphic';
+import Confirmation from './Confirmation';
 
 export {
     Card,
@@ -14,5 +15,6 @@ export {
     PlaceholderAnimation,
     HorizontalList,
     Table,
-    Graphic
+    Graphic,
+    Confirmation
 }

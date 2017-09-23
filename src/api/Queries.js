@@ -50,6 +50,8 @@ const FORM_DATA_QUERY = gql`
     Forms(id: $id) {
         id
         name
+        description
+        isDisabled
         endpoint
         data
     }

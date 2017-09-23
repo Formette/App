@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
-import { graphql, compose } from "react-apollo";
+import { graphql, compose, withApollo } from "react-apollo";
 //Components
 import CopyToClipboard from "react-copy-to-clipboard";
 import AlertContainer from "react-alert";
@@ -18,21 +18,25 @@ import {
   Link,
   Badge
 } from "../components/atoms/index";
+import {Graphic} from '../components/molecules/index'
 //Styles
 import Colors from "../styles/Colors";
 //Utils
 import { _getUsername, guid, _getUserId } from "../services/utilities";
 import { ALERT_OPTIONS } from "../services/Constants";
 //API
-import { CREATE_FORM_MUTATION } from "../api/Mutations";
-import { ALL_FORMS_QUERY } from "../api/Queries";
+import { CREATE_FORM_MUTATION, UPDATE_FORM_MUTATION } from "../api/Mutations";
+import { ALL_FORMS_QUERY, FORM_DATA_QUERY } from "../api/Queries";
 const generateEndpoint = `api.formette.com/${_getUsername()}/`;
 
 class NewForm extends PureComponent {
   msg: any;
   props: {
     createFormMutation: any,
-    router: any
+    updateFormMutation: any,
+    router: any,
+    match: any,
+    client: any,
   };
   state = {
     name: "",
@@ -43,7 +47,14 @@ class NewForm extends PureComponent {
     onModeEdit: false,
     error: false,
     errorMsg: "",
+    nullFormToEdit: false,
   };
+  componentDidMount(){
+      //if the form is already created set the edit mode
+      if(this.props.match.params.id !== undefined){
+          this._getFormData(this.props.match.params.id);
+      }
+  }
   showAlert(
     type: string = "success",
     text: string = "Some Text",
@@ -63,7 +74,8 @@ class NewForm extends PureComponent {
       customEndpoint,
       disableForm: isDisabled,
       error,
-      generateID
+      generateID,
+      onModeEdit
     } = this.state;
     //Verifies if the inputs are empty or not
     if (name) {
@@ -74,30 +86,35 @@ class NewForm extends PureComponent {
         : `${_getUsername()}/${generateID}`;
       //saves the new form in the DB
         try{
-             await this.props.createFormMutation({
-                variables: {
-                    userId,
-                    name,
-                    description,
-                    endpoint,
-                    isDisabled
-                },
-                update: (store, { data: {createForms} }) => {
-                    try {
-                        //reads the query from the cache
-                        const data = store.readQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId} });
-                        //pushes the new data
-                        data.allFormses.push(createForms);
-                        //writes the new data to the store
-                        store.writeQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId}, data });
-                    } catch (e) {
-                        console.error(e);
+            //if is on mode edit only updates the form, does not create a new one
+            if(onModeEdit){
+                this._updateForm(name, description, endpoint, isDisabled);
+            }else{
+                await this.props.createFormMutation({
+                    variables: {
+                        userId,
+                        name,
+                        description,
+                        endpoint,
+                        isDisabled
+                    },
+                    update: (store, { data: {createForms} }) => {
+                        try {
+                            //reads the query from the cache
+                            const data = store.readQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId} });
+                            //pushes the new data
+                            data.allFormses.push(createForms);
+                            //writes the new data to the store
+                            store.writeQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId}, data });
+                        } catch (e) {
+                            console.error(e);
+                        }
                     }
-                }
-            });
-                //Shows feedback and updates the store
-                //this.showAlert("success", "Form created successfully");
-                this.props.history.push("/");
+                });
+            }
+            //Shows feedback and updates the store
+            //this.showAlert("success", "Form created successfully");
+            this.props.history.push("/");
         }catch(e){
             console.error(e);
             this.setState({
@@ -112,6 +129,69 @@ class NewForm extends PureComponent {
       });
     }
   };
+  _updateForm = async (name, description, endpoint, isDisabled) => {
+      //updates the form in the DB
+      try{
+          const id = this.props.match.params.id;
+          await this.props.updateFormMutation({
+              variables: {
+                  id,
+                  name,
+                  description,
+                  endpoint,
+                  isDisabled
+              },
+              update: (store, { data }) => {
+                  try {
+                      console.log("store = ", store);
+                      console.log("data = ", data);
+                     /* //reads the query from the cache
+                      const data = store.readQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId} });
+                      //pushes the new data
+                      data.allFormses.push(createForms);
+                      //writes the new data to the store
+                      store.writeQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId}, data });*/
+                  } catch (e) {
+                      console.error(e);
+                  }
+              }
+          });
+      }catch(e){
+          console.error(e);
+          this.setState({
+              error: true,
+              errorMsg: "This endpoint already exists, try another."
+          });
+      }
+  };
+  _getFormData =  (id) => {
+      this.props.client.query({
+          query: FORM_DATA_QUERY,
+          variables: { id },
+      }).then((res) => {
+          //TODO do this condition in a better way
+          if(res.data.Forms === null){
+              this.setState({nullFormToEdit: true, onModeEdit: false});
+              return true;
+          }
+          if(Object.keys(res.data.Forms).length !== 0){
+              const {name, id: generateID, endpoint, description, isDisabled: disableForm} = res.data.Forms;
+              const point = endpoint.split("/");
+              this.setState({
+                  name,
+                  description,
+                  disableForm,
+                  generateID,
+                  customEndpoint: point[1]
+              });
+              this.setState((prevState) => ({onModeEdit: !prevState.onModeEdit}));
+          }else{
+              this.setState({nullFormToEdit: true, onModeEdit: false});
+          }
+      }).catch((e) => {
+          console.error(e);
+      });
+  };
   render() {
     const {
       name,
@@ -121,14 +201,26 @@ class NewForm extends PureComponent {
       onModeEdit,
       error,
       errorMsg,
-      generateID
+      generateID,
+      nullFormToEdit
     } = this.state;
+
+      if (nullFormToEdit) {
+          return <Graphic text="Ups! No form was found to edit." icon="fa-file-text-o">
+              <Button className="btn btn-lg btn-primary"
+                      color={Colors.primary}
+                      onClick={_ =>  this.props.history.push('/')}>
+                    Go back
+              </Button>
+          </Graphic>
+      }
+
     return (
       <div>
         <AlertContainer ref={a => (this.msg = a)} {...ALERT_OPTIONS} />
         <div className="row">
           <div className={`col-md-${onModeEdit ? 9 : 12}`}>
-            <SubTitle text="New form" color={Colors.text.secondary} />
+            <SubTitle text={`${onModeEdit ? "Edit" : "New"} Form`} color={Colors.text.secondary} />
             <Header text={name ? name : generateID} />
           </div>
           {onModeEdit
@@ -282,7 +374,8 @@ class NewForm extends PureComponent {
 }
 
 const NewFormWithData = compose(
-  graphql(CREATE_FORM_MUTATION, { name: "createFormMutation" })
+  graphql(CREATE_FORM_MUTATION, { name: "createFormMutation" }),
+  graphql(UPDATE_FORM_MUTATION, { name: "updateFormMutation" })
 )(NewForm);
 
-export default NewFormWithData;
+export default withApollo(NewFormWithData);

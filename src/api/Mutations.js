@@ -63,6 +63,19 @@ const CREATE_FORM_MUTATION = gql`
 `;
 
 //this deletes the selected form and all of is data
+const UPDATE_FORM_MUTATION = gql`
+    mutation($id: ID!, $name: String!, $description: String, $endpoint: String!, $isDisabled: Boolean) {
+      updateForms(id: $id, name: $name, description: $description, endpoint: $endpoint, isDisabled: $isDisabled) {
+        id
+        name
+        description
+        endpoint
+        isDisabled
+      }
+    }
+`;
+
+//this deletes the selected form and all of is data
 const DELETE_FORM_MUTATION = gql`
     mutation($id: ID!){
       deleteForms(id: $id){
@@ -76,5 +89,6 @@ export {
   CREATE_USER_MUTATION,
   UPDATE_USER_MUTATION,
   CREATE_FORM_MUTATION,
+  UPDATE_FORM_MUTATION,
   DELETE_FORM_MUTATION
 };

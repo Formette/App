@@ -5,7 +5,7 @@ import { graphql, compose } from "react-apollo";
 import CopyToClipboard from 'react-copy-to-clipboard';
 import AlertContainer from 'react-alert';
 import {SubTitle, Header, Button, Icon} from '../components/atoms/index';
-import {HorizontalList, Table, Graphic} from '../components/molecules/index';
+import {HorizontalList, Table, Graphic, Confirmation} from '../components/molecules/index';
 //Styles
 import Colors from '../styles/Colors';
 //Utils
@@ -20,6 +20,9 @@ const url = `api.formette.com/${_getUsername()}/`;
 
 export class FormDetails extends PureComponent{
     msg: any;
+    state = {
+        onConfirmation: false,
+    };
     props: {
         formDataQuery: any,
         deleteFormMutation: any,
@@ -53,6 +56,11 @@ export class FormDetails extends PureComponent{
             icon: <Icon name={icon} color={color}/>
         })
     }
+    _showConfirmation = _ => {
+      this.setState((prevState) => ({
+          onConfirmation: !prevState.onConfirmation
+      }));
+    };
     _deleteForm = async () => {
         //deletes the form in the DB
         try{
@@ -87,10 +95,9 @@ export class FormDetails extends PureComponent{
         }
     };
     _editForm = _ => {
-        this.props.history.push(`/edit/${this.props.match.params.id}`)
+        this.props.history.push(`/edit/${this.props.match.params.id}`);
     };
     render(){
-        console.log("data = ",this.props.formDataQuery);
         if (this.props.formDataQuery && this.props.formDataQuery.loading) {
             return <div>Loading</div>;
         }
@@ -117,10 +124,17 @@ export class FormDetails extends PureComponent{
         }
         const {data: items, name, endpoint} = this.props.formDataQuery.Forms;
         const point = endpoint.split("/");
+        const {onConfirmation} = this.state;
        // const point = "teste";
         return(
             <div>
                 <AlertContainer ref={a => this.msg = a} {...ALERT_OPTIONS} />
+                <Confirmation title="Are you sure?"
+                              description="Are you sure you want to delete this form?"
+                              show={onConfirmation}
+                              onCancel={this._showConfirmation}
+                              onDelete={this._deleteForm}
+                />
                 <div className="row">
                     <div className="col-md-6 col-sm-6">
                         <SubTitle text="All the data for" color={Colors.text.secondary}/>
@@ -143,7 +157,7 @@ export class FormDetails extends PureComponent{
                                 </Button>
                             </li>
                             <li>
-                                <Button className="btn" color={Colors.red} onClick={this._deleteForm}>
+                                <Button className="btn" color={Colors.red} onClick={this._showConfirmation}>
                                     <Icon color={Colors.white} name="fa-trash-o"/>
                                 </Button>
                             </li>
