@@ -18,16 +18,16 @@ import {
   Link,
   Badge
 } from "../components/atoms/index";
-import {Graphic} from '../components/molecules/index'
+import {Graphic, Confirmation} from '../components/molecules/index'
 //Styles
 import Colors from "../styles/Colors";
 //Utils
 import { _getUsername, guid, _getUserId } from "../services/utilities";
 import { ALERT_OPTIONS } from "../services/Constants";
 //API
-import { CREATE_FORM_MUTATION, UPDATE_FORM_MUTATION } from "../api/Mutations";
+import { CREATE_FORM_MUTATION, UPDATE_FORM_MUTATION, DELETE_FORM_MUTATION } from "../api/Mutations";
 import { ALL_FORMS_QUERY, FORM_DATA_QUERY } from "../api/Queries";
-const generateEndpoint = `api.formette.com/${_getUsername()}/`;
+import {deleteForm} from '../api/Functions';
 
 class NewForm extends PureComponent {
   msg: any;
@@ -42,12 +42,15 @@ class NewForm extends PureComponent {
     name: "",
     description: "",
     customEndpoint: "",
+    generateEndpoint: `api.formette.com/${_getUsername()}/`,
     generateID:  guid(),
     disableForm: false,
+    oldData: [],
     onModeEdit: false,
     error: false,
     errorMsg: "",
     nullFormToEdit: false,
+    onConfirmation: false,
   };
   componentDidMount(){
       //if the form is already created set the edit mode
@@ -111,10 +114,10 @@ class NewForm extends PureComponent {
                         }
                     }
                 });
+                this.props.history.push("/");
             }
             //Shows feedback and updates the store
             //this.showAlert("success", "Form created successfully");
-            this.props.history.push("/");
         }catch(e){
             console.error(e);
             this.setState({
@@ -130,9 +133,20 @@ class NewForm extends PureComponent {
     }
   };
   _updateForm = async (name, description, endpoint, isDisabled) => {
-      //updates the form in the DB
       try{
           const id = this.props.match.params.id;
+          const {oldData} = this.state;
+          //checks if the new data is the same as the previous
+          console.log("new isDisabled = ", isDisabled);
+          console.log("old isDisabled = ", oldData.isDisabled);
+          if(name === oldData.name && description === oldData.description && endpoint === oldData.endpoint && isDisabled === oldData.isDisabled){
+              this.setState({
+                  error: true,
+                  errorMsg: "If it's the same as before, what's the point of changing?"
+              });
+              return;
+          }
+          //updates the form in the DB
           await this.props.updateFormMutation({
               variables: {
                   id,
@@ -140,22 +154,9 @@ class NewForm extends PureComponent {
                   description,
                   endpoint,
                   isDisabled
-              },
-              update: (store, { data }) => {
-                  try {
-                      console.log("store = ", store);
-                      console.log("data = ", data);
-                     /* //reads the query from the cache
-                      const data = store.readQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId} });
-                      //pushes the new data
-                      data.allFormses.push(createForms);
-                      //writes the new data to the store
-                      store.writeQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId}, data });*/
-                  } catch (e) {
-                      console.error(e);
-                  }
               }
           });
+          this.props.history.push("/");
       }catch(e){
           console.error(e);
           this.setState({
@@ -164,6 +165,23 @@ class NewForm extends PureComponent {
           });
       }
   };
+   _showConfirmation = _ => {
+        this.setState((prevState) => ({
+            onConfirmation: !prevState.onConfirmation
+        }));
+    };
+   _onDeleteForm =  () => {
+        //deletes the form in the DB
+        const {id} = this.props.match.params;
+        const userId = _getUserId();
+        const response = deleteForm(id, userId, this.props.deleteFormMutation);
+            if(response){
+                this.props.history.push("/");
+            }else{
+                console.log("erro ao apagar o form = ", response);
+                this.showAlert("error", "What a disgrace but it was not possible to delete the form, try again.", Colors.red, "fa-exclamation-triangle");
+            }
+    };
   _getFormData =  (id) => {
       this.props.client.query({
           query: FORM_DATA_QUERY,
@@ -177,14 +195,15 @@ class NewForm extends PureComponent {
           if(Object.keys(res.data.Forms).length !== 0){
               const {name, id: generateID, endpoint, description, isDisabled: disableForm} = res.data.Forms;
               const point = endpoint.split("/");
-              this.setState({
+              this.setState((prevState) => ({
                   name,
                   description,
                   disableForm,
                   generateID,
-                  customEndpoint: point[1]
-              });
-              this.setState((prevState) => ({onModeEdit: !prevState.onModeEdit}));
+                  customEndpoint: point[1],
+                  onModeEdit: !prevState.onModeEdit,
+                  oldData: res.data.Forms
+              }));
           }else{
               this.setState({nullFormToEdit: true, onModeEdit: false});
           }
@@ -197,12 +216,14 @@ class NewForm extends PureComponent {
       name,
       description,
       customEndpoint,
+      generateEndpoint,
       disableForm,
       onModeEdit,
       error,
       errorMsg,
       generateID,
-      nullFormToEdit
+      nullFormToEdit,
+      onConfirmation
     } = this.state;
 
       if (nullFormToEdit) {
@@ -218,6 +239,11 @@ class NewForm extends PureComponent {
     return (
       <div>
         <AlertContainer ref={a => (this.msg = a)} {...ALERT_OPTIONS} />
+          <Confirmation title="Are you sure?"
+                        description="Are you sure you want to delete this form?"
+                        show={onConfirmation}
+                        onCancel={this._showConfirmation}
+                        onDelete={this._onDeleteForm}/>
         <div className="row">
           <div className={`col-md-${onModeEdit ? 9 : 12}`}>
             <SubTitle text={`${onModeEdit ? "Edit" : "New"} Form`} color={Colors.text.secondary} />
@@ -347,7 +373,7 @@ class NewForm extends PureComponent {
                   color={Colors.text.secondary}
                 />
                 <Switch
-                  onChange={value => this.setState({ disableForm: value })}
+                  onChange={value => {this.setState({ disableForm: value }); console.log("go = ",value);}}
                   value={disableForm}
                 />
                 {onModeEdit
@@ -359,7 +385,7 @@ class NewForm extends PureComponent {
                       />
                       <ul className="list-inline">
                         <li>
-                          <Link color={Colors.red}>Delete form</Link>
+                          <Link color={Colors.red} onClick={this._showConfirmation}>Delete form</Link>
                         </li>
                       </ul>
                     </div>
@@ -375,7 +401,8 @@ class NewForm extends PureComponent {
 
 const NewFormWithData = compose(
   graphql(CREATE_FORM_MUTATION, { name: "createFormMutation" }),
-  graphql(UPDATE_FORM_MUTATION, { name: "updateFormMutation" })
+  graphql(UPDATE_FORM_MUTATION, { name: "updateFormMutation" }),
+  graphql(DELETE_FORM_MUTATION, { name: "deleteFormMutation" })
 )(NewForm);
 
 export default withApollo(NewFormWithData);

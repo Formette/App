@@ -7,7 +7,7 @@ import {_isLoggedIn} from '../services/utilities';
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => (
         _isLoggedIn() ? (
-            <Component {...props}/>
+            <Component {...props} {...rest}/>
         ) : (
             <Redirect to={{
                 pathname: '/signin',

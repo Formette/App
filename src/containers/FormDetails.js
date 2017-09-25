@@ -12,9 +12,10 @@ import Colors from '../styles/Colors';
 import {ALERT_OPTIONS} from '../services/Constants';
 import { _getUsername, _refreshPage, _getUserId} from "../services/utilities";
 //API
-import { FORM_DATA_QUERY, ALL_FORMS_QUERY } from "../api/Queries";
+import { FORM_DATA_QUERY } from "../api/Queries";
 import { DELETE_FORM_MUTATION } from "../api/Mutations";
 import { FORM_DATA_SUBSCRIPTION } from "../api/Subscriptions";
+import {deleteForm} from '../api/Functions';
 
 const url = `api.formette.com/${_getUsername()}/`;
 
@@ -61,38 +62,17 @@ export class FormDetails extends PureComponent{
           onConfirmation: !prevState.onConfirmation
       }));
     };
-    _deleteForm = async () => {
+    _onDeleteForm = async _ => {
         //deletes the form in the DB
-        try{
-            const {id} = this.props.match.params;
-            const userId = _getUserId();
-            await this.props.deleteFormMutation({
-                variables: {
-                    id,
-                },
-                update: (store, { data: {deleteForms} }) => {
-                    try {
-                        //reads the query from the cache
-                        const data = store.readQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId} });
-                        //finds and removes the form from the object
-                        data.allFormses.forEach((value, index) => {
-                            if (value.id === deleteForms.id) {
-                                data.allFormses.splice(index, 1);
-                            }
-                        });
-                        //updates the new data to the store
-                        store.writeQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId}, data });
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }
-            });
-            //Shows feedback and updates the store
-            //this.showAlert("success", "Form created successfully");
-            this.props.history.push("/");
-        }catch(e){
-            console.error(e);
-        }
+        const {id} = this.props.match.params;
+        const userId = _getUserId();
+        const response = deleteForm(id, userId, this.props.deleteFormMutation);
+            if(response){
+                this.props.history.push("/");
+            }else{
+                console.log("erro ao apagar o form = ", response);
+                this.showAlert("error", "What a disgrace but it was not possible to delete the form, try again.", Colors.red, "fa-exclamation-triangle");
+            }
     };
     _editForm = _ => {
         this.props.history.push(`/edit/${this.props.match.params.id}`);
@@ -133,7 +113,7 @@ export class FormDetails extends PureComponent{
                               description="Are you sure you want to delete this form?"
                               show={onConfirmation}
                               onCancel={this._showConfirmation}
-                              onDelete={this._deleteForm}
+                              onDelete={this._onDeleteForm}
                 />
                 <div className="row">
                     <div className="col-md-6 col-sm-6">

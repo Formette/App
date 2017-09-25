@@ -5,9 +5,10 @@ import styled from 'styled-components';
 import Colors from '../../styles/Colors';
 
 const Switch = ({className, value, square, onChange}) => {
+    console.log("Switch component =  ", value);
     return(
         <label className={className}>
-            <input type="checkbox" onChange={_ => onChange(!value)} defaultChecked={value}/>
+            <input type="checkbox" onChange={_ => onChange(!value)} checked={value}/>
             <span className={`slider ${(square) ? "" : "round"}`}>&zwnj;</span>
         </label>
     )

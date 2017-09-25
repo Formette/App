@@ -73,7 +73,6 @@ registerServiceWorker();
 // eslint-disable-next-line
 injectGlobal`
   body, html {
-    height: 100%;
     margin: 0;
     background: ${Colors.background};
     font-family: 'Roboto', sans-serif;

@@ -29,6 +29,7 @@ class App extends PureComponent {
 }
 
 const AppWithStyles = styled(App)`
+    margin-top: 120px;
     .content{
          min-height: calc(88vh - 70px);
     }

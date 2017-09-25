@@ -29,7 +29,8 @@ export class Profile extends PureComponent {
     userQuery: any,
     updateUser: any,
     client: any,
-    router: any
+    router: any,
+    updateUsername: any
   };
   state = {
     username: "",
@@ -69,8 +70,10 @@ export class Profile extends PureComponent {
                     username
                 },
             });
-            //Shows feedback and updates the store
+            //Shows feedback and updates the localStorage
             _saveUsername(username);
+            //this updates the navbar to the new username
+            this.props.updateUsername();
             this.showAlert();
         }catch(e){
             console.error(e);

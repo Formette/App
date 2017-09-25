@@ -43,5 +43,8 @@ module.exports = {
   },
   _refreshPage() {
       window.location.reload();
-  }
+  },
+  dynamicWidth() {
+      return window.innerWidth;
+  },
 };

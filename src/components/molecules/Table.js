@@ -14,6 +14,11 @@ const TableWithStyles = styled(Table)`
             cursor: pointer;
         }
     }
+    @media (max-width: 480px) {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+	}
 `;
 
 export default TableWithStyles;
