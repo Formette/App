@@ -3,7 +3,7 @@
 import './helpers/browser';
 import './helpers/mock-localstorage';
 import React from 'react';
-import NewForm from '../containers/NewForm';
+import {NewForm} from '../containers/NewForm';
 //import renderer from 'react-test-renderer';
 import {shallow} from 'enzyme';
 

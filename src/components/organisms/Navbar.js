@@ -4,24 +4,39 @@ import {NavLink, withRouter} from 'react-router-dom';
 //Styles
 import styled from "styled-components";
 import Colors from "../../styles/Colors";
-import { lighten, darken } from "polished";
+import { lighten } from "polished";
 //Utilities
-import { _logout, dynamicWidth } from "../../services/utilities";
+import { _logout } from "../../services/utilities";
 
 class Navbar extends React.PureComponent  {
   state = {
     show: false,
+    shadowScroll: false
+  };
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+  handleScroll = _ => {
+      this.setState({
+          shadowScroll: (window.scrollY > 10)
+      });
   };
   _openDrawer = _ => {
-      this.setState((prevState) => ({show: !prevState.show}));
+      this.setState((prevState) => ({
+          show: !prevState.show,
+      }));
   };
   render(){
-      const {show} = this.state;
+      const {show, shadowScroll} = this.state;
       return(
-          <nav className={`navbar navbar-expand-md fixed-top ${this.props.className}`}>
+          <nav className={`navbar navbar-expand-sm fixed-top ${this.props.className}`}
+            style={shadowScroll ? {boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)"} : null}>
             <a className="navbar-brand" href="/">{this.props.brand}</a>
             <button className={`navbar-toggler collapsed`} type="button" onClick={this._openDrawer} data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-              <i className="fa fa-bars" aria-hidden="true">&nbsp;</i>
+              <i className={`fa ${show ? "fa-times" : "fa-bars"}`} aria-hidden="true">&nbsp;</i>
             </button>
             <div className={`navbar-collapse collapse ${show ? "show" : ""}`} id="navbarCollapse" >
               <ul className="navbar-nav mr-auto">
@@ -63,9 +78,8 @@ Navbar.propTypes = {
   username: PropTypes.string.isRequired
 };
 
-// background-image: linear-gradient( 135deg, #CE9FFC 0%, #7367F0 100%) !important;
-
 const NavbarWithStyles = styled(Navbar)`
+    background: ${Colors.background};
     .navbar-brand{
         font-size: 25px;
         font-weight: bold;
@@ -94,26 +108,9 @@ const NavbarWithStyles = styled(Navbar)`
             color: ${lighten(0.1, Colors.primary)} ;
         }
     }
-    @media (max-width: 768px) {
-        background: ${Colors.text.normal};
-        .navbar-brand, i, .user-link{
-            color: ${Colors.text.white};
-            &:hover{
-                color: ${darken(0.1, Colors.text.white)};
-            }
-        }
-        .nav-link{
-            &:hover{
-                color: ${darken(0.1, Colors.text.white)};
-            }
-        }
-        .active{
-            &:hover {
-                color: ${lighten(0.1, Colors.primary)} ;
-            }
-        }
-	}
-    
+    .navbar-toggler{
+      outline: none;
+    }
 `;
 
 export default withRouter(NavbarWithStyles);

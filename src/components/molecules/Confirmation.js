@@ -14,7 +14,7 @@ const Confirmation = props => {
                 <Text text={props.description}/>
                 <div className="text-right">
                     <Link className="cancelAction" onClick={_ => props.onCancel()}>Cancel</Link>
-                    <Button className="btn" onClick={_ => props.onDelete()} color={Colors.red} textColor={Colors.white}>Delete</Button>
+                    <Button className="btn" onClick={_ => props.onConfirmation()} color={props.onConfirmationColor} textColor={Colors.white}>{props.onConfirmationText}</Button>
                 </div>
             </div>
         </div>
@@ -24,14 +24,18 @@ const Confirmation = props => {
 Confirmation.defaultProps = {
     title: "Form Title",
     description: "Form Date",
+    onConfirmationText: "Delete",
+    onConfirmationColor: Colors.red,
     show: false,
 };
 
 Confirmation.propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
+    onConfirmationText: PropTypes.string,
+    onConfirmationColor: PropTypes.string,
     show: PropTypes.bool.isRequired,
-    onDelete: PropTypes.func,
+    onConfirmation: PropTypes.func,
     onCancel: PropTypes.func,
 };
 
@@ -40,7 +44,7 @@ const ConfirmationWithStyled = styled(Confirmation)`
    position: absolute; 
    left: 0; 
    right: 0; 
-   z-index: 100;
+   z-index: 9999;
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
    .cancelAction{
       margin-right: 10px;

@@ -12,7 +12,7 @@ import {
   Link,
   Icon
 } from "../components/atoms/index";
-import {Graphic} from '../components/molecules/index';
+import {Graphic, Confirmation} from '../components/molecules/index';
 import AlertContainer from "react-alert";
 //Styles
 import Colors from "../styles/Colors";
@@ -36,7 +36,8 @@ export class Profile extends PureComponent {
     username: "",
     error: false,
     errorMsg: "",
-    timeoutUserName: 0
+    timeoutUserName: 0,
+    onConfirmation: false,
   };
   componentDidMount() {
     this.setState({ username: _getUsername() });
@@ -54,8 +55,17 @@ export class Profile extends PureComponent {
       icon: <Icon name={icon} color={color} />
     });
   }
+  _showConfirmation = _ => {
+      this.setState((prevState) => ({
+            onConfirmation: !prevState.onConfirmation
+      }));
+  };
   _updateProfile = async () => {
     const { username, error } = this.state;
+    //hides the confirmation modal
+    this.setState((prevState) => ({
+          onConfirmation: !prevState.onConfirmation
+    }));
     //checks is the username is the same as the previous one
     if (this._isTheSameUsername(username)) return;
     //Verifies if the inputs are empty or not
@@ -142,10 +152,18 @@ export class Profile extends PureComponent {
         </Graphic>
     }
     const { userName, _formsesMeta } = this.props.userQuery.user;
-    const { error, errorMsg, username } = this.state;
+    const { error, errorMsg, username, onConfirmation } = this.state;
     return (
       <div>
         <AlertContainer ref={a => (this.msg = a)} {...ALERT_OPTIONS} />
+        <Confirmation title="Are you sure?"
+                      description="All your endpoints will be changed to the new username. Do not forget to change in your apps."
+                      show={onConfirmation}
+                      onCancel={this._showConfirmation}
+                      onConfirmation={this._updateProfile}
+                      onConfirmationText="Confirm"
+                      onConfirmationColor={Colors.green}
+        />
         <div className="row">
           <div className="col-md-12">
             <Header text={`Hey, ${username}`} />
@@ -167,7 +185,7 @@ export class Profile extends PureComponent {
                 {error ? <Text text={errorMsg} color={Colors.red} /> : ""}
               </div>
               <Button
-                onClick={this._updateProfile}
+                onClick={this._showConfirmation}
                 color={Colors.primary}
                 className="btn btn-lg btn-primary btn-block"
               >

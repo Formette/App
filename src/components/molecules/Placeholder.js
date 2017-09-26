@@ -26,8 +26,8 @@ const PlaceholderWithStyled = styled(Placeholder)`
       margin: 0;
     }
     @media (max-width: 465px) {
-		width: 7rem;
-		height: 160px;
+		width: 8rem;
+        height: 157px;
 	}
 `;
 

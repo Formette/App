@@ -105,7 +105,6 @@ export class FormDetails extends PureComponent{
         const {data: items, name, endpoint} = this.props.formDataQuery.Forms;
         const point = endpoint.split("/");
         const {onConfirmation} = this.state;
-       // const point = "teste";
         return(
             <div>
                 <AlertContainer ref={a => this.msg = a} {...ALERT_OPTIONS} />
@@ -113,7 +112,7 @@ export class FormDetails extends PureComponent{
                               description="Are you sure you want to delete this form?"
                               show={onConfirmation}
                               onCancel={this._showConfirmation}
-                              onDelete={this._onDeleteForm}
+                              onConfirmation={this._onDeleteForm}
                 />
                 <div className="row">
                     <div className="col-md-6 col-sm-6">

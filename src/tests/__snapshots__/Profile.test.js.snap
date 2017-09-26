@@ -8,6 +8,47 @@ exports[`Profile UI renders correctly 1`] = `
     <span />
   </div>
   <div
+    className="card mx-auto animated zoomInUp sc-kAzzGY wczDT"
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+  >
+    <div
+      className="card-body"
+    >
+      <h3
+        className="sc-ifAKCX gQALWX"
+      >
+        Are you sure?
+      </h3>
+      <p
+        className="sc-EHOje cPwqCw"
+      >
+        All your endpoints will be changed to the new username. Do not forget to change in your apps.
+      </p>
+      <div
+        className="text-right"
+      >
+        <a
+          className="cancelAction sc-htpNat fwULHq"
+          onClick={[Function]}
+        >
+          Cancel
+        </a>
+        <button
+          className="btn sc-bdVaJa WptJO"
+          color="#12b886"
+          onClick={[Function]}
+          type="button"
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
     className="row"
   >
     <div
@@ -46,7 +87,7 @@ exports[`Profile UI renders correctly 1`] = `
           
         </div>
         <button
-          className="btn btn-lg btn-primary btn-block sc-bdVaJa hlYRTl"
+          className="btn btn-lg btn-primary btn-block sc-bdVaJa scyOA"
           color="#7950f2"
           onClick={[Function]}
           type="button"

@@ -29,7 +29,7 @@ import { CREATE_FORM_MUTATION, UPDATE_FORM_MUTATION, DELETE_FORM_MUTATION } from
 import { ALL_FORMS_QUERY, FORM_DATA_QUERY } from "../api/Queries";
 import {deleteForm} from '../api/Functions';
 
-class NewForm extends PureComponent {
+export class NewForm extends PureComponent {
   msg: any;
   props: {
     createFormMutation: any,
@@ -243,7 +243,7 @@ class NewForm extends PureComponent {
                         description="Are you sure you want to delete this form?"
                         show={onConfirmation}
                         onCancel={this._showConfirmation}
-                        onDelete={this._onDeleteForm}/>
+                        onConfirmation={this._onDeleteForm}/>
         <div className="row">
           <div className={`col-md-${onModeEdit ? 9 : 12}`}>
             <SubTitle text={`${onModeEdit ? "Edit" : "New"} Form`} color={Colors.text.secondary} />

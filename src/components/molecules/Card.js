@@ -64,7 +64,7 @@ const CardWithStyled = styled(Card)`
     cursor: pointer;
     &:hover {
        background: ${props =>
-    props.new ? "" : darken(0.1, Colors.card.normal)};
+        props.new ? "" : darken(0.1, Colors.white)};
     }
     &:last-child {
       margin: 0;
@@ -81,15 +81,15 @@ const CardWithStyled = styled(Card)`
         display: block;
     }
     @media (max-width: 465px) {
-		width: 7rem;
+		width: 8rem;
 		i{
 		   font-size: 50px;
 		}
 		h3, span{
-		    font-size: 15px;
+		    font-size: 20px;
 		}
 		h6{
-		    font-size: 7px;
+		    font-size: 9px;
 		}
 	}
 `;
