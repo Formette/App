@@ -1,18 +1,42 @@
-import { createFragmentMap } from 'apollo-client';
 import gql from "graphql-tag";
 
-// Save the fragment into a variable
-const formFieldsFragment = createFragmentMap(gql`
-  fragment formFields on Forms {
-      id
-      name
-      description
-      isDisabled
-      endpoint
-      data
+//USER FRAGMENTS
+
+//collects the essencial information from the user
+const ESSENTIAL_USER_FIELDS_FRAGMENT = gql`
+  fragment essentialUserFields on User {
+    id
+    userName
+    email
   }
-`);
+`;
+
+//FORMS FRAGMENTS
+
+//gets all the form fields in the DB
+const ALL_FORM_FIELDS_FRAGMENT = gql`
+  fragment allFormFields on Forms {
+    id
+    name
+    description
+    isDisabled
+    endpoint
+    data
+    createdAt
+  }
+`;
+
+//collects the essential fields from the form in the DB
+const ESSENTIAL_FORM_FIELDS_FRAGMENT = gql`
+  fragment essentialFormFields on Forms {
+    id
+    name
+    createdAt
+  }
+`;
 
 export {
-    formFieldsFragment
+  ALL_FORM_FIELDS_FRAGMENT,
+  ESSENTIAL_FORM_FIELDS_FRAGMENT,
+  ESSENTIAL_USER_FIELDS_FRAGMENT
 };

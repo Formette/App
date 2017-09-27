@@ -1,18 +1,23 @@
 import gql from "graphql-tag";
+//API
+import {
+  ALL_FORM_FIELDS_FRAGMENT,
+  ESSENTIAL_FORM_FIELDS_FRAGMENT,
+  ESSENTIAL_USER_FIELDS_FRAGMENT
+} from "./Fragments";
 
 // USER QUERIES
 
 const USER_QUERY = gql`
   query userQuery {
     user {
-      id
-      userName
-      email
+       ...essentialUserFields
       _formsesMeta {
         count
       }
     }
   }
+   ${ESSENTIAL_USER_FIELDS_FRAGMENT}
 `;
 
 const USERNAME_QUERY = gql`
@@ -38,45 +43,25 @@ const USERNAME_VALIDATION_QUERY = gql`
 const ALL_FORMS_QUERY = gql`
   query allFormses($userId: ID!) {
    allFormses(filter: {user: {id: $userId}}) {
-    id
-    name
-    createdAt
+        ...essentialFormFields
    }
   }
+  ${ESSENTIAL_FORM_FIELDS_FRAGMENT}
 `;
 
 const FORM_DATA_QUERY = gql`
   query form($id: ID!) {
     Forms(id: $id) {
-        id
-        name
-        description
-        isDisabled
-        endpoint
-        data
+        ...allFormFields
     }
   }
+  ${ALL_FORM_FIELDS_FRAGMENT}
 `;
 
-/*const ALL_FORMS_COUNT_QUERY = gql`
-  query allFormses {
-    user {
-      formses {
-        id
-        name
-        createdAt
-      }
-      _formsesMeta {
-        count
-      }
-    }
-  }
-`;*/
-
 export {
-    USER_QUERY,
-    USERNAME_QUERY,
-    USERNAME_VALIDATION_QUERY,
-    ALL_FORMS_QUERY,
-    FORM_DATA_QUERY
+  USER_QUERY,
+  USERNAME_QUERY,
+  USERNAME_VALIDATION_QUERY,
+  ALL_FORMS_QUERY,
+  FORM_DATA_QUERY
 };

@@ -1,12 +1,14 @@
 // Button.test.js
-import React from 'react';
-import Button from '../components/atoms/Button';
-import renderer from 'react-test-renderer';
+import React from "react";
+import Button from "../components/atoms/Button";
+import renderer from "react-test-renderer";
 
-test('Button renders correctly', () => {
-    const component = renderer.create(
-        <Button type="button" color="#000">Hello</Button>
-    );
-    let tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+test("Button renders correctly", () => {
+  const component = renderer.create(
+    <Button type="button" color="#000">
+      Hello
+    </Button>
+  );
+  let tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
 });

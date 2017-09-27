@@ -2,18 +2,18 @@
 
 exports[`Create User UI renders correctly 1`] = `
 <div
-  className="container sc-gZMcBi kEyREm"
+  className="container sc-gZMcBi dCdvRp"
 >
   <form
     className="form-signin"
   >
     <h2
-      className="sc-bxivhb fqOvWn"
+      className="sc-bxivhb kRbHZm"
     >
       Formette
     </h2>
     <h6
-      className="sc-bZQynM hFGzSH"
+      className="sc-bZQynM hpyxrd"
     >
       Seriously? Your forms do not have a home for the data? Do not worry, they will not be without shelter.
     </h6>
@@ -25,7 +25,7 @@ exports[`Create User UI renders correctly 1`] = `
     </label>
     <input
       autoFocus={true}
-      className="form-control sc-bwzfXH izjiAr"
+      className="form-control sc-bwzfXH kUMhZx"
       id="signupUsername"
       onChange={[Function]}
       onKeyUp={[Function]}
@@ -42,7 +42,7 @@ exports[`Create User UI renders correctly 1`] = `
     </label>
     <input
       autoFocus={true}
-      className="form-control sc-bwzfXH izjiAr"
+      className="form-control sc-bwzfXH kUMhZx"
       id="signupEmail"
       onChange={[Function]}
       placeholder="Email address"
@@ -58,7 +58,7 @@ exports[`Create User UI renders correctly 1`] = `
     </label>
     <input
       autoFocus={true}
-      className="form-control sc-bwzfXH izjiAr"
+      className="form-control sc-bwzfXH kUMhZx"
       id="signupPassword"
       onChange={[Function]}
       onKeyUp={[Function]}
@@ -68,7 +68,7 @@ exports[`Create User UI renders correctly 1`] = `
       value=""
     />
     <button
-      className="btn btn-lg btn-primary btn-block sc-bdVaJa scyOA"
+      className="btn btn-lg btn-primary btn-block sc-bdVaJa hayiWv"
       color="#7950f2"
       onClick={[Function]}
       style={
@@ -82,10 +82,11 @@ exports[`Create User UI renders correctly 1`] = `
       Create Account
     </button>
     <a
-      className="sc-htpNat fwULHq"
+      className="sc-htpNat jfadgg"
       onClick={[Function]}
     >
-      Already have an account? Your forms miss you. 
+      Already have an account? Your forms miss you.
+       
       <u>
         <strong>
           Sign In

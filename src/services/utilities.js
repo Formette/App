@@ -42,9 +42,9 @@ module.exports = {
     return s4() + "" + s4() + "" + s4() + "" + s4();
   },
   _refreshPage() {
-      window.location.reload();
+    window.location.reload();
   },
   dynamicWidth() {
-      return window.innerWidth;
-  },
+    return window.innerWidth;
+  }
 };

@@ -18,16 +18,20 @@ import {
   Link,
   Badge
 } from "../components/atoms/index";
-import {Graphic, Confirmation} from '../components/molecules/index'
+import { Graphic, Confirmation } from "../components/molecules/index";
 //Styles
 import Colors from "../styles/Colors";
 //Utils
 import { _getUsername, guid, _getUserId } from "../services/utilities";
 import { ALERT_OPTIONS } from "../services/Constants";
 //API
-import { CREATE_FORM_MUTATION, UPDATE_FORM_MUTATION, DELETE_FORM_MUTATION } from "../api/Mutations";
+import {
+  CREATE_FORM_MUTATION,
+  UPDATE_FORM_MUTATION,
+  DELETE_FORM_MUTATION
+} from "../api/Mutations";
 import { ALL_FORMS_QUERY, FORM_DATA_QUERY } from "../api/Queries";
-import {deleteForm} from '../api/Functions';
+import { deleteForm } from "../api/Functions";
 
 export class NewForm extends PureComponent {
   msg: any;
@@ -36,27 +40,27 @@ export class NewForm extends PureComponent {
     updateFormMutation: any,
     router: any,
     match: any,
-    client: any,
+    client: any
   };
   state = {
     name: "",
     description: "",
     customEndpoint: "",
     generateEndpoint: `api.formette.com/${_getUsername()}/`,
-    generateID:  guid(),
+    generateID: guid(),
     disableForm: false,
     oldData: [],
     onModeEdit: false,
     error: false,
     errorMsg: "",
     nullFormToEdit: false,
-    onConfirmation: false,
+    onConfirmation: false
   };
-  componentDidMount(){
-      //if the form is already created set the edit mode
-      if(this.props.match.params.id !== undefined){
-          this._getFormData(this.props.match.params.id);
-      }
+  componentDidMount() {
+    //if the form is already created set the edit mode
+    if (this.props.match.params.id !== undefined) {
+      this._getFormData(this.props.match.params.id);
+    }
   }
   showAlert(
     type: string = "success",
@@ -88,43 +92,50 @@ export class NewForm extends PureComponent {
         ? `${_getUsername()}/${customEndpoint}`
         : `${_getUsername()}/${generateID}`;
       //saves the new form in the DB
-        try{
-            //if is on mode edit only updates the form, does not create a new one
-            if(onModeEdit){
-                this._updateForm(name, description, endpoint, isDisabled);
-            }else{
-                await this.props.createFormMutation({
-                    variables: {
-                        userId,
-                        name,
-                        description,
-                        endpoint,
-                        isDisabled
-                    },
-                    update: (store, { data: {createForms} }) => {
-                        try {
-                            //reads the query from the cache
-                            const data = store.readQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId} });
-                            //pushes the new data
-                            data.allFormses.push(createForms);
-                            //writes the new data to the store
-                            store.writeQuery({ query: ALL_FORMS_QUERY, variables: {userId: userId}, data });
-                        } catch (e) {
-                            console.error(e);
-                        }
-                    }
+      try {
+        //if is on mode edit only updates the form, does not create a new one
+        if (onModeEdit) {
+          this._updateForm(name, description, endpoint, isDisabled);
+        } else {
+          await this.props.createFormMutation({
+            variables: {
+              userId,
+              name,
+              description,
+              endpoint,
+              isDisabled
+            },
+            update: (store, { data: { createForms } }) => {
+              try {
+                //reads the query from the cache
+                const data = store.readQuery({
+                  query: ALL_FORMS_QUERY,
+                  variables: { userId: userId }
                 });
-                this.props.history.push("/");
+                //pushes the new data
+                data.allFormses.push(createForms);
+                //writes the new data to the store
+                store.writeQuery({
+                  query: ALL_FORMS_QUERY,
+                  variables: { userId: userId },
+                  data
+                });
+              } catch (e) {
+                console.error(e);
+              }
             }
-            //Shows feedback and updates the store
-            //this.showAlert("success", "Form created successfully");
-        }catch(e){
-            console.error(e);
-            this.setState({
-                error: true,
-                errorMsg: "This endpoint already exists, try another."
-            });
+          });
+          this.props.history.push("/");
         }
+        //Shows feedback and updates the store
+        //this.showAlert("success", "Form created successfully");
+      } catch (e) {
+        console.error(e);
+        this.setState({
+          error: true,
+          errorMsg: "This endpoint already exists, try another."
+        });
+      }
     } else {
       this.setState({
         error: true,
@@ -133,82 +144,101 @@ export class NewForm extends PureComponent {
     }
   };
   _updateForm = async (name, description, endpoint, isDisabled) => {
-      try{
-          const id = this.props.match.params.id;
-          const {oldData} = this.state;
-          //checks if the new data is the same as the previous
-          console.log("new isDisabled = ", isDisabled);
-          console.log("old isDisabled = ", oldData.isDisabled);
-          if(name === oldData.name && description === oldData.description && endpoint === oldData.endpoint && isDisabled === oldData.isDisabled){
-              this.setState({
-                  error: true,
-                  errorMsg: "If it's the same as before, what's the point of changing?"
-              });
-              return;
-          }
-          //updates the form in the DB
-          await this.props.updateFormMutation({
-              variables: {
-                  id,
-                  name,
-                  description,
-                  endpoint,
-                  isDisabled
-              }
-          });
-          this.props.history.push("/");
-      }catch(e){
-          console.error(e);
-          this.setState({
-              error: true,
-              errorMsg: "This endpoint already exists, try another."
-          });
+    try {
+      const id = this.props.match.params.id;
+      const { oldData } = this.state;
+      //checks if the new data is the same as the previous
+      console.log("new isDisabled = ", isDisabled);
+      console.log("old isDisabled = ", oldData.isDisabled);
+      if (
+        name === oldData.name &&
+        description === oldData.description &&
+        endpoint === oldData.endpoint &&
+        isDisabled === oldData.isDisabled
+      ) {
+        this.setState({
+          error: true,
+          errorMsg: "If it's the same as before, what's the point of changing?"
+        });
+        return;
       }
+      //updates the form in the DB
+      await this.props.updateFormMutation({
+        variables: {
+          id,
+          name,
+          description,
+          endpoint,
+          isDisabled
+        }
+      });
+      this.props.history.push("/");
+    } catch (e) {
+      console.error(e);
+      this.setState({
+        error: true,
+        errorMsg: "This endpoint already exists, try another."
+      });
+    }
   };
-   _showConfirmation = _ => {
-        this.setState((prevState) => ({
-            onConfirmation: !prevState.onConfirmation
-        }));
-    };
-   _onDeleteForm =  () => {
-        //deletes the form in the DB
-        const {id} = this.props.match.params;
-        const userId = _getUserId();
-        const response = deleteForm(id, userId, this.props.deleteFormMutation);
-            if(response){
-                this.props.history.push("/");
-            }else{
-                console.log("erro ao apagar o form = ", response);
-                this.showAlert("error", "What a disgrace but it was not possible to delete the form, try again.", Colors.red, "fa-exclamation-triangle");
-            }
-    };
-  _getFormData =  (id) => {
-      this.props.client.query({
-          query: FORM_DATA_QUERY,
-          variables: { id },
-      }).then((res) => {
-          //TODO do this condition in a better way
-          if(res.data.Forms === null){
-              this.setState({nullFormToEdit: true, onModeEdit: false});
-              return true;
-          }
-          if(Object.keys(res.data.Forms).length !== 0){
-              const {name, id: generateID, endpoint, description, isDisabled: disableForm} = res.data.Forms;
-              const point = endpoint.split("/");
-              this.setState((prevState) => ({
-                  name,
-                  description,
-                  disableForm,
-                  generateID,
-                  customEndpoint: point[1],
-                  onModeEdit: !prevState.onModeEdit,
-                  oldData: res.data.Forms
-              }));
-          }else{
-              this.setState({nullFormToEdit: true, onModeEdit: false});
-          }
-      }).catch((e) => {
-          console.error(e);
+  _showConfirmation = _ => {
+    this.setState(prevState => ({
+      onConfirmation: !prevState.onConfirmation
+    }));
+  };
+  _onDeleteForm = () => {
+    //deletes the form in the DB
+    const { id } = this.props.match.params;
+    const userId = _getUserId();
+    const response = deleteForm(id, userId, this.props.deleteFormMutation);
+    if (response) {
+      this.props.history.push("/");
+    } else {
+      console.log("erro ao apagar o form = ", response);
+      this.showAlert(
+        "error",
+        "What a disgrace but it was not possible to delete the form, try again.",
+        Colors.red,
+        "fa-exclamation-triangle"
+      );
+    }
+  };
+  _getFormData = id => {
+    this.props.client
+      .query({
+        query: FORM_DATA_QUERY,
+        variables: { id }
+      })
+      .then(res => {
+        //TODO do this condition in a better way
+        if (res.data.Forms === null) {
+          this.setState({ nullFormToEdit: true, onModeEdit: false });
+          return true;
+        }
+        if (Object.keys(res.data.Forms).length !== 0) {
+          const {
+            name,
+            id: generateID,
+            endpoint,
+            description,
+            isDisabled: disableForm
+          } = res.data.Forms;
+          const point = endpoint.split("/");
+          this.setState(prevState => ({
+            name,
+            description,
+            disableForm,
+            generateID,
+            customEndpoint: point[1],
+            onModeEdit: !prevState.onModeEdit,
+            oldData: res.data.Forms
+          }));
+        } else {
+          this.setState({ nullFormToEdit: true, onModeEdit: false });
+        }
+      })
+      .catch(e => {
+        console.error(e);
       });
   };
   render() {
@@ -226,38 +256,47 @@ export class NewForm extends PureComponent {
       onConfirmation
     } = this.state;
 
-      if (nullFormToEdit) {
-          return <Graphic text="Ups! No form was found to edit." icon="fa-file-text-o">
-              <Button className="btn btn-lg btn-primary"
-                      color={Colors.primary}
-                      onClick={_ =>  this.props.history.push('/')}>
-                    Go back
-              </Button>
-          </Graphic>
-      }
+    if (nullFormToEdit) {
+      return (
+        <Graphic text="Ups! No form was found to edit." icon="fa-file-text-o">
+          <Button
+            className="btn btn-lg btn-primary"
+            color={Colors.primary}
+            onClick={_ => this.props.history.push("/")}
+          >
+            Go back
+          </Button>
+        </Graphic>
+      );
+    }
 
     return (
       <div>
         <AlertContainer ref={a => (this.msg = a)} {...ALERT_OPTIONS} />
-          <Confirmation title="Are you sure?"
-                        description="Are you sure you want to delete this form?"
-                        show={onConfirmation}
-                        onCancel={this._showConfirmation}
-                        onConfirmation={this._onDeleteForm}/>
+        <Confirmation
+          title="Are you sure?"
+          description="Are you sure you want to delete this form?"
+          show={onConfirmation}
+          onCancel={this._showConfirmation}
+          onConfirmation={this._onDeleteForm}
+        />
         <div className="row">
           <div className={`col-md-${onModeEdit ? 9 : 12}`}>
-            <SubTitle text={`${onModeEdit ? "Edit" : "New"} Form`} color={Colors.text.secondary} />
+            <SubTitle
+              text={`${onModeEdit ? "Edit" : "New"} Form`}
+              color={Colors.text.secondary}
+            />
             <Header text={name ? name : generateID} />
           </div>
-          {onModeEdit
-            ? <div className="col-md-3">
-                <Badge
-                  className="float-right"
-                  text="Edit mode"
-                  bg={Colors.yellow}
-                />
-              </div>
-            : null}
+          {onModeEdit ? (
+            <div className="col-md-3">
+              <Badge
+                className="float-right"
+                text="Edit mode"
+                bg={Colors.yellow}
+              />
+            </div>
+          ) : null}
         </div>
         <div className="row">
           <div className="col-md-6" style={{ marginTop: 30 }}>
@@ -357,7 +396,11 @@ export class NewForm extends PureComponent {
                     color={Colors.text.secondary}
                   />
                   <SyntaxHighlighter language="javascript" style={docco}>
-                    {'<form action="'+generateEndpoint+''+(customEndpoint ? customEndpoint : generateID)+'" method="post" target="_blank">\n' +
+                    {'<form action="' +
+                      generateEndpoint +
+                      "" +
+                      (customEndpoint ? customEndpoint : generateID) +
+                      '" method="post" target="_blank">\n' +
                       '  <input type="text" name="email" placeholder="Email" />\n' +
                       '  <input type="text" name="message" placeholder="Message" />\n' +
                       '  <button class="button" type="submit">Submit</button>\n' +
@@ -373,23 +416,28 @@ export class NewForm extends PureComponent {
                   color={Colors.text.secondary}
                 />
                 <Switch
-                  onChange={value => {this.setState({ disableForm: value }); console.log("go = ",value);}}
+                  onChange={value => {
+                    this.setState({ disableForm: value });
+                    console.log("go = ", value);
+                  }}
                   value={disableForm}
                 />
-                {onModeEdit
-                  ? <div>
-                      <hr />
-                      <SubTitle
-                        text="Settings:"
-                        color={Colors.text.secondary}
-                      />
-                      <ul className="list-inline">
-                        <li>
-                          <Link color={Colors.red} onClick={this._showConfirmation}>Delete form</Link>
-                        </li>
-                      </ul>
-                    </div>
-                  : null}
+                {onModeEdit ? (
+                  <div>
+                    <hr />
+                    <SubTitle text="Settings:" color={Colors.text.secondary} />
+                    <ul className="list-inline">
+                      <li>
+                        <Link
+                          color={Colors.red}
+                          onClick={this._showConfirmation}
+                        >
+                          Delete form
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>

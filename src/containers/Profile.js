@@ -12,12 +12,17 @@ import {
   Link,
   Icon
 } from "../components/atoms/index";
-import {Graphic, Confirmation} from '../components/molecules/index';
+import { Graphic, Confirmation } from "../components/molecules/index";
 import AlertContainer from "react-alert";
 //Styles
 import Colors from "../styles/Colors";
 //Utils
-import { _getUsername, _logout, _saveUsername, _refreshPage } from "../services/utilities";
+import {
+  _getUsername,
+  _logout,
+  _saveUsername,
+  _refreshPage
+} from "../services/utilities";
 import { ALERT_OPTIONS } from "../services/Constants";
 //API
 import { USER_QUERY, USERNAME_VALIDATION_QUERY } from "../api/Queries";
@@ -37,7 +42,7 @@ export class Profile extends PureComponent {
     error: false,
     errorMsg: "",
     timeoutUserName: 0,
-    onConfirmation: false,
+    onConfirmation: false
   };
   componentDidMount() {
     this.setState({ username: _getUsername() });
@@ -56,15 +61,15 @@ export class Profile extends PureComponent {
     });
   }
   _showConfirmation = _ => {
-      this.setState((prevState) => ({
-            onConfirmation: !prevState.onConfirmation
-      }));
+    this.setState(prevState => ({
+      onConfirmation: !prevState.onConfirmation
+    }));
   };
   _updateProfile = async () => {
     const { username, error } = this.state;
     //hides the confirmation modal
-    this.setState((prevState) => ({
-          onConfirmation: !prevState.onConfirmation
+    this.setState(prevState => ({
+      onConfirmation: !prevState.onConfirmation
     }));
     //checks is the username is the same as the previous one
     if (this._isTheSameUsername(username)) return;
@@ -73,27 +78,27 @@ export class Profile extends PureComponent {
       if (error) return;
       const userId = this.props.userQuery.user.id;
       //updates the user username and some else info in the DB
-        try{
-            await this.props.updateUser({
-                variables: {
-                    userId,
-                    username
-                },
-            });
-            //Shows feedback and updates the localStorage
-            _saveUsername(username);
-            //this updates the navbar to the new username
-            this.props.updateUsername();
-            this.showAlert();
-        }catch(e){
-            console.error(e);
-            this.showAlert(
-                "error",
-                "Something went wrong, try again ...",
-                Colors.red,
-                "fa-times"
-            );
-        }
+      try {
+        await this.props.updateUser({
+          variables: {
+            userId,
+            username
+          }
+        });
+        //Shows feedback and updates the localStorage
+        _saveUsername(username);
+        //this updates the navbar to the new username
+        this.props.updateUsername();
+        this.showAlert();
+      } catch (e) {
+        console.error(e);
+        this.showAlert(
+          "error",
+          "Something went wrong, try again ...",
+          Colors.red,
+          "fa-times"
+        );
+      }
     } else {
       this.setState({
         error: true,
@@ -143,26 +148,31 @@ export class Profile extends PureComponent {
       return <div>Loading</div>;
     }
     if (this.props.userQuery && this.props.userQuery.error) {
-        return <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
-            <Button className="btn btn-lg btn-primary"
-                    color={Colors.primary}
-                    onClick={_refreshPage}>
-                Try Again
-            </Button>
+      return (
+        <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
+          <Button
+            className="btn btn-lg btn-primary"
+            color={Colors.primary}
+            onClick={_refreshPage}
+          >
+            Try Again
+          </Button>
         </Graphic>
+      );
     }
     const { userName, _formsesMeta } = this.props.userQuery.user;
     const { error, errorMsg, username, onConfirmation } = this.state;
     return (
       <div>
         <AlertContainer ref={a => (this.msg = a)} {...ALERT_OPTIONS} />
-        <Confirmation title="Are you sure?"
-                      description="All your endpoints will be changed to the new username. Do not forget to change in your apps."
-                      show={onConfirmation}
-                      onCancel={this._showConfirmation}
-                      onConfirmation={this._updateProfile}
-                      onConfirmationText="Confirm"
-                      onConfirmationColor={Colors.green}
+        <Confirmation
+          title="Are you sure?"
+          description="All your endpoints will be changed to the new username. Do not forget to change in your apps."
+          show={onConfirmation}
+          onCancel={this._showConfirmation}
+          onConfirmation={this._updateProfile}
+          onConfirmationText="Confirm"
+          onConfirmationColor={Colors.green}
         />
         <div className="row">
           <div className="col-md-12">
@@ -229,7 +239,9 @@ export class Profile extends PureComponent {
                     <Link onClick={_logout}>Log Out</Link>
                   </li>
                   <li>
-                    <Link href="http://www.formette.com/docs" target="_blank">Help</Link>
+                    <Link href="http://www.formette.com/docs" target="_blank">
+                      Help
+                    </Link>
                   </li>
                   <li>
                     <Link color={Colors.red}>Delete Account</Link>

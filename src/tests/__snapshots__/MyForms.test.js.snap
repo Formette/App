@@ -8,37 +8,37 @@ exports[`My Forms UI renders correctly 1`] = `
     className="col-md-12 col-sm-12 col"
   >
     <h2
-      className="sc-bxivhb fqOvWn"
+      className="sc-bxivhb kRbHZm"
     >
       My Forms
     </h2>
     <div
-      className="card text-center sc-gZMcBi gYhfbS"
+      className="card text-center sc-gZMcBi hZEWWS"
       onClick={[Function]}
     >
       <div
         className="card-body"
       >
         <i
-          className="fa fa-plus sc-gzVnrw fJyTTO"
+          className="fa fa-plus sc-gzVnrw hIWOOg"
           style={undefined}
         >
           ‌
         </i>
         <h3
-          className="card-title text-truncate sc-ifAKCX kmUohh"
+          className="card-title text-truncate sc-ifAKCX bljzpw"
         >
           New Form
         </h3>
         <h6
-          className="card-subtitle mb-2  sc-bZQynM eThALa"
+          className="card-subtitle mb-2  sc-bZQynM dIEjhl"
         >
           Create from scratch
         </h6>
       </div>
     </div>
     <div
-      className="card sc-jTzLTM iWoBnz sc-VigVT bTmkbe"
+      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
     >
       <div
         className="card-body"
@@ -115,7 +115,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM iWoBnz sc-VigVT bTmkbe"
+      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
     >
       <div
         className="card-body"
@@ -192,7 +192,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM iWoBnz sc-VigVT bTmkbe"
+      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
     >
       <div
         className="card-body"
@@ -269,7 +269,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM iWoBnz sc-VigVT bTmkbe"
+      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
     >
       <div
         className="card-body"
@@ -346,7 +346,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM iWoBnz sc-VigVT bTmkbe"
+      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
     >
       <div
         className="card-body"
@@ -423,7 +423,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM iWoBnz sc-VigVT bTmkbe"
+      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
     >
       <div
         className="card-body"
@@ -500,7 +500,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM iWoBnz sc-VigVT bTmkbe"
+      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
     >
       <div
         className="card-body"

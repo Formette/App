@@ -1,21 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 //Styles
-import styled from 'styled-components';
-import Colors from '../../styles/Colors';
+import styled from "styled-components";
+import Colors from "../../styles/Colors";
 
-const Error = (props) => (props.show)? <p className={props.className}>{props.children}</p> : null;
+const Error = props =>
+  props.show ? <p className={props.className}>{props.children}</p> : null;
 
 Error.defaultProps = {
-    children: "Text"
+  children: "Text"
 };
 
 Error.propTypes = {
-    children: PropTypes.any.isRequired,
+  children: PropTypes.any.isRequired
 };
 
-const ErrorWithStyles = styled(Error)`
-    color: ${Colors.red} !important;
-`;
+const ErrorWithStyles = styled(Error)`color: ${Colors.red} !important;`;
 
 export default ErrorWithStyles;

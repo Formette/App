@@ -8,18 +8,18 @@ import {
   Placeholder,
   PlaceholderAnimation,
   Card,
-   Graphic
+  Graphic
 } from "../components/molecules/index";
 //Utils
-import {_refreshPage, _getUserId} from "../services/utilities";
+import { _refreshPage, _getUserId } from "../services/utilities";
 //Styles
-import Colors from '../styles/Colors';
+import Colors from "../styles/Colors";
 //API
 import { ALL_FORMS_QUERY } from "../api/Queries";
 
 export class MyForms extends Component {
   props: {
-    allFormsQuery: any,
+    allFormsQuery: any
   };
   state = {
     loading: true,
@@ -39,7 +39,7 @@ export class MyForms extends Component {
     return content;
   };
   _loadContent = _ => {
-      console.log(this.props.allFormsQuery);
+    console.log(this.props.allFormsQuery);
     const { allFormses } = this.props.allFormsQuery;
     const formsCount = Object.keys(allFormses).length;
     const content = [];
@@ -50,7 +50,7 @@ export class MyForms extends Component {
     }
     //Checks if the object data is not empty
     if (formsCount >= 0) {
-        allFormses.map(res => {
+      allFormses.map(res => {
         content.push(
           <Card
             key={res.id}
@@ -69,17 +69,21 @@ export class MyForms extends Component {
     }
   };
   _goToNew = _ => {
-      this.props.history.push("/new");
+    this.props.history.push("/new");
   };
   render() {
     if (this.props.allFormsQuery && this.props.allFormsQuery.error) {
-        return <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
-            <Button className="btn btn-lg btn-primary"
-                    color={Colors.primary}
-                    onClick={_refreshPage}>
-                Try Again
-            </Button>
+      return (
+        <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
+          <Button
+            className="btn btn-lg btn-primary"
+            color={Colors.primary}
+            onClick={_refreshPage}
+          >
+            Try Again
+          </Button>
         </Graphic>
+      );
     }
     return (
       <div className="row">
@@ -92,11 +96,11 @@ export class MyForms extends Component {
             onClick={this._goToNew}
             new
           />
-          {this.props.allFormsQuery.loading
-            ? this._LoadingAnimationContent()
-            : <div>
-                {this._loadContent()}
-              </div>}
+          {this.props.allFormsQuery.loading ? (
+            this._LoadingAnimationContent()
+          ) : (
+            <div>{this._loadContent()}</div>
+          )}
         </div>
       </div>
     );
@@ -104,11 +108,12 @@ export class MyForms extends Component {
 }
 
 const MyFormsWithData = compose(
-  graphql(ALL_FORMS_QUERY, { name: "allFormsQuery",
-      options: (props) => ({
-          variables: {userId: _getUserId()}
-      })
-  }),
+  graphql(ALL_FORMS_QUERY, {
+    name: "allFormsQuery",
+    options: props => ({
+      variables: { userId: _getUserId() }
+    })
+  })
 )(MyForms);
 
 export default MyFormsWithData;

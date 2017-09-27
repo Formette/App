@@ -1,4 +1,9 @@
 import gql from "graphql-tag";
+//API
+import {
+  ESSENTIAL_FORM_FIELDS_FRAGMENT,
+  ESSENTIAL_USER_FIELDS_FRAGMENT
+} from "./Fragments";
 
 // USER MUTATIONS
 
@@ -7,11 +12,11 @@ const SIGIN_USER_MUTATION = gql`
     signinUser(email: { email: $email, password: $password }) {
       token
       user {
-        id
-        userName
+        ...essentialUserFields
       }
     }
   }
+   ${ESSENTIAL_USER_FIELDS_FRAGMENT}
 `;
 
 const CREATE_USER_MUTATION = gql`
@@ -55,33 +60,44 @@ const CREATE_FORM_MUTATION = gql`
       endpoint: $endpoint
       isDisabled: $isDisabled
     ) {
+      ...essentialFormFields
+    }
+  }
+   ${ESSENTIAL_FORM_FIELDS_FRAGMENT}
+`;
+
+//this updates the selected form and all of is data
+const UPDATE_FORM_MUTATION = gql`
+  mutation(
+    $id: ID!
+    $name: String!
+    $description: String
+    $endpoint: String!
+    $isDisabled: Boolean
+  ) {
+    updateForms(
+      id: $id
+      name: $name
+      description: $description
+      endpoint: $endpoint
+      isDisabled: $isDisabled
+    ) {
       id
       name
-      createdAt
+      description
+      endpoint
+      isDisabled
     }
   }
 `;
 
 //this deletes the selected form and all of is data
-const UPDATE_FORM_MUTATION = gql`
-    mutation($id: ID!, $name: String!, $description: String, $endpoint: String!, $isDisabled: Boolean) {
-      updateForms(id: $id, name: $name, description: $description, endpoint: $endpoint, isDisabled: $isDisabled) {
-        id
-        name
-        description
-        endpoint
-        isDisabled
-      }
-    }
-`;
-
-//this deletes the selected form and all of is data
 const DELETE_FORM_MUTATION = gql`
-    mutation($id: ID!){
-      deleteForms(id: $id){
-        id
-      }
+  mutation($id: ID!) {
+    deleteForms(id: $id) {
+      id
     }
+  }
 `;
 
 export {
