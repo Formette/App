@@ -20,7 +20,7 @@ Link.propTypes = {
 };
 
 const LinkWithStyles = styled(Link)`
-  color: ${props =>
+  color: ${(props) =>
     props.color ? props.color : Colors.link.normal} !important;
   text-decoration: none !important;
   &:hover {

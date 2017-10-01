@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Placeholder = props => {
+const Placeholder = (props) => {
   return (
     <div className={`card ${props.className}`}>
       <div className="card-body">{props.children}</div>
@@ -15,8 +15,8 @@ Placeholder.defaultProps = {
 };
 
 const PlaceholderWithStyled = styled(Placeholder)`
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
   background: #f0f0f0;
   float: left;
   margin: 0 10px 10px 0;

@@ -19,7 +19,7 @@ class Navbar extends React.PureComponent {
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   }
-  handleScroll = _ => {
+  handleScroll = () => {
     this.setState({
       shadowScroll: window.scrollY > 10
     });

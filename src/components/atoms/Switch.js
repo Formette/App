@@ -5,7 +5,6 @@ import styled from "styled-components";
 import Colors from "../../styles/Colors";
 
 const Switch = ({ className, value, square, onChange }) => {
-  console.log("Switch component =  ", value);
   return (
     <label className={className}>
       <input type="checkbox" onChange={_ => onChange(!value)} checked={value} />
@@ -64,11 +63,11 @@ const SwitchWithStyles = styled(Switch)`
   }
 
   input:checked + .slider {
-    background-color: ${props => (props.color ? props.color : Colors.primary)};
+    background-color: ${(props) => (props.color ? props.color : Colors.primary)};
   }
 
   input:focus + .slider {
-    box-shadow: 0 0 1px ${props =>
+    box-shadow: 0 0 1px ${(props) =>
         props.color ? props.color : Colors.primary};
   }
 

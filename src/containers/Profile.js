@@ -60,8 +60,8 @@ export class Profile extends PureComponent {
       icon: <Icon name={icon} color={color} />
     });
   }
-  _showConfirmation = _ => {
-    this.setState(prevState => ({
+  _showConfirmation = () => {
+    this.setState((prevState) => ({
       onConfirmation: !prevState.onConfirmation
     }));
   };
@@ -75,7 +75,9 @@ export class Profile extends PureComponent {
     if (this._isTheSameUsername(username)) return;
     //Verifies if the inputs are empty or not
     if (username) {
-      if (error) return;
+      if (error){
+          return;
+      }
       const userId = this.props.userQuery.user.id;
       //updates the user username and some else info in the DB
       try {

@@ -31,12 +31,12 @@ Graphic.propTypes = {
 const GraphicWithStyles = styled(Graphic)`
   i {
     font-size: ${props => props.size || "100px"};
-    color: ${props => props.iconColor || Colors.text.secondary};
+    color: ${(props) => props.iconColor || Colors.text.secondary};
   }
   p {
     margin-top: 20px;
     padding: 0 100px 0 100px;
-    color: ${props => props.textColor || Colors.text.secondary};
+    color: ${(props) => props.textColor || Colors.text.secondary};
     font-size: 20px;
   }
 `;

@@ -40,8 +40,6 @@ export class FormDetails extends PureComponent {
       document: FORM_DATA_SUBSCRIPTION,
       variables: { id: this.props.match.params.id },
       updateQuery: (previous, { subscriptionData }) => {
-        console.log("subscriptionData = ", subscriptionData);
-        console.log("previous = ", previous);
         const newItems = [
           subscriptionData.data.Forms.node.data,
           ...previous.Forms.data
@@ -62,16 +60,16 @@ export class FormDetails extends PureComponent {
   ) {
     this.msg.show(text, {
       time: 3000,
-      type: type,
+      type,
       icon: <Icon name={icon} color={color} />
     });
   }
-  _showConfirmation = _ => {
-    this.setState(prevState => ({
+  _showConfirmation = () => {
+    this.setState((prevState) => ({
       onConfirmation: !prevState.onConfirmation
     }));
   };
-  _onDeleteForm = async _ => {
+  _onDeleteForm = async () => {
     //deletes the form in the DB
     const { id } = this.props.match.params;
     const userId = _getUserId();
@@ -79,7 +77,6 @@ export class FormDetails extends PureComponent {
     if (response) {
       this.props.history.push("/");
     } else {
-      console.log("erro ao apagar o form = ", response);
       this.showAlert(
         "error",
         "What a disgrace but it was not possible to delete the form, try again.",
@@ -127,7 +124,7 @@ export class FormDetails extends PureComponent {
     const { onConfirmation, url } = this.state;
     return (
       <div>
-        <AlertContainer ref={a => (this.msg = a)} {...ALERT_OPTIONS} />
+        <AlertContainer ref={(a) => (this.msg = a)} {...ALERT_OPTIONS} />
         <Confirmation
           title="Are you sure?"
           description="Are you sure you want to delete this form?"
@@ -146,7 +143,7 @@ export class FormDetails extends PureComponent {
                 <CopyToClipboard
                   text={`${url}${point[1]}`}
                   style={{ cursor: "pointer" }}
-                  onCopy={_ =>
+                  onCopy={() =>
                     this.showAlert("success", "Endpoint copied to clipboard")}
                 >
                   <Button className="btn" color={Colors.default}>
@@ -199,7 +196,7 @@ export class FormDetails extends PureComponent {
 const FormDetailsWithData = compose(
   graphql(FORM_DATA_QUERY, {
     name: "formDataQuery",
-    options: props => ({
+    options: (props) => ({
       variables: { id: props.match.params.id }
     })
   }),

@@ -29,16 +29,18 @@ export class CreateUser extends React.PureComponent {
     timeoutUserName: 0,
     timeoutPassword: 0
   };
-  _onCreateUser = _ => {
+  _onCreateUser = () => {
     const { email, password, username, error } = this.state;
     //Verifies if the inputs are empty or not
     if (email && password && username) {
-      if (error) return;
+      if (error) {
+        return
+      };
       if (this._checkPassword(password)) return;
       //Creates a new user
       this.props
         .createUser({ variables: { email, password, username } })
-        .then(_ => {
+        .then(() => {
           this._onSignIn(email, password);
         })
         .catch(e => {
@@ -159,8 +161,8 @@ export class CreateUser extends React.PureComponent {
           id="signupPassword"
           type="password"
           value={password}
-          onChange={e => this.setState({ password: e.target.value })}
-          onKeyUp={e => this._onPasswordValidation(e.target.value)}
+          onChange={(e) => this.setState({ password: e.target.value })}
+          onKeyUp={(e) => this._onPasswordValidation(e.target.value)}
           className="form-control"
           placeholder="Password"
           required

@@ -32,11 +32,11 @@ Button.propTypes = {
 const ButtonWithStyles = styled(Button)`
   border-radius: 0;
   background: ${props => (props.color ? props.color : Color.default)};
-  color: ${props => (props.textColor ? props.textColor : Color.black)};
+  color: ${(props) => (props.textColor ? props.textColor : Color.black)};
   border: 0;
   cursor: pointer;
   &:hover {
-    background: ${props =>
+    background: ${(props) =>
       props.color ? lighten(0.1, props.color) : lighten(0.1, Color.default)};
   }
 `;

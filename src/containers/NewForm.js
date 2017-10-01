@@ -110,14 +110,14 @@ export class NewForm extends PureComponent {
                 //reads the query from the cache
                 const data = store.readQuery({
                   query: ALL_FORMS_QUERY,
-                  variables: { userId: userId }
+                  variables: { userId }
                 });
                 //pushes the new data
                 data.allFormses.push(createForms);
                 //writes the new data to the store
                 store.writeQuery({
                   query: ALL_FORMS_QUERY,
-                  variables: { userId: userId },
+                  variables: { userId },
                   data
                 });
               } catch (e) {
@@ -148,8 +148,6 @@ export class NewForm extends PureComponent {
       const id = this.props.match.params.id;
       const { oldData } = this.state;
       //checks if the new data is the same as the previous
-      console.log("new isDisabled = ", isDisabled);
-      console.log("old isDisabled = ", oldData.isDisabled);
       if (
         name === oldData.name &&
         description === oldData.description &&
@@ -237,7 +235,7 @@ export class NewForm extends PureComponent {
           this.setState({ nullFormToEdit: true, onModeEdit: false });
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.error(e);
       });
   };
@@ -376,7 +374,7 @@ export class NewForm extends PureComponent {
                         ? customEndpoint
                         : generateID}`}
                       style={{ cursor: "pointer" }}
-                      onCopy={_ =>
+                      onCopy={() =>
                         this.showAlert(
                           "success",
                           "Endpoint copied to clipboard"

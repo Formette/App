@@ -12,7 +12,7 @@ class App extends PureComponent {
   state = {
     username: _getUsername()
   };
-  _updateUsername = _ => {
+  _updateUsername = () => {
     this.setState({ username: _getUsername() });
   };
   render() {

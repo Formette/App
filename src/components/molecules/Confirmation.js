@@ -16,7 +16,7 @@ const Confirmation = props => {
         <Title text={props.title} />
         <Text text={props.description} />
         <div className="text-right">
-          <Link className="cancelAction" onClick={_ => props.onCancel()}>
+          <Link className="cancelAction" onClick={() => props.onCancel()}>
             Cancel
           </Link>
           <Button

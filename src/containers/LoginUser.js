@@ -23,7 +23,7 @@ class LoginUser extends React.PureComponent {
     error: false,
     errorMsg: ""
   };
-  _onSignIn = _ => {
+  _onSignIn = () => {
     const { email, password } = this.state;
     //Verifies if the inputs are empty or not
     if (email && password) {
@@ -38,8 +38,8 @@ class LoginUser extends React.PureComponent {
           _saveUsername(res.data.signinUser.user.userName);
           _saveUserId(res.data.signinUser.user.id);
         })
-        .then(_ => this.props.history.push("/"))
-        .catch(e => {
+        .then(() => this.props.history.push("/"))
+        .catch((e) => {
           console.log(e);
           this.setState({
             error: true,
@@ -65,7 +65,7 @@ class LoginUser extends React.PureComponent {
           id="signinEmail"
           type="email"
           value={email}
-          onChange={e => this.setState({ email: e.target.value })}
+          onChange={(e) => this.setState({ email: e.target.value })}
           className="form-control"
           placeholder="Email address"
           required
@@ -79,7 +79,7 @@ class LoginUser extends React.PureComponent {
           id="signinPassword"
           type="password"
           value={password}
-          onChange={e => this.setState({ password: e.target.value })}
+          onChange={(e) => this.setState({ password: e.target.value })}
           className="form-control"
           placeholder="Password"
           required

@@ -25,7 +25,7 @@ const deleteForm = async (
           //reads the query from the cache
           const data = store.readQuery({
             query: ALL_FORMS_QUERY,
-            variables: { userId: userId }
+            variables: { userId }
           });
           //finds and removes the form from the object
           data.allFormses.forEach((value, index) => {
@@ -36,7 +36,7 @@ const deleteForm = async (
           //updates the new data to the store
           store.writeQuery({
             query: ALL_FORMS_QUERY,
-            variables: { userId: userId },
+            variables: { userId },
             data
           });
         } catch (e) {

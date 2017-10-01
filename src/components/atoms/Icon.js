@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Colors from "../../styles/Colors";
 
-const Icon = props => (
+const Icon = (props) => (
   <i className={`fa ${props.name} ${props.className}`} style={props.style}>
     &zwnj;
   </i>
@@ -23,8 +23,8 @@ Icon.propTypes = {
 };
 
 const IconWithStyles = styled(Icon)`
-  font-size: ${props => props.size || 20}px;
-  color: ${props => props.color || Colors.text.normal};
+  font-size: ${(props) => props.size || 20}px;
+  color: ${(props) => props.color || Colors.text.normal};
 `;
 
 export default IconWithStyles;

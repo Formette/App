@@ -5,7 +5,7 @@ import { Link } from "../atoms/index";
 import styled from "styled-components";
 
 const url = "http://www.formette.com";
-const Footer = props => {
+const Footer = (props) => {
   return (
     <div className={`container-fluid ${props.className}`}>
       <ul>

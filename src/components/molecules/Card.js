@@ -12,7 +12,7 @@ import { random } from "../../services/utilities";
 
 const colors = ["#7568F0", "#8A75F3", "#A384F6", "#A384F6", "#CA9CFB"];
 
-const Card = props => {
+const Card = (props) => {
   return (
     <div
       className={`card text-center ${props.className}`}
@@ -54,7 +54,7 @@ Card.propTypes = {
 };
 
 const CardWithStyled = styled(Card)`
-  background-image: ${props =>
+  background-image: ${(props) =>
     props.new
       ? "linear-gradient( 135deg, #CE9FFC 0%, #7367F0 100%)"
       : Colors.card.normal};

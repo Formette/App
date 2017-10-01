@@ -110,7 +110,7 @@ export class MyForms extends Component {
 const MyFormsWithData = compose(
   graphql(ALL_FORMS_QUERY, {
     name: "allFormsQuery",
-    options: props => ({
+    options: (props) => ({
       variables: { userId: _getUserId() }
     })
   })
