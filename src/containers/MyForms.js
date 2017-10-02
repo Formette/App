@@ -19,7 +19,9 @@ import { ALL_FORMS_QUERY } from "../api/Queries";
 
 export class MyForms extends Component {
   props: {
-    allFormsQuery: any
+    allFormsQuery: any,
+    history: any,
+
   };
   state = {
     loading: true,
@@ -38,8 +40,7 @@ export class MyForms extends Component {
     }
     return content;
   };
-  _loadContent = _ => {
-    console.log(this.props.allFormsQuery);
+  _loadContent = () => {
     const { allFormses } = this.props.allFormsQuery;
     const formsCount = Object.keys(allFormses).length;
     const content = [];
@@ -50,7 +51,7 @@ export class MyForms extends Component {
     }
     //Checks if the object data is not empty
     if (formsCount >= 0) {
-      allFormses.map(res => {
+      allFormses.map((res) => {
         content.push(
           <Card
             key={res.id}
@@ -68,7 +69,7 @@ export class MyForms extends Component {
       return content.concat(this._LoadingAnimationContent("normal", length));
     }
   };
-  _goToNew = _ => {
+  _goToNew = () => {
     this.props.history.push("/new");
   };
   render() {

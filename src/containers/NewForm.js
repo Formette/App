@@ -34,11 +34,14 @@ import { ALL_FORMS_QUERY, FORM_DATA_QUERY } from "../api/Queries";
 import { deleteForm } from "../api/Functions";
 
 export class NewForm extends PureComponent {
-  msg: any;
+  msg: () => any;
   props: {
     createFormMutation: any,
     updateFormMutation: any,
+    deleteFormMutation: any,
     router: any,
+    showMessage: () => mixed,
+    history: any,
     match: any,
     client: any
   };
@@ -89,8 +92,8 @@ export class NewForm extends PureComponent {
       if (error) return;
       const userId = _getUserId();
       let endpoint = customEndpoint
-        ? `${_getUsername()}/${customEndpoint}`
-        : `${_getUsername()}/${generateID}`;
+        ? `${userId}/${customEndpoint}`
+        : `${userId}/${generateID}`;
       //saves the new form in the DB
       try {
         //if is on mode edit only updates the form, does not create a new one
@@ -125,10 +128,11 @@ export class NewForm extends PureComponent {
               }
             }
           });
+          //Shows feedback and updates the store
+          this.props.showMessage("success", "Form created successfully", undefined, "fa-plus");
+          //redirects the user to the main page
           this.props.history.push("/");
         }
-        //Shows feedback and updates the store
-        //this.showAlert("success", "Form created successfully");
       } catch (e) {
         console.error(e);
         this.setState({
@@ -143,7 +147,7 @@ export class NewForm extends PureComponent {
       });
     }
   };
-  _updateForm = async (name, description, endpoint, isDisabled) => {
+  _updateForm = async (name: string, description: string, endpoint: string, isDisabled: boolean) => {
     try {
       const id = this.props.match.params.id;
       const { oldData } = this.state;
@@ -170,6 +174,9 @@ export class NewForm extends PureComponent {
           isDisabled
         }
       });
+      //Shows feedback and updates the store
+      this.props.showMessage("success", "Form updated successfully", undefined, "fa-pencil");
+      //redirects the user to the main page
       this.props.history.push("/");
     } catch (e) {
       console.error(e);
@@ -179,7 +186,7 @@ export class NewForm extends PureComponent {
       });
     }
   };
-  _showConfirmation = _ => {
+  _showConfirmation = () => {
     this.setState(prevState => ({
       onConfirmation: !prevState.onConfirmation
     }));
@@ -190,9 +197,11 @@ export class NewForm extends PureComponent {
     const userId = _getUserId();
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
-      this.props.history.push("/");
+        //Shows feedback and updates the store
+        this.props.showMessage("success", "Form deleted successfully", undefined, "fa-trash");
+        //redirects the user to the main page
+        this.props.history.push("/");
     } else {
-      console.log("erro ao apagar o form = ", response);
       this.showAlert(
         "error",
         "What a disgrace but it was not possible to delete the form, try again.",
@@ -201,13 +210,13 @@ export class NewForm extends PureComponent {
       );
     }
   };
-  _getFormData = id => {
+  _getFormData = (id: string) => {
     this.props.client
       .query({
         query: FORM_DATA_QUERY,
         variables: { id }
       })
-      .then(res => {
+      .then((res) => {
         //TODO do this condition in a better way
         if (res.data.Forms === null) {
           this.setState({ nullFormToEdit: true, onModeEdit: false });
@@ -216,7 +225,6 @@ export class NewForm extends PureComponent {
         if (Object.keys(res.data.Forms).length !== 0) {
           const {
             name,
-            id: generateID,
             endpoint,
             description,
             isDisabled: disableForm
@@ -226,7 +234,6 @@ export class NewForm extends PureComponent {
             name,
             description,
             disableForm,
-            generateID,
             customEndpoint: point[1],
             onModeEdit: !prevState.onModeEdit,
             oldData: res.data.Forms
@@ -260,7 +267,7 @@ export class NewForm extends PureComponent {
           <Button
             className="btn btn-lg btn-primary"
             color={Colors.primary}
-            onClick={_ => this.props.history.push("/")}
+            onClick={() => this.props.history.push("/")}
           >
             Go back
           </Button>
@@ -270,7 +277,7 @@ export class NewForm extends PureComponent {
 
     return (
       <div>
-        <AlertContainer ref={a => (this.msg = a)} {...ALERT_OPTIONS} />
+        <AlertContainer ref={(a) => (this.msg = a)} {...ALERT_OPTIONS} />
         <Confirmation
           title="Are you sure?"
           description="Are you sure you want to delete this form?"
@@ -304,7 +311,7 @@ export class NewForm extends PureComponent {
                 <Input
                   placeholder="e.g: Newsletters"
                   value={name}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.setState({ name: e.target.value, error: false })}
                   className="form-control"
                 />
@@ -315,7 +322,7 @@ export class NewForm extends PureComponent {
                   className="form-control"
                   placeholder="e.g: This is a Newsletters form for my personal website."
                   value={description}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.setState({
                       description: e.target.value,
                       error: false
@@ -336,7 +343,7 @@ export class NewForm extends PureComponent {
                 <Input
                   placeholder="e.g: newsletters2017"
                   value={customEndpoint}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.setState({
                       customEndpoint: e.target.value,
                       error: false

@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+// eslint-disable-next-line
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import registerServiceWorker from "./registerServiceWorker";
 //GraphQL
@@ -8,6 +9,7 @@ import {
   ApolloProvider,
   createNetworkInterface
 } from "react-apollo";
+// eslint-disable-next-line
 import {
   SubscriptionClient,
   addGraphQLSubscriptions

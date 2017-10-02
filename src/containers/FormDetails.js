@@ -23,14 +23,17 @@ import { FORM_DATA_SUBSCRIPTION } from "../api/Subscriptions";
 import { deleteForm } from "../api/Functions";
 
 export class FormDetails extends PureComponent {
-  msg: any;
+  msg: () => any;
   state = {
     onConfirmation: false,
     url: `api.formette.com/${_getUsername()}/`
   };
   props: {
     formDataQuery: any,
-    deleteFormMutation: any
+    deleteFormMutation: any,
+    showMessage: () => mixed,
+    history: any,
+    match: any,
   };
   componentWillMount() {
     this._subscribeToNewLinks();
@@ -75,7 +78,10 @@ export class FormDetails extends PureComponent {
     const userId = _getUserId();
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
-      this.props.history.push("/");
+        //Shows feedback and updates the store
+        this.props.showMessage("success", "Form deleted successfully", undefined, "fa-trash");
+        //redirects the user to the main page
+        this.props.history.push("/");
     } else {
       this.showAlert(
         "error",
@@ -85,7 +91,7 @@ export class FormDetails extends PureComponent {
       );
     }
   };
-  _editForm = _ => {
+  _editForm = () => {
     this.props.history.push(`/edit/${this.props.match.params.id}`);
   };
   render() {
@@ -112,7 +118,7 @@ export class FormDetails extends PureComponent {
           <Button
             className="btn btn-lg btn-primary"
             color={Colors.primary}
-            onClick={_ => this.props.history.push("/")}
+            onClick={() => this.props.history.push("/")}
           >
             Go back home
           </Button>

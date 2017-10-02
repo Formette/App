@@ -9,12 +9,12 @@ import Error from "../components/molecules/Error";
 import Colors from "../styles/Colors";
 //API
 import { SIGIN_USER_MUTATION } from "../api/Mutations";
-//Utilities
-import { _saveUsername, _saveUserId } from "../services/utilities";
+import { userSignIn } from "../api/Functions";
 
 class LoginUser extends React.PureComponent {
   props: {
     signinUser: any,
+    history: any,
     router: any
   };
   state = {
@@ -23,29 +23,22 @@ class LoginUser extends React.PureComponent {
     error: false,
     errorMsg: ""
   };
-  _onSignIn = () => {
+  _onSignIn = async () => {
     const { email, password } = this.state;
     //Verifies if the inputs are empty or not
     if (email && password) {
-      //logs in the user
-      this.props
-        .signinUser({ variables: { email, password } })
-        .then(res => {
-          window.localStorage.setItem(
-            "graphcoolToken",
-            res.data.signinUser.token
-          );
-          _saveUsername(res.data.signinUser.user.userName);
-          _saveUserId(res.data.signinUser.user.id);
-        })
-        .then(() => this.props.history.push("/"))
-        .catch((e) => {
-          console.log(e);
-          this.setState({
-            error: true,
-            errorMsg: "Ops! Invalid Email or password."
-          });
-        });
+        //logs in the user
+        const response = await userSignIn(email, password, this.props.signinUser);
+        if (response) {
+            //redirects the user to the main page
+            this.props.history.push("/");
+        }else {
+            this.setState({
+                error: true,
+                errorMsg: "Ops! Invalid Email or password."
+            });
+        }
+
     } else {
       this.setState({
         error: true,

@@ -10,13 +10,13 @@ import Colors from "../styles/Colors";
 //API
 import { USERNAME_VALIDATION_QUERY } from "../api/Queries";
 import { SIGIN_USER_MUTATION, CREATE_USER_MUTATION } from "../api/Mutations";
-//Utilities
-import { _saveUsername } from "../services/utilities";
+import { userSignIn } from "../api/Functions";
 
 export class CreateUser extends React.PureComponent {
   props: {
     createUser: any,
     signinUser: any,
+    history: any,
     client: any,
     router: any
   };
@@ -35,7 +35,7 @@ export class CreateUser extends React.PureComponent {
     if (email && password && username) {
       if (error) {
         return
-      };
+      }
       if (this._checkPassword(password)) return;
       //Creates a new user
       this.props
@@ -43,7 +43,7 @@ export class CreateUser extends React.PureComponent {
         .then(() => {
           this._onSignIn(email, password);
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e);
           this.setState({
             error: true,
@@ -58,24 +58,19 @@ export class CreateUser extends React.PureComponent {
       });
     }
   };
-  _onSignIn = (email: string, password: string) => {
-    this.props
-      .signinUser({ variables: { email, password } })
-      .then(res => {
-        window.localStorage.setItem(
-          "graphcoolToken",
-          res.data.signinUser.token
-        );
-        _saveUsername(res.data.signinUser.user.userName);
-      })
-      .then(_ => this.props.history.push("/"))
-      .catch(e => {
-        console.error(e);
-        this.setState({
-          error: true,
-          errorMsg: "Ops! Something went wrong, try again."
-        });
-      });
+  _onSignIn = async (email: string, password: string) => {
+      //logs in the user
+      const response = await userSignIn(email, password, this.props.signinUser);
+      if (response) {
+          //redirects the user to the main page
+          this.props.history.push("/");
+      } else {
+          console.error(response);
+          this.setState({
+              error: true,
+              errorMsg: "Ops! Something went wrong, try again."
+          });
+      }
   };
   _onPasswordValidation(password: string) {
     clearTimeout(this.state.timeoutPassword);
@@ -133,8 +128,8 @@ export class CreateUser extends React.PureComponent {
         <Input
           id="signupUsername"
           value={username}
-          onChange={e => this.setState({ username: e.target.value })}
-          onKeyUp={e => this._onUsernameValidation(e.target.value)}
+          onChange={(e) => this.setState({ username: e.target.value })}
+          onKeyUp={(e) => this._onUsernameValidation(e.target.value)}
           className="form-control"
           placeholder="Username"
           required
@@ -147,7 +142,7 @@ export class CreateUser extends React.PureComponent {
           id="signupEmail"
           type="email"
           value={email}
-          onChange={e => this.setState({ email: e.target.value })}
+          onChange={(e) => this.setState({ email: e.target.value })}
           className="form-control"
           placeholder="Email address"
           required

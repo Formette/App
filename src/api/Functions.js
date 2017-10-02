@@ -1,10 +1,47 @@
 // @flow
 //API
 import { ALL_FORMS_QUERY } from "./Queries";
+//Utilities
+import { _saveUsername, _saveUserId } from "../services/utilities";
 
 /*
 * This file contains all the global functions and actions to the servers that are used on all the project
 * */
+
+//USER
+
+//this functions login in the user
+const userSignIn = async (
+    email: string,
+    password: string,
+    signinUser: any
+) => {
+    try{
+        await signinUser({
+           variables: {
+               email,
+               password
+           },
+           update: (store, { data: { signinUser } }) => {
+               try{
+                   window.localStorage.setItem(
+                       "graphcoolToken",
+                       signinUser.token
+                   );
+                   _saveUsername(signinUser.user.userName);
+                   _saveUserId(signinUser.user.id);
+               }catch(e){
+                   console.error(e);
+                   return e;
+               }
+           }
+        });
+        return true;
+    }catch(e){
+        console.error(e);
+        return false;
+    }
+};
 
 //FORMS
 
@@ -52,4 +89,4 @@ const deleteForm = async (
   }
 };
 
-export { deleteForm };
+export { deleteForm, userSignIn };

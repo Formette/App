@@ -29,7 +29,7 @@ import { USER_QUERY, USERNAME_VALIDATION_QUERY } from "../api/Queries";
 import { UPDATE_USER_MUTATION } from "../api/Mutations";
 
 export class Profile extends PureComponent {
-  msg: any;
+  msg: () => any;
   props: {
     userQuery: any,
     updateUser: any,
