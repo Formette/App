@@ -10,10 +10,8 @@ import {
   Button,
   Text,
   Link,
-  Icon
 } from "../components/atoms/index";
 import { Graphic, Confirmation } from "../components/molecules/index";
-import AlertContainer from "react-alert";
 //Styles
 import Colors from "../styles/Colors";
 //Utils
@@ -23,19 +21,18 @@ import {
   _saveUsername,
   _refreshPage
 } from "../services/utilities";
-import { ALERT_OPTIONS } from "../services/Constants";
 //API
 import { USER_QUERY, USERNAME_VALIDATION_QUERY } from "../api/Queries";
 import { UPDATE_USER_MUTATION } from "../api/Mutations";
 
 export class Profile extends PureComponent {
-  msg: () => any;
   props: {
     userQuery: any,
     updateUser: any,
     client: any,
     router: any,
-    updateUsername: any
+    updateUsername: any,
+    showMessage: () => mixed,
   };
   state = {
     username: "",
@@ -47,18 +44,6 @@ export class Profile extends PureComponent {
   componentDidMount() {
     this.setState({ username: _getUsername() });
     console.log(this.props);
-  }
-  showAlert(
-    type: string = "success",
-    text: string = "Change made successfully",
-    color: string = Colors.green,
-    icon: string = "fa-check"
-  ) {
-    this.msg.show(text, {
-      time: 3000,
-      type: type,
-      icon: <Icon name={icon} color={color} />
-    });
   }
   _showConfirmation = () => {
     this.setState((prevState) => ({
@@ -91,14 +76,14 @@ export class Profile extends PureComponent {
         _saveUsername(username);
         //this updates the navbar to the new username
         this.props.updateUsername();
-        this.showAlert();
+        this.props.showMessage("success", "Change made successfully", undefined, undefined);
       } catch (e) {
         console.error(e);
-        this.showAlert(
-          "error",
-          "Something went wrong, try again ...",
-          Colors.red,
-          "fa-times"
+        this.props.showMessage(
+            "error",
+            "Something went wrong, try again...",
+            Colors.red,
+            "fa-times"
         );
       }
     } else {
@@ -166,7 +151,6 @@ export class Profile extends PureComponent {
     const { error, errorMsg, username, onConfirmation } = this.state;
     return (
       <div>
-        <AlertContainer ref={a => (this.msg = a)} {...ALERT_OPTIONS} />
         <Confirmation
           title="Are you sure?"
           description="All your endpoints will be changed to the new username. Do not forget to change in your apps."

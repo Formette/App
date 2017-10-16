@@ -3,11 +3,6 @@
 exports[`Profile UI renders correctly 1`] = `
 <div>
   <div
-    className="css-1bdcmy7"
-  >
-    <span />
-  </div>
-  <div
     className="card mx-auto animated zoomInUp sc-kAzzGY cfOeAw"
     style={
       Object {
@@ -38,7 +33,7 @@ exports[`Profile UI renders correctly 1`] = `
           Cancel
         </a>
         <button
-          className="btn sc-bdVaJa fFweCv"
+          className="btn sc-bdVaJa rjmbm"
           color="#12b886"
           onClick={[Function]}
           type="button"
@@ -87,7 +82,7 @@ exports[`Profile UI renders correctly 1`] = `
           
         </div>
         <button
-          className="btn btn-lg btn-primary btn-block sc-bdVaJa hayiWv"
+          className="btn btn-lg btn-primary btn-block sc-bdVaJa ksYEWH"
           color="#7950f2"
           onClick={[Function]}
           type="button"

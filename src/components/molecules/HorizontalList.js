@@ -16,11 +16,17 @@ HorizontalList.propTypes = {
 };
 
 const HorizontalListWithStyles = styled(HorizontalList)`
+  padding: 0;
   li {
     display: inline;
     margin-right: 10px;
     &:last-child {
       margin-right: 0;
+    }
+  }
+   @media (max-width: 375px) {
+    li button span{
+      display: none;
     }
   }
 `;

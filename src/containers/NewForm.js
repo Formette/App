@@ -3,7 +3,6 @@ import React, { PureComponent } from "react";
 import { graphql, compose, withApollo } from "react-apollo";
 //Components
 import CopyToClipboard from "react-copy-to-clipboard";
-import AlertContainer from "react-alert";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/styles";
 import {
@@ -23,7 +22,6 @@ import { Graphic, Confirmation } from "../components/molecules/index";
 import Colors from "../styles/Colors";
 //Utils
 import { _getUsername, guid, _getUserId } from "../services/utilities";
-import { ALERT_OPTIONS } from "../services/Constants";
 //API
 import {
   CREATE_FORM_MUTATION,
@@ -34,7 +32,6 @@ import { ALL_FORMS_QUERY, FORM_DATA_QUERY } from "../api/Queries";
 import { deleteForm } from "../api/Functions";
 
 export class NewForm extends PureComponent {
-  msg: () => any;
   props: {
     createFormMutation: any,
     updateFormMutation: any,
@@ -49,7 +46,7 @@ export class NewForm extends PureComponent {
     name: "",
     description: "",
     customEndpoint: "",
-    generateEndpoint: `api.formette.com/${_getUsername()}/`,
+    generateEndpoint: `https://api.formette.com/${_getUsername()}/`,
     generateID: guid(),
     disableForm: false,
     oldData: [],
@@ -64,18 +61,6 @@ export class NewForm extends PureComponent {
     if (this.props.match.params.id !== undefined) {
       this._getFormData(this.props.match.params.id);
     }
-  }
-  showAlert(
-    type: string = "success",
-    text: string = "Some Text",
-    color: string = Colors.green,
-    icon: string = "fa-link"
-  ) {
-    this.msg.show(text, {
-      time: 3000,
-      type,
-      icon: <Icon name={icon} color={color} />
-    });
   }
   _createForm = async () => {
     const {
@@ -202,11 +187,11 @@ export class NewForm extends PureComponent {
         //redirects the user to the main page
         this.props.history.push("/");
     } else {
-      this.showAlert(
-        "error",
-        "What a disgrace but it was not possible to delete the form, try again.",
-        Colors.red,
-        "fa-exclamation-triangle"
+      this.props.showMessage(
+          "error",
+          "What a disgrace but it was not possible to delete the form, try again.",
+          Colors.red,
+          "fa-exclamation-triangle"
       );
     }
   };
@@ -244,6 +229,9 @@ export class NewForm extends PureComponent {
       })
       .catch((e) => {
         console.error(e);
+        this.setState({
+            nullFormToEdit: true
+        })
       });
   };
   render() {
@@ -277,7 +265,6 @@ export class NewForm extends PureComponent {
 
     return (
       <div>
-        <AlertContainer ref={(a) => (this.msg = a)} {...ALERT_OPTIONS} />
         <Confirmation
           title="Are you sure?"
           description="Are you sure you want to delete this form?"
@@ -382,10 +369,13 @@ export class NewForm extends PureComponent {
                         : generateID}`}
                       style={{ cursor: "pointer" }}
                       onCopy={() =>
-                        this.showAlert(
-                          "success",
-                          "Endpoint copied to clipboard"
-                        )}
+                          this.props.showMessage(
+                              "success",
+                              "Endpoint copied to clipboard.",
+                              undefined,
+                              undefined
+                          )
+                       }
                     >
                       <div className="input-group-addon">
                         <Icon name="fa-clipboard" size={16} />

@@ -68,7 +68,7 @@ exports[`Create User UI renders correctly 1`] = `
       value=""
     />
     <button
-      className="btn btn-lg btn-primary btn-block sc-bdVaJa hayiWv"
+      className="btn btn-lg btn-primary btn-block sc-bdVaJa ksYEWH"
       color="#7950f2"
       onClick={[Function]}
       style={

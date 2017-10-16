@@ -21,7 +21,11 @@ const ALL_FORM_FIELDS_FRAGMENT = gql`
     description
     isDisabled
     endpoint
-    data
+    contents{
+      id
+      data
+      createdAt
+    }
     createdAt
   }
 `;

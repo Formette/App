@@ -1,9 +1,9 @@
 // @flow
 import React, { PureComponent } from "react";
 import { graphql, compose } from "react-apollo";
+import * as moment from "moment";
 //Components
 import CopyToClipboard from "react-copy-to-clipboard";
-import AlertContainer from "react-alert";
 import { SubTitle, Header, Button, Icon } from "../components/atoms/index";
 import {
   HorizontalList,
@@ -14,7 +14,6 @@ import {
 //Styles
 import Colors from "../styles/Colors";
 //Utils
-import { ALERT_OPTIONS } from "../services/Constants";
 import { _getUsername, _refreshPage, _getUserId } from "../services/utilities";
 //API
 import { FORM_DATA_QUERY } from "../api/Queries";
@@ -23,7 +22,6 @@ import { FORM_DATA_SUBSCRIPTION } from "../api/Subscriptions";
 import { deleteForm } from "../api/Functions";
 
 export class FormDetails extends PureComponent {
-  msg: () => any;
   state = {
     onConfirmation: false,
     url: `api.formette.com/${_getUsername()}/`
@@ -36,37 +34,26 @@ export class FormDetails extends PureComponent {
     match: any,
   };
   componentWillMount() {
-    this._subscribeToNewLinks();
+    this._subscribeToNewData();
   }
-  _subscribeToNewLinks = () => {
+  _subscribeToNewData = () => {
     this.props.formDataQuery.subscribeToMore({
       document: FORM_DATA_SUBSCRIPTION,
       variables: { id: this.props.match.params.id },
       updateQuery: (previous, { subscriptionData }) => {
+          console.log("subscriptionData = ", subscriptionData);
         const newItems = [
-          subscriptionData.data.Forms.node.data,
-          ...previous.Forms.data
+          subscriptionData.data.Content.node,
+          ...previous.Forms.contents
         ];
         const result = {
           ...previous,
-          data: newItems
+          contents: newItems
         };
         return result;
       }
     });
   };
-  showAlert(
-    type: string = "success",
-    text: string = "Some Text",
-    color: string = Colors.green,
-    icon: string = "fa-link"
-  ) {
-    this.msg.show(text, {
-      time: 3000,
-      type,
-      icon: <Icon name={icon} color={color} />
-    });
-  }
   _showConfirmation = () => {
     this.setState((prevState) => ({
       onConfirmation: !prevState.onConfirmation
@@ -83,16 +70,31 @@ export class FormDetails extends PureComponent {
         //redirects the user to the main page
         this.props.history.push("/");
     } else {
-      this.showAlert(
-        "error",
-        "What a disgrace but it was not possible to delete the form, try again.",
-        Colors.red,
-        "fa-exclamation-triangle"
-      );
+        this.props.showMessage(
+            "error",
+            "What a disgrace but it was not possible to delete the form, try again.",
+            Colors.red,
+            "fa-exclamation-triangle"
+        );
+
     }
   };
   _editForm = () => {
     this.props.history.push(`/edit/${this.props.match.params.id}`);
+  };
+  _organizeTableData = (content) => {
+      let data = [];
+      let items = [];
+      content.map((value) => {
+          items = {
+              id: value.id,
+              ...value.data[0],
+              createdAt: moment(value.createdAt).format("ll")
+          };
+          data.push(items);
+          return true;
+      });
+      return data;
   };
   render() {
     if (this.props.formDataQuery && this.props.formDataQuery.loading) {
@@ -125,12 +127,12 @@ export class FormDetails extends PureComponent {
         </Graphic>
       );
     }
-    const { data: items, name, endpoint } = this.props.formDataQuery.Forms;
+    const { name, endpoint, contents } = this.props.formDataQuery.Forms;
+    const items = this._organizeTableData(contents);
     const point = endpoint.split("/");
     const { onConfirmation, url } = this.state;
     return (
       <div>
-        <AlertContainer ref={(a) => (this.msg = a)} {...ALERT_OPTIONS} />
         <Confirmation
           title="Are you sure?"
           description="Are you sure you want to delete this form?"
@@ -139,21 +141,23 @@ export class FormDetails extends PureComponent {
           onConfirmation={this._onDeleteForm}
         />
         <div className="row">
-          <div className="col-md-6 col-sm-6">
+          <div className="col-md-6 col-sm-12">
             <SubTitle text="All the data for" color={Colors.text.secondary} />
             <Header className="text-truncate" text={name} />
           </div>
-          <div className="col-md-6 col-sm-6">
+          <div className="col-md-6 col-sm-12">
             <HorizontalList className="float-right">
               <li>
                 <CopyToClipboard
                   text={`${url}${point[1]}`}
                   style={{ cursor: "pointer" }}
                   onCopy={() =>
-                    this.showAlert("success", "Endpoint copied to clipboard")}
+                    this.props.showMessage("success", "Endpoint copied to clipboard", undefined, undefined)
+                  }
                 >
-                  <Button className="btn" color={Colors.default}>
+                  <Button className="btn" color={Colors.default} textColor={Colors.white}>
                     <Icon color={Colors.white} name="fa-link" />
+                    <span>Endpoint</span>
                   </Button>
                 </CopyToClipboard>
               </li>
@@ -161,18 +165,22 @@ export class FormDetails extends PureComponent {
                 <Button
                   className="btn"
                   color={Colors.default}
+                  textColor={Colors.white}
                   onClick={this._editForm}
                 >
                   <Icon color={Colors.white} name="fa-pencil" />
+                  <span>Edit</span>
                 </Button>
               </li>
               <li>
                 <Button
                   className="btn"
                   color={Colors.red}
+                  textColor={Colors.white}
                   onClick={this._showConfirmation}
                 >
                   <Icon color={Colors.white} name="fa-trash-o" />
+                  <span>Delete</span>
                 </Button>
               </li>
             </HorizontalList>

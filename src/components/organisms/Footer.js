@@ -4,38 +4,39 @@ import { Link } from "../atoms/index";
 //Styles
 import styled from "styled-components";
 
-const url = "http://www.formette.com";
+const url = "formette.com";
+const protocol = "https://";
 const Footer = (props) => {
   return (
     <div className={`container-fluid ${props.className}`}>
       <ul>
         <li>
-          <Link href={`${url}/about`} target="_blank">
+          <Link href={`${protocol}${url}/about`} target="_blank">
             About
           </Link>
         </li>
         <li>
-          <Link href={`${url}/docs`} target="_blank">
+          <Link href={`${protocol}docs.${url}`} target="_blank">
             Docs
           </Link>
         </li>
         <li>
-          <Link href={`${url}/roadmap`} target="_blank">
+          <Link href={`${protocol}${url}/roadmap`} target="_blank">
             Roadmap
           </Link>
         </li>
         <li>
-          <Link href={`${url}/terms`} target="_blank">
+          <Link href={`${protocol}${url}/terms`} target="_blank">
             Terms
           </Link>
         </li>
         <li>
-          <Link href={`${url}/privacy`} target="_blank">
+          <Link href={`${protocol}${url}/privacy`} target="_blank">
             Privacy Policy
           </Link>
         </li>
         <li>
-          <Link href={`${url}/feedback`} target="_blank">
+          <Link href={`${protocol}${url}/feedback`} target="_blank">
             Feedback
           </Link>
         </li>
