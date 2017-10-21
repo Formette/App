@@ -1,11 +1,12 @@
 // @flow
 import React, { PureComponent } from "react";
+import { withRouter } from "react-router-dom";
 //Components
 import AlertContainer from "react-alert";
 import { Icon } from "./atoms/index";
 import { Navbar, Footer } from "./organisms/index";
 //Utilities
-import { _getUsername } from "../services/utilities";
+import { _getUsername} from "../services/utilities";
 import { ALERT_OPTIONS } from "../services/Constants";
 //Styles
 import styled from "styled-components";
@@ -60,4 +61,4 @@ const AppWithStyles = styled(App)`
   }
 `;
 
-export default AppWithStyles;
+export default withRouter(AppWithStyles);

@@ -119,6 +119,12 @@ const NavbarWithStyles = styled(Navbar)`
     &:hover {
       color: ${lighten(0.1, Colors.text.highlight)};
     }
+    #HW_badge_cont{
+      display: inline;
+      position: absolute;
+      left: 135px;
+      top: 5px;
+    }
   }
   .nav-link {
     font-size: 20px;

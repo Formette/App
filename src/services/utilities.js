@@ -11,6 +11,7 @@ module.exports = {
     window.localStorage.removeItem("graphcoolToken");
     module.exports._deleteUsername();
     module.exports._deleteUserId();
+    module.exports._deleteEmailConfirmation();
     setTimeout(() => {
       window.location.reload();
     }, 200);
@@ -31,7 +32,16 @@ module.exports = {
     window.localStorage.removeItem("userId");
   },
   _getUserId() {
-    return window.localStorage.getItem("userId");
+      return window.localStorage.getItem("userId");
+  },
+  _getEmailConfirmation() {
+    return window.localStorage.getItem("isEmailVerified");
+  },
+  _saveEmailConfirmation(isEmailVerified: boolean) {
+     window.localStorage.setItem("isEmailVerified", isEmailVerified);
+  },
+  _deleteEmailConfirmation() {
+     window.localStorage.removeItem("isEmailVerified");
   },
   guid() {
     function s4() {
@@ -46,5 +56,13 @@ module.exports = {
   },
   dynamicWidth() {
     return window.innerWidth;
+  },
+  generateToken() {
+      //return crypto.randomBytes(20).toString("hex")
+      return module.exports.guid();
+  },
+  generateExpiration() {
+      const now = new Date();
+      return new Date(now.getTime() + 3600000).toISOString()
   }
 };

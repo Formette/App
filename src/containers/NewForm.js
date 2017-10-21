@@ -22,6 +22,7 @@ import { Graphic, Confirmation } from "../components/molecules/index";
 import Colors from "../styles/Colors";
 //Utils
 import { _getUsername, guid, _getUserId } from "../services/utilities";
+import LogRocket from 'logrocket';
 //API
 import {
   CREATE_FORM_MUTATION,
@@ -110,22 +111,27 @@ export class NewForm extends PureComponent {
                 });
               } catch (e) {
                 console.error(e);
+                LogRocket.error({'UpdateForm': e});
               }
             }
           });
           //Shows feedback and updates the store
           this.props.showMessage("success", "Form created successfully", undefined, "fa-plus");
+          LogRocket.log('Form created successfully');
+          LogRocket.track('Created Form');
           //redirects the user to the main page
           this.props.history.push("/");
         }
       } catch (e) {
         console.error(e);
+        LogRocket.error({'CreateForm': e});
         this.setState({
           error: true,
           errorMsg: "This endpoint already exists, try another."
         });
       }
     } else {
+      LogRocket.log('This form is feeling lonely, needs affection, needs data');
       this.setState({
         error: true,
         errorMsg: "This form is feeling lonely, needs affection, needs data."
@@ -143,6 +149,7 @@ export class NewForm extends PureComponent {
         endpoint === oldData.endpoint &&
         isDisabled === oldData.isDisabled
       ) {
+        LogRocket.log('If it\'s the same as before, what\'s the point of changing?');
         this.setState({
           error: true,
           errorMsg: "If it's the same as before, what's the point of changing?"
@@ -161,10 +168,13 @@ export class NewForm extends PureComponent {
       });
       //Shows feedback and updates the store
       this.props.showMessage("success", "Form updated successfully", undefined, "fa-pencil");
+      LogRocket.log('Form updated successfully');
+      LogRocket.track('Updated Form');
       //redirects the user to the main page
       this.props.history.push("/");
     } catch (e) {
       console.error(e);
+      LogRocket.error({'UpdateForm': e});
       this.setState({
         error: true,
         errorMsg: "This endpoint already exists, try another."
@@ -175,6 +185,7 @@ export class NewForm extends PureComponent {
     this.setState(prevState => ({
       onConfirmation: !prevState.onConfirmation
     }));
+      LogRocket.track('Opened delete modal on Form Details');
   };
   _onDeleteForm = () => {
     //deletes the form in the DB
@@ -184,9 +195,12 @@ export class NewForm extends PureComponent {
     if (response) {
         //Shows feedback and updates the store
         this.props.showMessage("success", "Form deleted successfully", undefined, "fa-trash");
+        LogRocket.log('Form deleted successfully');
+        LogRocket.track('Deleted Form');
         //redirects the user to the main page
         this.props.history.push("/");
     } else {
+        LogRocket.error('What a disgrace but it was not possible to delete the form, try again.');
       this.props.showMessage(
           "error",
           "What a disgrace but it was not possible to delete the form, try again.",
@@ -229,6 +243,7 @@ export class NewForm extends PureComponent {
       })
       .catch((e) => {
         console.error(e);
+        LogRocket.error({'getFormData': e});
         this.setState({
             nullFormToEdit: true
         })

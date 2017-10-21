@@ -9,8 +9,11 @@ import Error from "../components/molecules/Error";
 import Colors from "../styles/Colors";
 //API
 import { USERNAME_VALIDATION_QUERY } from "../api/Queries";
-import { SIGIN_USER_MUTATION, CREATE_USER_MUTATION } from "../api/Mutations";
+import { SIGIN_USER_MUTATION, CREATE_USER_MUTATION, } from "../api/Mutations";
 import { userSignIn } from "../api/Functions";
+//Utils
+import {generateToken, generateExpiration} from '../services/utilities';
+import LogRocket from 'logrocket';
 
 export class CreateUser extends React.PureComponent {
   props: {
@@ -39,12 +42,20 @@ export class CreateUser extends React.PureComponent {
       if (this._checkPassword(password)) return;
       //Creates a new user
       this.props
-        .createUser({ variables: { email, password, username } })
+        .createUser({ variables: {
+            email,
+            password,
+            username,
+            confirmToken: generateToken(),
+            confirmExpires: generateExpiration()
+        } })
         .then(() => {
+          LogRocket.track('Registered');
           this._onSignIn(email, password);
         })
         .catch((e) => {
           console.error(e);
+          LogRocket.error({'CreateUser': e});
           this.setState({
             error: true,
             errorMsg:
@@ -62,10 +73,12 @@ export class CreateUser extends React.PureComponent {
       //logs in the user
       const response = await userSignIn(email, password, this.props.signinUser);
       if (response) {
+          LogRocket.track('Sign in');
           //redirects the user to the main page
           this.props.history.push("/");
       } else {
           console.error(response);
+          LogRocket.error({'SignIn': response});
           this.setState({
               error: true,
               errorMsg: "Ops! Something went wrong, try again."
@@ -82,6 +95,7 @@ export class CreateUser extends React.PureComponent {
   }
   _checkPassword(password: string) {
     if (password.length <= 8) {
+      LogRocket.warn('With so much room in the box, you chose this tiny thing. We need more than 8 characters, go we know you can.');
       this.setState({
         error: true,
         errorMsg:
@@ -102,6 +116,7 @@ export class CreateUser extends React.PureComponent {
           })
           .then(res => {
             if (Object.keys(res.data.allUsers).length !== 0) {
+              LogRocket.info('With so much name in this world, you had to choose this one. Try another.');
               this.setState({
                 error: true,
                 errorMsg:
@@ -113,6 +128,7 @@ export class CreateUser extends React.PureComponent {
           })
           .catch(e => {
             console.error(e);
+            LogRocket.error({'_onUsernameValidation': e});
           });
       }, 500)
     });
@@ -187,7 +203,7 @@ export class CreateUser extends React.PureComponent {
 
 const CreateUserWithData = compose(
   graphql(CREATE_USER_MUTATION, { name: "createUser" }),
-  graphql(SIGIN_USER_MUTATION, { name: "signinUser" })
+  graphql(SIGIN_USER_MUTATION, { name: "signinUser" }),
 );
 
 export default withApollo(CreateUserWithData(CreateUser));

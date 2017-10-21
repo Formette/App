@@ -3,6 +3,7 @@
 import { ALL_FORMS_QUERY } from "./Queries";
 //Utilities
 import { _saveUsername, _saveUserId } from "../services/utilities";
+import LogRocket from 'logrocket';
 
 /*
 * This file contains all the global functions and actions to the servers that are used on all the project
@@ -14,7 +15,7 @@ import { _saveUsername, _saveUserId } from "../services/utilities";
 const userSignIn = async (
     email: string,
     password: string,
-    signinUser: any
+    signinUser: any,
 ) => {
     try{
         await signinUser({
@@ -30,6 +31,11 @@ const userSignIn = async (
                    );
                    _saveUsername(signinUser.user.userName);
                    _saveUserId(signinUser.user.id);
+                   //LogRocket
+                   LogRocket.identify(signinUser.user.id, {
+                       name: signinUser.user.userName,
+                       email: signinUser.user.email,
+                   });
                }catch(e){
                    console.error(e);
                    return e;
@@ -77,6 +83,7 @@ const deleteForm = async (
             data
           });
         } catch (e) {
+          LogRocket.error({'deleteForm': e});
           console.error(e);
           return e;
         }

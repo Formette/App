@@ -15,6 +15,7 @@ import {
 import Colors from "../styles/Colors";
 //Utils
 import { _getUsername, _refreshPage, _getUserId } from "../services/utilities";
+import LogRocket from 'logrocket';
 //API
 import { FORM_DATA_QUERY } from "../api/Queries";
 import { DELETE_FORM_MUTATION } from "../api/Mutations";
@@ -37,20 +38,23 @@ export class FormDetails extends PureComponent {
     this._subscribeToNewData();
   }
   _subscribeToNewData = () => {
+    const id = this.props.match.params.id;
     this.props.formDataQuery.subscribeToMore({
       document: FORM_DATA_SUBSCRIPTION,
-      variables: { id: this.props.match.params.id },
+      variables: { id },
       updateQuery: (previous, { subscriptionData }) => {
-          console.log("subscriptionData = ", subscriptionData);
-        const newItems = [
-          subscriptionData.data.Content.node,
-          ...previous.Forms.contents
-        ];
-        const result = {
-          ...previous,
-          contents: newItems
-        };
-        return result;
+          if (!subscriptionData.data) {
+              return previous;
+          }
+          const newItems = subscriptionData.data.Content.node;
+          const result = Object.assign({}, previous, {
+              Forms: {
+                  ...previous.Forms,
+                  contents: [newItems, ...previous.Forms.contents]
+              }
+          });
+          LogRocket.debug({'subscriptionData': result});
+          return result;
       }
     });
   };
@@ -58,6 +62,7 @@ export class FormDetails extends PureComponent {
     this.setState((prevState) => ({
       onConfirmation: !prevState.onConfirmation
     }));
+      LogRocket.track('Opened delete modal on Form Details');
   };
   _onDeleteForm = async () => {
     //deletes the form in the DB
@@ -67,9 +72,12 @@ export class FormDetails extends PureComponent {
     if (response) {
         //Shows feedback and updates the store
         this.props.showMessage("success", "Form deleted successfully", undefined, "fa-trash");
+        LogRocket.info('Form deleted successfully');
+        LogRocket.track('Deleted Form');
         //redirects the user to the main page
         this.props.history.push("/");
     } else {
+        LogRocket.warn('What a disgrace but it was not possible to delete the form, try again.');
         this.props.showMessage(
             "error",
             "What a disgrace but it was not possible to delete the form, try again.",

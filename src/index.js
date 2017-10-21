@@ -18,11 +18,13 @@ import {
 import App from "./components/App";
 import LoginUser from "./containers/LoginUser";
 import CreateUser from "./containers/CreateUser";
+import ConfirmUser from "./containers/ConfirmUser";
 //Styles
 import { injectGlobal } from "styled-components";
 import Colors from "./styles/Colors";
 //Utilities
 import { API_URL, SUBSCRIPTION_URL, TOKEN } from "./services/Constants";
+import LogRocket from 'logrocket';
 
 const networkInterface = createNetworkInterface({ uri: API_URL });
 
@@ -70,6 +72,7 @@ ReactDOM.render(
         <Switch>
           <Route path="/signin" component={LoginUser} />
           <Route path="/signup" component={CreateUser} />
+          <Route exact path="/confirm" component={ConfirmUser} />
           <App />
         </Switch>
       </div>
@@ -79,6 +82,9 @@ ReactDOM.render(
 );
 
 registerServiceWorker();
+LogRocket.init('hdwf9x/formette', {
+    release: '0.1.0',
+});
 
 // Global style
 // eslint-disable-next-line
@@ -87,5 +93,10 @@ injectGlobal`
     margin: 0;
     background: ${Colors.background};
     font-family: 'Roboto', sans-serif;
+  }
+  #HW_frame_cont.HW_visible {
+    left: 15px !important;
+    top: 60px !important;
+    z-index: 9999;
   }
 `;

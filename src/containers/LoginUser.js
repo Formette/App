@@ -10,6 +10,8 @@ import Colors from "../styles/Colors";
 //API
 import { SIGIN_USER_MUTATION } from "../api/Mutations";
 import { userSignIn } from "../api/Functions";
+//Utils
+import LogRocket from 'logrocket';
 
 class LoginUser extends React.PureComponent {
   props: {
@@ -30,9 +32,11 @@ class LoginUser extends React.PureComponent {
         //logs in the user
         const response = await userSignIn(email, password, this.props.signinUser);
         if (response) {
+            LogRocket.track('Signed In');
             //redirects the user to the main page
             this.props.history.push("/");
         }else {
+            LogRocket.log("Ops! Invalid Email or password.");
             this.setState({
                 error: true,
                 errorMsg: "Ops! Invalid Email or password."
@@ -40,6 +44,7 @@ class LoginUser extends React.PureComponent {
         }
 
     } else {
+      LogRocket.info("This form is feeling lonely, needs affection, needs data.");
       this.setState({
         error: true,
         errorMsg: "This form is feeling lonely, needs affection, needs data."

@@ -21,6 +21,7 @@ import {
   _saveUsername,
   _refreshPage
 } from "../services/utilities";
+import LogRocket from 'logrocket';
 //API
 import { USER_QUERY, USERNAME_VALIDATION_QUERY } from "../api/Queries";
 import { UPDATE_USER_MUTATION } from "../api/Mutations";
@@ -49,6 +50,7 @@ export class Profile extends PureComponent {
     this.setState((prevState) => ({
       onConfirmation: !prevState.onConfirmation
     }));
+      LogRocket.track('Opened  modal on change username');
   };
   _updateProfile = async () => {
     const { username, error } = this.state;
@@ -77,8 +79,11 @@ export class Profile extends PureComponent {
         //this updates the navbar to the new username
         this.props.updateUsername();
         this.props.showMessage("success", "Change made successfully", undefined, undefined);
+        LogRocket.info('Change made successfully');
+        LogRocket.track('Updated username');
       } catch (e) {
         console.error(e);
+        LogRocket.error({'_updateProfile': e});
         this.props.showMessage(
             "error",
             "Something went wrong, try again...",
@@ -87,6 +92,7 @@ export class Profile extends PureComponent {
         );
       }
     } else {
+      LogRocket.warn('This form is feeling lonely, needs affection, needs data.');
       this.setState({
         error: true,
         errorMsg: "This form is feeling lonely, needs affection, needs data."
@@ -106,6 +112,7 @@ export class Profile extends PureComponent {
           })
           .then(res => {
             if (Object.keys(res.data.allUsers).length !== 0) {
+                LogRocket.warn('With so much name in this world, you had to choose this one. Try another.');
               this.setState({
                 error: true,
                 errorMsg:
@@ -116,6 +123,7 @@ export class Profile extends PureComponent {
             }
           })
           .catch(e => {
+            LogRocket.error({'_onUsernameValidation': e});
             console.error(e);
           });
       }, 500)
@@ -123,6 +131,7 @@ export class Profile extends PureComponent {
   }
   _isTheSameUsername(username: string) {
     if (_getUsername() === username) {
+      LogRocket.warn('If it\'s the same as before, what\'s the point of changing?');
       this.setState({
         error: true,
         errorMsg: "If it's the same as before, what's the point of changing?"

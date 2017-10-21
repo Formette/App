@@ -12,6 +12,7 @@ import {
 } from "../components/molecules/index";
 //Utils
 import { _refreshPage, _getUserId } from "../services/utilities";
+import LogRocket from 'logrocket';
 //Styles
 import Colors from "../styles/Colors";
 //API
@@ -66,6 +67,7 @@ export class MyForms extends Component {
       if (formsCount < 6) {
         length = 6 - Number(formsCount);
       }
+      LogRocket.track('Loaded Forms');
       return content.concat(this._LoadingAnimationContent("normal", length));
     }
   };

@@ -8,6 +8,8 @@ const ESSENTIAL_USER_FIELDS_FRAGMENT = gql`
     id
     userName
     email
+    confirmToken
+    confirmed
   }
 `;
 
