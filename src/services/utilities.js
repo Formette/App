@@ -11,7 +11,6 @@ module.exports = {
     window.localStorage.removeItem("graphcoolToken");
     module.exports._deleteUsername();
     module.exports._deleteUserId();
-    module.exports._deleteEmailConfirmation();
     setTimeout(() => {
       window.location.reload();
     }, 200);
@@ -34,15 +33,6 @@ module.exports = {
   _getUserId() {
       return window.localStorage.getItem("userId");
   },
-  _getEmailConfirmation() {
-    return window.localStorage.getItem("isEmailVerified");
-  },
-  _saveEmailConfirmation(isEmailVerified: boolean) {
-     window.localStorage.setItem("isEmailVerified", isEmailVerified);
-  },
-  _deleteEmailConfirmation() {
-     window.localStorage.removeItem("isEmailVerified");
-  },
   guid() {
     function s4() {
       return Math.floor((1 + Math.random()) * 0x10000)
@@ -64,5 +54,13 @@ module.exports = {
   generateExpiration() {
       const now = new Date();
       return new Date(now.getTime() + 3600000).toISOString()
+  },
+  getUrlParam(name, url) {
+      if (!url) url = window.location.href;
+      name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+      let regexS = "[\\?&]"+name+"=([^&#]*)";
+      let regex = new RegExp( regexS );
+      let results = regex.exec( url );
+      return results == null ? null : results[1];
   }
 };

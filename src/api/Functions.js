@@ -18,6 +18,7 @@ const userSignIn = async (
     signinUser: any,
 ) => {
     try{
+        let confirmed = '';
         await signinUser({
            variables: {
                email,
@@ -31,6 +32,7 @@ const userSignIn = async (
                    );
                    _saveUsername(signinUser.user.userName);
                    _saveUserId(signinUser.user.id);
+                   confirmed = signinUser.user.confirmed;
                    //LogRocket
                    LogRocket.identify(signinUser.user.id, {
                        name: signinUser.user.userName,
@@ -42,10 +44,10 @@ const userSignIn = async (
                }
            }
         });
-        return true;
+        return {status: true, confirmed};
     }catch(e){
         console.error(e);
-        return false;
+        return {status: false};
     }
 };
 

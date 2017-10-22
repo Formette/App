@@ -15,6 +15,8 @@ import LogRocket from 'logrocket';
 
 class LoginUser extends React.PureComponent {
   props: {
+    client: any,
+    confirmed: boolean,
     signinUser: any,
     history: any,
     router: any
@@ -31,10 +33,16 @@ class LoginUser extends React.PureComponent {
     if (email && password) {
         //logs in the user
         const response = await userSignIn(email, password, this.props.signinUser);
-        if (response) {
+        console.log(response);
+        if (response.status) {
             LogRocket.track('Signed In');
-            //redirects the user to the main page
-            this.props.history.push("/");
+            //checks if the user has the email confirmed
+            if(response.confirmed){
+                //sends to the dashboard
+                this.props.history.push("/");
+            }else{
+                this.props.history.push("/confirm");
+            }
         }else {
             LogRocket.log("Ops! Invalid Email or password.");
             this.setState({
@@ -106,7 +114,7 @@ class LoginUser extends React.PureComponent {
 }
 
 const LoginUserWithData = compose(
-  graphql(SIGIN_USER_MUTATION, { name: "signinUser" })
+  graphql(SIGIN_USER_MUTATION, { name: "signinUser" }),
 );
 
 export default LoginUserWithData(LoginUser);

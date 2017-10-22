@@ -72,12 +72,16 @@ export class CreateUser extends React.PureComponent {
   _onSignIn = async (email: string, password: string) => {
       //logs in the user
       const response = await userSignIn(email, password, this.props.signinUser);
-      if (response) {
+      if (response.status) {
           LogRocket.track('Sign in');
-          //redirects the user to the main page
-          this.props.history.push("/");
+          //checks if the user has the email confirmed
+          if(response.confirmed){
+              //sends to the dashboard
+              this.props.history.push("/");
+          }else{
+              this.props.history.push("/confirm");
+          }
       } else {
-          console.error(response);
           LogRocket.error({'SignIn': response});
           this.setState({
               error: true,
