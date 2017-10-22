@@ -57,7 +57,7 @@ module.exports = {
   },
   getUrlParam(name, url) {
       if (!url) url = window.location.href;
-      name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+      //name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
       let regexS = "[\\?&]"+name+"=([^&#]*)";
       let regex = new RegExp( regexS );
       let results = regex.exec( url );

@@ -106,8 +106,13 @@ export class ConfirmUser extends React.PureComponent {
               </Graphic>
           );
     }
+   if(this.props.userQuery.user === null){
+       this.props.history.push("/signin");
+       return true;
+   }
     if(this.props.userQuery.user.confirmed){
        this.props.history.push("/");
+       return true;
     }
     const { confirmToken, error, errorMsg } = this.state;
     return (
