@@ -3,7 +3,7 @@
 import { ALL_FORMS_QUERY } from "./Queries";
 //Utilities
 import { _saveUsername, _saveUserId } from "../services/utilities";
-import LogRocket from 'logrocket';
+import LogRocket from "logrocket";
 
 /*
 * This file contains all the global functions and actions to the servers that are used on all the project
@@ -12,43 +12,34 @@ import LogRocket from 'logrocket';
 //USER
 
 //this functions login in the user
-const userSignIn = async (
-    email: string,
-    password: string,
-    signinUser: any,
-) => {
-    try{
-        let confirmed = '';
-        await signinUser({
-           variables: {
-               email,
-               password
-           },
-           update: (store, { data: { signinUser } }) => {
-               try{
-                   window.localStorage.setItem(
-                       "graphcoolToken",
-                       signinUser.token
-                   );
-                   _saveUsername(signinUser.user.userName);
-                   _saveUserId(signinUser.user.id);
-                   confirmed = signinUser.user.confirmed;
-                   //LogRocket
-                   LogRocket.identify(signinUser.user.id, {
-                       name: signinUser.user.userName,
-                       email: signinUser.user.email,
-                   });
-               }catch(e){
-                   console.error(e);
-                   return e;
-               }
-           }
-        });
-        return {status: true, confirmed};
-    }catch(e){
-        console.error(e);
-        return {status: false};
-    }
+const userSignIn = async (email: string, password: string, signinUser: any) => {
+  try {
+    let confirmed = "";
+    await signinUser({
+      variables: {
+        email,
+        password
+      },
+      update: (store, { data: { signinUser } }) => {
+        try {
+          window.localStorage.setItem("graphcoolToken", signinUser.token);
+          _saveUsername(signinUser.user.userName);
+          _saveUserId(signinUser.user.id);
+          confirmed = signinUser.user.confirmed;
+          //LogRocket
+          LogRocket.identify(signinUser.user.id, {
+            name: signinUser.user.userName,
+            email: signinUser.user.email
+          });
+        } catch (e) {
+          return e;
+        }
+      }
+    });
+    return { status: true, confirmed };
+  } catch (e) {
+    return { status: false };
+  }
 };
 
 //FORMS
@@ -85,15 +76,13 @@ const deleteForm = async (
             data
           });
         } catch (e) {
-          LogRocket.error({'deleteForm': e});
-          console.error(e);
+          LogRocket.error({ deleteForm: e });
           return e;
         }
       }
     });
     return true;
   } catch (e) {
-    console.error(e);
     return e;
   }
 };

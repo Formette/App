@@ -19,7 +19,7 @@ const PlaceholderWithStyled = styled(Placeholder)`
   height: ${(props) => props.height}px;
   background: #f0f0f0;
   float: left;
-  margin: 0 10px 10px 0;
+  margin: 0 10px 11px 0;
   &:last-child {
     margin: 0;
   }

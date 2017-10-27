@@ -18,7 +18,7 @@ SubTitle.propTypes = {
 };
 
 const SubTitleWithStyles = styled(SubTitle)`
-  color: ${props => props.color || Colors.text.normal};
+  color: ${(props) => props.color || Colors.text.normal};
 `;
 
 export default SubTitleWithStyles;

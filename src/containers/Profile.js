@@ -9,7 +9,7 @@ import {
   Input,
   Button,
   Text,
-  Link,
+  Link
 } from "../components/atoms/index";
 import { Graphic, Confirmation } from "../components/molecules/index";
 //Styles
@@ -19,9 +19,10 @@ import {
   _getUsername,
   _logout,
   _saveUsername,
-  _refreshPage
+  _refreshPage,
+  _formatUsername
 } from "../services/utilities";
-import LogRocket from 'logrocket';
+import LogRocket from "logrocket";
 //API
 import { USER_QUERY, USERNAME_VALIDATION_QUERY } from "../api/Queries";
 import { UPDATE_USER_MUTATION } from "../api/Mutations";
@@ -33,7 +34,7 @@ export class Profile extends PureComponent {
     client: any,
     router: any,
     updateUsername: any,
-    showMessage: () => mixed,
+    showMessage: () => mixed
   };
   state = {
     username: "",
@@ -44,16 +45,16 @@ export class Profile extends PureComponent {
   };
   componentDidMount() {
     this.setState({ username: _getUsername() });
-    console.log(this.props);
   }
   _showConfirmation = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       onConfirmation: !prevState.onConfirmation
     }));
-      LogRocket.track('Opened  modal on change username');
+    LogRocket.track("Opened  modal on change username");
   };
   _updateProfile = async () => {
-    const { username, error } = this.state;
+    const { error } = this.state;
+    let username = _formatUsername(this.state.username);
     //hides the confirmation modal
     this.setState(prevState => ({
       onConfirmation: !prevState.onConfirmation
@@ -62,8 +63,8 @@ export class Profile extends PureComponent {
     if (this._isTheSameUsername(username)) return;
     //Verifies if the inputs are empty or not
     if (username) {
-      if (error){
-          return;
+      if (error) {
+        return;
       }
       const userId = this.props.userQuery.user.id;
       //updates the user username and some else info in the DB
@@ -76,34 +77,42 @@ export class Profile extends PureComponent {
         });
         //Shows feedback and updates the localStorage
         _saveUsername(username);
+        this.setState({ username });
         //this updates the navbar to the new username
         this.props.updateUsername();
-        this.props.showMessage("success", "Change made successfully", undefined, undefined);
-        LogRocket.info('Change made successfully');
-        LogRocket.track('Updated username');
-      } catch (e) {
-        console.error(e);
-        LogRocket.error({'_updateProfile': e});
         this.props.showMessage(
-            "error",
-            "Something went wrong, try again...",
-            Colors.red,
-            "fa-times"
+          "success",
+          "Change made successfully",
+          undefined,
+          undefined
+        );
+        LogRocket.info("Change made successfully");
+        LogRocket.track("Updated username");
+      } catch (e) {
+        LogRocket.error({ _updateProfile: e });
+        this.props.showMessage(
+          "error",
+          "Something went wrong, try again...",
+          Colors.red,
+          "fa-times"
         );
       }
     } else {
-      LogRocket.warn('This form is feeling lonely, needs affection, needs data.');
+      LogRocket.warn(
+        "This form is feeling lonely, needs affection, needs data."
+      );
       this.setState({
         error: true,
         errorMsg: "This form is feeling lonely, needs affection, needs data."
       });
     }
   };
-  _onUsernameValidation(username: string) {
+  _onUsernameValidation(getUsername: string) {
     clearTimeout(this.state.timeoutUserName);
     this.setState({
-      timeoutUserName: setTimeout(_ => {
+      timeoutUserName: setTimeout(() => {
         //checks is the username is the same as the previous one
+        let username = _formatUsername(getUsername);
         if (this._isTheSameUsername(username)) return;
         this.props.client
           .query({
@@ -112,7 +121,9 @@ export class Profile extends PureComponent {
           })
           .then(res => {
             if (Object.keys(res.data.allUsers).length !== 0) {
-                LogRocket.warn('With so much name in this world, you had to choose this one. Try another.');
+              LogRocket.warn(
+                "With so much name in this world, you had to choose this one. Try another."
+              );
               this.setState({
                 error: true,
                 errorMsg:
@@ -123,15 +134,16 @@ export class Profile extends PureComponent {
             }
           })
           .catch(e => {
-            LogRocket.error({'_onUsernameValidation': e});
-            console.error(e);
+            LogRocket.error({ _onUsernameValidation: e });
           });
       }, 500)
     });
   }
   _isTheSameUsername(username: string) {
     if (_getUsername() === username) {
-      LogRocket.warn('If it\'s the same as before, what\'s the point of changing?');
+      LogRocket.warn(
+        "If it's the same as before, what's the point of changing?"
+      );
       this.setState({
         error: true,
         errorMsg: "If it's the same as before, what's the point of changing?"
@@ -237,9 +249,6 @@ export class Profile extends PureComponent {
                     <Link href="http://www.formette.com/docs" target="_blank">
                       Help
                     </Link>
-                  </li>
-                  <li>
-                    <Link color={Colors.red}>Delete Account</Link>
                   </li>
                 </ul>
               </div>

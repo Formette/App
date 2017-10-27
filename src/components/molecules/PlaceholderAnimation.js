@@ -5,7 +5,7 @@ import { Placeholder } from "./index";
 import styled from "styled-components";
 import Color from "../../styles/Colors";
 
-const PlaceholderAnimation = props => {
+const PlaceholderAnimation = (props) => {
   return (
     <Placeholder className={props.className} width={208} height={198}>
       <div className="animated-background">

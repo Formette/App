@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Colors from "../../styles/Colors";
 
-const Textarea = props => (
+const Textarea = (props) => (
   <textarea
     className={`${props.className}`}
     placeholder={props.placeholder}

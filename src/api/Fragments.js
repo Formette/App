@@ -23,7 +23,7 @@ const ALL_FORM_FIELDS_FRAGMENT = gql`
     description
     isDisabled
     endpoint
-    contents{
+    contents(orderBy: createdAt_DESC) {
       id
       data
       createdAt

@@ -7,7 +7,7 @@ import Colors from "../../styles/Colors";
 const Switch = ({ className, value, square, onChange }) => {
   return (
     <label className={className}>
-      <input type="checkbox" onChange={_ => onChange(!value)} checked={value} />
+      <input type="checkbox" onChange={() => onChange(!value)} checked={value} />
       <span className={`slider ${square ? "" : "round"}`}>&zwnj;</span>
     </label>
   );

@@ -6,7 +6,7 @@ import { Header, SubTitle } from "../atoms/index";
 import styled from "styled-components";
 import Colors from "../../styles/Colors";
 
-const AuthLayout = props => {
+const AuthLayout = (props) => {
   return (
     <div className={`container ${props.className}`}>
       <form className="form-signin">

@@ -18,7 +18,7 @@ Header.propTypes = {
 
 const HeaderWithStyles = styled(Header)`
   margin-bottom: 30px;
-  color: ${props => props.color || Colors.text.normal};
+  color: ${(props) => props.color || Colors.text.normal};
 `;
 
 export default HeaderWithStyles;

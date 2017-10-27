@@ -13,7 +13,7 @@ exports[`My Forms UI renders correctly 1`] = `
       My Forms
     </h2>
     <div
-      className="card text-center sc-gZMcBi hZEWWS"
+      className="card text-center sc-gZMcBi iWAETB"
       onClick={[Function]}
     >
       <div
@@ -38,7 +38,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
+      className="card sc-jTzLTM dlGUEl sc-VigVT istVuo"
     >
       <div
         className="card-body"
@@ -115,7 +115,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
+      className="card sc-jTzLTM dlGUEl sc-VigVT istVuo"
     >
       <div
         className="card-body"
@@ -192,7 +192,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
+      className="card sc-jTzLTM dlGUEl sc-VigVT istVuo"
     >
       <div
         className="card-body"
@@ -269,7 +269,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
+      className="card sc-jTzLTM dlGUEl sc-VigVT istVuo"
     >
       <div
         className="card-body"
@@ -346,7 +346,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
+      className="card sc-jTzLTM dlGUEl sc-VigVT istVuo"
     >
       <div
         className="card-body"
@@ -423,7 +423,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
+      className="card sc-jTzLTM dlGUEl sc-VigVT istVuo"
     >
       <div
         className="card-body"
@@ -500,7 +500,7 @@ exports[`My Forms UI renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="card sc-jTzLTM dlGUEl sc-VigVT joQqKa"
+      className="card sc-jTzLTM dlGUEl sc-VigVT istVuo"
     >
       <div
         className="card-body"

@@ -33,14 +33,19 @@ const NEW_FORM_SUBSCRIPTION = gql`
 
 const FORM_DATA_SUBSCRIPTION = gql`
   subscription Content($id: ID!) {
-      Content(filter: {mutation_in: [UPDATED, CREATED, DELETED], node: {forms: {id: $id}}}) {
-        node {
-          id
-          data
-          createdAt
-        }
+    Content(
+      filter: {
+        mutation_in: [UPDATED, CREATED, DELETED]
+        node: { forms: { id: $id } }
       }
- }
+    ) {
+      node {
+        id
+        data
+        createdAt
+      }
+    }
+  }
 `;
 
 export { NEW_FORM_SUBSCRIPTION, FORM_DATA_SUBSCRIPTION };

@@ -11,7 +11,7 @@ import Colors from "../styles/Colors";
 import { SIGIN_USER_MUTATION } from "../api/Mutations";
 import { userSignIn } from "../api/Functions";
 //Utils
-import LogRocket from 'logrocket';
+import LogRocket from "logrocket";
 
 class LoginUser extends React.PureComponent {
   props: {
@@ -31,28 +31,28 @@ class LoginUser extends React.PureComponent {
     const { email, password } = this.state;
     //Verifies if the inputs are empty or not
     if (email && password) {
-        //logs in the user
-        const response = await userSignIn(email, password, this.props.signinUser);
-        console.log(response);
-        if (response.status) {
-            LogRocket.track('Signed In');
-            //checks if the user has the email confirmed
-            if(response.confirmed){
-                //sends to the dashboard
-                this.props.history.push("/");
-            }else{
-                this.props.history.push("/confirm");
-            }
-        }else {
-            LogRocket.log("Ops! Invalid Email or password.");
-            this.setState({
-                error: true,
-                errorMsg: "Ops! Invalid Email or password."
-            });
+      //logs in the user
+      const response = await userSignIn(email, password, this.props.signinUser);
+      if (response.status) {
+        LogRocket.track("Signed In");
+        //checks if the user has the email confirmed
+        if (response.confirmed) {
+          //sends to the dashboard
+          this.props.history.push("/");
+        } else {
+          this.props.history.push("/confirm");
         }
-
+      } else {
+        LogRocket.log("Ops! Invalid Email or password.");
+        this.setState({
+          error: true,
+          errorMsg: "Ops! Invalid Email or password."
+        });
+      }
     } else {
-      LogRocket.info("This form is feeling lonely, needs affection, needs data.");
+      LogRocket.info(
+        "This form is feeling lonely, needs affection, needs data."
+      );
       this.setState({
         error: true,
         errorMsg: "This form is feeling lonely, needs affection, needs data."
@@ -71,7 +71,7 @@ class LoginUser extends React.PureComponent {
           id="signinEmail"
           type="email"
           value={email}
-          onChange={(e) => this.setState({ email: e.target.value })}
+          onChange={e => this.setState({ email: e.target.value })}
           className="form-control"
           placeholder="Email address"
           required
@@ -85,7 +85,7 @@ class LoginUser extends React.PureComponent {
           id="signinPassword"
           type="password"
           value={password}
-          onChange={(e) => this.setState({ password: e.target.value })}
+          onChange={e => this.setState({ password: e.target.value })}
           className="form-control"
           placeholder="Password"
           required
@@ -114,7 +114,7 @@ class LoginUser extends React.PureComponent {
 }
 
 const LoginUserWithData = compose(
-  graphql(SIGIN_USER_MUTATION, { name: "signinUser" }),
+  graphql(SIGIN_USER_MUTATION, { name: "signinUser" })
 );
 
 export default LoginUserWithData(LoginUser);

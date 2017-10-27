@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Colors from "../../styles/Colors";
 
-const Input = props => (
+const Input = (props) => (
   <input
     type={props.type}
     className={`${props.className}`}

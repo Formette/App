@@ -11,10 +11,10 @@ import NoMatch from "../containers/NoMatch";
 const Main = props => (
   <main>
     <Switch>
-      <PrivateRoute exact path="/" component={MyForms}/>
-      <PrivateRoute exact path="/new" component={NewForm} {...props}/>
-      <PrivateRoute exact path="/edit/:id" component={NewForm} {...props}/>
-      <PrivateRoute exact path="/form/:id" component={FormDetails} {...props}/>
+      <PrivateRoute exact path="/" component={MyForms} />
+      <PrivateRoute exact path="/new" component={NewForm} {...props} />
+      <PrivateRoute exact path="/edit/:id" component={NewForm} {...props} />
+      <PrivateRoute exact path="/form/:id" component={FormDetails} {...props} />
       <PrivateRoute exact path="/profile" component={Profile} {...props} />
       <PrivateRoute component={NoMatch} />
     </Switch>

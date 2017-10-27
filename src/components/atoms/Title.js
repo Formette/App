@@ -10,7 +10,7 @@ Title.defaultProps = {
 };
 
 const TitleWithStyles = styled(Title)`
-  color: ${props => (props.color ? props.color : Colors.text.normal)};
+  color: ${(props) => (props.color ? props.color : Colors.text.normal)};
 `;
 
 export default TitleWithStyles;

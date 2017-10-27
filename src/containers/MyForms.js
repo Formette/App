@@ -12,7 +12,7 @@ import {
 } from "../components/molecules/index";
 //Utils
 import { _refreshPage, _getUserId } from "../services/utilities";
-import LogRocket from 'logrocket';
+import LogRocket from "logrocket";
 //Styles
 import Colors from "../styles/Colors";
 //API
@@ -21,8 +21,7 @@ import { ALL_FORMS_QUERY } from "../api/Queries";
 export class MyForms extends Component {
   props: {
     allFormsQuery: any,
-    history: any,
-
+    history: any
   };
   state = {
     loading: true,
@@ -52,7 +51,7 @@ export class MyForms extends Component {
     }
     //Checks if the object data is not empty
     if (formsCount >= 0) {
-      allFormses.map((res) => {
+      allFormses.map(res => {
         content.push(
           <Card
             key={res.id}
@@ -67,7 +66,7 @@ export class MyForms extends Component {
       if (formsCount < 6) {
         length = 6 - Number(formsCount);
       }
-      LogRocket.track('Loaded Forms');
+      LogRocket.track("Loaded Forms");
       return content.concat(this._LoadingAnimationContent("normal", length));
     }
   };
@@ -113,7 +112,7 @@ export class MyForms extends Component {
 const MyFormsWithData = compose(
   graphql(ALL_FORMS_QUERY, {
     name: "allFormsQuery",
-    options: (props) => ({
+    options: props => ({
       variables: { userId: _getUserId() }
     })
   })

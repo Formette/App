@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Colors from "../../styles/Colors";
 
-const Error = props =>
+const Error = (props) =>
   props.show ? <p className={props.className}>{props.children}</p> : null;
 
 Error.defaultProps = {

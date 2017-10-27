@@ -193,14 +193,6 @@ exports[`Profile UI renders correctly 1`] = `
                 Help
               </a>
             </li>
-            <li>
-              <a
-                className="sc-htpNat iZrbGc"
-                color="#fa5252"
-              >
-                Delete Account
-              </a>
-            </li>
           </ul>
         </div>
       </div>

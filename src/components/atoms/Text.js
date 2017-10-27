@@ -18,7 +18,7 @@ Text.propTypes = {
 };
 
 const TextWithStyles = styled(Text)`
-  color: ${props => props.color || Colors.text.normal};
+  color: ${(props) => props.color || Colors.text.normal};
 `;
 
 export default TextWithStyles;

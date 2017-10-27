@@ -20,7 +20,13 @@ const SIGIN_USER_MUTATION = gql`
 `;
 
 const CREATE_USER_MUTATION = gql`
-  mutation($email: String!, $password: String!, $username: String!, $confirmToken: String!, $confirmExpires: DateTime!) {
+  mutation(
+    $email: String!
+    $password: String!
+    $username: String!
+    $confirmToken: String!
+    $confirmExpires: DateTime!
+  ) {
     createUser(
       authProvider: { email: { email: $email, password: $password } }
       userName: $username
@@ -47,7 +53,6 @@ const USER_RESEND_CONFIRMATION_MUTATION = gql`
     }
   }
 `;
-
 
 // PROFILE MUTATIONS
 

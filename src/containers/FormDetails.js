@@ -15,7 +15,7 @@ import {
 import Colors from "../styles/Colors";
 //Utils
 import { _getUsername, _refreshPage, _getUserId } from "../services/utilities";
-import LogRocket from 'logrocket';
+import LogRocket from "logrocket";
 //API
 import { FORM_DATA_QUERY } from "../api/Queries";
 import { DELETE_FORM_MUTATION } from "../api/Mutations";
@@ -25,14 +25,14 @@ import { deleteForm } from "../api/Functions";
 export class FormDetails extends PureComponent {
   state = {
     onConfirmation: false,
-    url: `api.formette.com/${_getUsername()}/`
+    url: `https://api.formette.com/${_getUsername()}/`
   };
   props: {
     formDataQuery: any,
     deleteFormMutation: any,
     showMessage: () => mixed,
     history: any,
-    match: any,
+    match: any
   };
   componentWillMount() {
     this._subscribeToNewData();
@@ -43,26 +43,26 @@ export class FormDetails extends PureComponent {
       document: FORM_DATA_SUBSCRIPTION,
       variables: { id },
       updateQuery: (previous, { subscriptionData }) => {
-          if (!subscriptionData.data) {
-              return previous;
+        if (!subscriptionData.data) {
+          return previous;
+        }
+        const newItems = subscriptionData.data.Content.node;
+        const result = Object.assign({}, previous, {
+          Forms: {
+            ...previous.Forms,
+            contents: [newItems, ...previous.Forms.contents]
           }
-          const newItems = subscriptionData.data.Content.node;
-          const result = Object.assign({}, previous, {
-              Forms: {
-                  ...previous.Forms,
-                  contents: [newItems, ...previous.Forms.contents]
-              }
-          });
-          LogRocket.debug({'subscriptionData': result});
-          return result;
+        });
+        LogRocket.debug({ subscriptionData: result });
+        return result;
       }
     });
   };
   _showConfirmation = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       onConfirmation: !prevState.onConfirmation
     }));
-      LogRocket.track('Opened delete modal on Form Details');
+    LogRocket.track("Opened delete modal on Form Details");
   };
   _onDeleteForm = async () => {
     //deletes the form in the DB
@@ -70,39 +70,44 @@ export class FormDetails extends PureComponent {
     const userId = _getUserId();
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
-        //Shows feedback and updates the store
-        this.props.showMessage("success", "Form deleted successfully", undefined, "fa-trash");
-        LogRocket.info('Form deleted successfully');
-        LogRocket.track('Deleted Form');
-        //redirects the user to the main page
-        this.props.history.push("/");
+      //Shows feedback and updates the store
+      this.props.showMessage(
+        "success",
+        "Form deleted successfully",
+        undefined,
+        "fa-trash"
+      );
+      LogRocket.info("Form deleted successfully");
+      LogRocket.track("Deleted Form");
+      //redirects the user to the main page
+      this.props.history.push("/");
     } else {
-        LogRocket.warn('What a disgrace but it was not possible to delete the form, try again.');
-        this.props.showMessage(
-            "error",
-            "What a disgrace but it was not possible to delete the form, try again.",
-            Colors.red,
-            "fa-exclamation-triangle"
-        );
-
+      LogRocket.warn(
+        "What a disgrace but it was not possible to delete the form, try again."
+      );
+      this.props.showMessage(
+        "error",
+        "What a disgrace but it was not possible to delete the form, try again.",
+        Colors.red,
+        "fa-exclamation-triangle"
+      );
     }
   };
   _editForm = () => {
     this.props.history.push(`/edit/${this.props.match.params.id}`);
   };
-  _organizeTableData = (content) => {
-      let data = [];
-      let items = [];
-      content.map((value) => {
-          items = {
-              id: value.id,
-              ...value.data[0],
-              createdAt: moment(value.createdAt).format("ll")
-          };
-          data.push(items);
-          return true;
-      });
-      return data;
+  _organizeTableData = content => {
+    let data = [];
+    let items = [];
+    content.map(value => {
+      items = {
+        ...value.data[0],
+        createdAt: moment(value.createdAt).format("ll")
+      };
+      data.push(items);
+      return true;
+    });
+    return data;
   };
   render() {
     if (this.props.formDataQuery && this.props.formDataQuery.loading) {
@@ -160,10 +165,18 @@ export class FormDetails extends PureComponent {
                   text={`${url}${point[1]}`}
                   style={{ cursor: "pointer" }}
                   onCopy={() =>
-                    this.props.showMessage("success", "Endpoint copied to clipboard", undefined, undefined)
-                  }
+                    this.props.showMessage(
+                      "success",
+                      "Endpoint copied to clipboard",
+                      undefined,
+                      undefined
+                    )}
                 >
-                  <Button className="btn" color={Colors.default} textColor={Colors.white}>
+                  <Button
+                    className="btn"
+                    color={Colors.default}
+                    textColor={Colors.white}
+                  >
                     <Icon color={Colors.white} name="fa-link" />
                     <span>Endpoint</span>
                   </Button>
@@ -218,7 +231,7 @@ export class FormDetails extends PureComponent {
 const FormDetailsWithData = compose(
   graphql(FORM_DATA_QUERY, {
     name: "formDataQuery",
-    options: (props) => ({
+    options: props => ({
       variables: { id: props.match.params.id }
     })
   }),

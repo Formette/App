@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 //Styles
 import styled from "styled-components";
 
-const HorizontalList = props => (
+const HorizontalList = (props) => (
   <ul className={props.className}>{props.children}</ul>
 );
 

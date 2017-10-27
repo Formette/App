@@ -14,7 +14,7 @@ const NoMatch = props => {
       <Button
         className="btn btn-lg btn-primary"
         color={Colors.primary}
-        onClick={_ => props.history.push("/")}
+        onClick={() => props.history.push("/")}
       >
         Go back home
       </Button>

@@ -6,7 +6,7 @@ import { Title, SubTitle, Icon } from "../atoms/index";
 //Styles
 import Colors from "../../styles/Colors";
 import styled from "styled-components";
-import { darken } from "polished";
+import { darken, lighten } from "polished";
 //Utilities
 import { random } from "../../services/utilities";
 
@@ -63,7 +63,7 @@ const CardWithStyled = styled(Card)`
   margin: 0 10px 10px 0;
   cursor: pointer;
   &:hover {
-    background: ${props => (props.new ? "" : darken(0.1, Colors.white))};
+    background: ${(props) => (props.new ? lighten(0.1, Colors.primary) : darken(0.1, Colors.white))};
   }
   &:last-child {
     margin: 0;

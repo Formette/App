@@ -5,7 +5,7 @@ import JsonTable from "react-json-table";
 import styled from "styled-components";
 import Colors from "../../styles/Colors";
 
-const Table = props => (
+const Table = (props) => (
   <JsonTable
     className={`table thead-inverse ${props.className}`}
     rows={props.data}

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Color from "../../styles/Colors";
 import { lighten } from "polished";
 
-const Button = props => {
+const Button = (props) => {
   const rest = Object.assign({}, props);
   delete rest.textColor;
   return (
@@ -31,7 +31,7 @@ Button.propTypes = {
 
 const ButtonWithStyles = styled(Button)`
   border-radius: 0;
-  background: ${props => (props.color ? props.color : Color.default)};
+  background: ${(props) => (props.color ? props.color : Color.default)};
   color: ${(props) => (props.textColor ? props.textColor : Color.black)};
   border: 0;
   cursor: pointer;

@@ -6,7 +6,7 @@ import { Text, Icon } from "../atoms/index";
 import styled from "styled-components";
 import Colors from "../../styles/Colors";
 
-const Graphic = props => {
+const Graphic = (props) => {
   return (
     <div className={`${props.className} text-center `}>
       <Icon name={props.icon} />

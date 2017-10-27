@@ -6,7 +6,7 @@ import { Title, Text, Button, Link } from "../atoms/index";
 import Colors from "../../styles/Colors";
 import styled from "styled-components";
 
-const Confirmation = props => {
+const Confirmation = (props) => {
   return (
     <div
       className={`card mx-auto animated zoomInUp ${props.className}`}

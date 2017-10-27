@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Colors from "../../styles/Colors";
 import { lighten } from "polished";
 
-const Link = props => (
+const Link = (props) => (
   <a className={props.className} {...props}>
     {props.children}
   </a>
@@ -24,7 +24,7 @@ const LinkWithStyles = styled(Link)`
     props.color ? props.color : Colors.link.normal} !important;
   text-decoration: none !important;
   &:hover {
-    color: ${props =>
+    color: ${(props) =>
       props.color
         ? lighten(0.1, props.color)
         : Colors.link.highlight} !important;

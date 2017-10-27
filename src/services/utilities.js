@@ -31,7 +31,7 @@ module.exports = {
     window.localStorage.removeItem("userId");
   },
   _getUserId() {
-      return window.localStorage.getItem("userId");
+    return window.localStorage.getItem("userId");
   },
   guid() {
     function s4() {
@@ -48,19 +48,38 @@ module.exports = {
     return window.innerWidth;
   },
   generateToken() {
-      //return crypto.randomBytes(20).toString("hex")
-      return module.exports.guid();
+    //return crypto.randomBytes(20).toString("hex")
+    return module.exports.guid();
   },
   generateExpiration() {
-      const now = new Date();
-      return new Date(now.getTime() + 3600000).toISOString()
+    const now = new Date();
+    return new Date(now.getTime() + 3600000).toISOString();
   },
   getUrlParam(name, url) {
-      if (!url) url = window.location.href;
-      //name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-      let regexS = "[\\?&]"+name+"=([^&#]*)";
-      let regex = new RegExp( regexS );
-      let results = regex.exec( url );
-      return results == null ? null : results[1];
+    if (!url) url = window.location.href;
+    //name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+    let regexS = "[\\?&]" + name + "=([^&#]*)";
+    let regex = new RegExp(regexS);
+    let results = regex.exec(url);
+    return results == null ? null : results[1];
+  },
+  _removeAccents(str: string) {
+    let accents =
+      "ÀÁÂÃÄÅàáâãäåßÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž";
+    let accentsOut =
+      "AAAAAAaaaaaaBOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
+    str = str.split("");
+    str.forEach((letter, index) => {
+      let i = accents.indexOf(letter);
+      if (i !== -1) {
+        str[index] = accentsOut[i];
+      }
+    });
+    return str.join("");
+  },
+  _formatUsername(str: string) {
+    str = str.replace(/\s+/g, ""); //removes the spaces
+    str = str.toLowerCase(); //all the letter to lowercase
+    return module.exports._removeAccents(str); //removes all the string accents
   }
 };

@@ -22,7 +22,7 @@ import { Graphic, Confirmation } from "../components/molecules/index";
 import Colors from "../styles/Colors";
 //Utils
 import { _getUsername, guid, _getUserId } from "../services/utilities";
-import LogRocket from 'logrocket';
+import LogRocket from "logrocket";
 //API
 import {
   CREATE_FORM_MUTATION,
@@ -110,35 +110,43 @@ export class NewForm extends PureComponent {
                   data
                 });
               } catch (e) {
-                console.error(e);
-                LogRocket.error({'UpdateForm': e});
+                LogRocket.error({ UpdateForm: e });
               }
             }
           });
           //Shows feedback and updates the store
-          this.props.showMessage("success", "Form created successfully", undefined, "fa-plus");
-          LogRocket.log('Form created successfully');
-          LogRocket.track('Created Form');
+          this.props.showMessage(
+            "success",
+            "Form created successfully",
+            undefined,
+            "fa-plus"
+          );
+          LogRocket.log("Form created successfully");
+          LogRocket.track("Created Form");
           //redirects the user to the main page
           this.props.history.push("/");
         }
       } catch (e) {
-        console.error(e);
-        LogRocket.error({'CreateForm': e});
+        LogRocket.error({ CreateForm: e });
         this.setState({
           error: true,
           errorMsg: "This endpoint already exists, try another."
         });
       }
     } else {
-      LogRocket.log('This form is feeling lonely, needs affection, needs data');
+      LogRocket.log("This form is feeling lonely, needs affection, needs data");
       this.setState({
         error: true,
         errorMsg: "This form is feeling lonely, needs affection, needs data."
       });
     }
   };
-  _updateForm = async (name: string, description: string, endpoint: string, isDisabled: boolean) => {
+  _updateForm = async (
+    name: string,
+    description: string,
+    endpoint: string,
+    isDisabled: boolean
+  ) => {
     try {
       const id = this.props.match.params.id;
       const { oldData } = this.state;
@@ -149,7 +157,9 @@ export class NewForm extends PureComponent {
         endpoint === oldData.endpoint &&
         isDisabled === oldData.isDisabled
       ) {
-        LogRocket.log('If it\'s the same as before, what\'s the point of changing?');
+        LogRocket.log(
+          "If it's the same as before, what's the point of changing?"
+        );
         this.setState({
           error: true,
           errorMsg: "If it's the same as before, what's the point of changing?"
@@ -167,14 +177,18 @@ export class NewForm extends PureComponent {
         }
       });
       //Shows feedback and updates the store
-      this.props.showMessage("success", "Form updated successfully", undefined, "fa-pencil");
-      LogRocket.log('Form updated successfully');
-      LogRocket.track('Updated Form');
+      this.props.showMessage(
+        "success",
+        "Form updated successfully",
+        undefined,
+        "fa-pencil"
+      );
+      LogRocket.log("Form updated successfully");
+      LogRocket.track("Updated Form");
       //redirects the user to the main page
       this.props.history.push("/");
     } catch (e) {
-      console.error(e);
-      LogRocket.error({'UpdateForm': e});
+      LogRocket.error({ UpdateForm: e });
       this.setState({
         error: true,
         errorMsg: "This endpoint already exists, try another."
@@ -185,7 +199,7 @@ export class NewForm extends PureComponent {
     this.setState(prevState => ({
       onConfirmation: !prevState.onConfirmation
     }));
-      LogRocket.track('Opened delete modal on Form Details');
+    LogRocket.track("Opened delete modal on Form Details");
   };
   _onDeleteForm = () => {
     //deletes the form in the DB
@@ -193,19 +207,26 @@ export class NewForm extends PureComponent {
     const userId = _getUserId();
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
-        //Shows feedback and updates the store
-        this.props.showMessage("success", "Form deleted successfully", undefined, "fa-trash");
-        LogRocket.log('Form deleted successfully');
-        LogRocket.track('Deleted Form');
-        //redirects the user to the main page
-        this.props.history.push("/");
-    } else {
-        LogRocket.error('What a disgrace but it was not possible to delete the form, try again.');
+      //Shows feedback and updates the store
       this.props.showMessage(
-          "error",
-          "What a disgrace but it was not possible to delete the form, try again.",
-          Colors.red,
-          "fa-exclamation-triangle"
+        "success",
+        "Form deleted successfully",
+        undefined,
+        "fa-trash"
+      );
+      LogRocket.log("Form deleted successfully");
+      LogRocket.track("Deleted Form");
+      //redirects the user to the main page
+      this.props.history.push("/");
+    } else {
+      LogRocket.error(
+        "What a disgrace but it was not possible to delete the form, try again."
+      );
+      this.props.showMessage(
+        "error",
+        "What a disgrace but it was not possible to delete the form, try again.",
+        Colors.red,
+        "fa-exclamation-triangle"
       );
     }
   };
@@ -215,7 +236,7 @@ export class NewForm extends PureComponent {
         query: FORM_DATA_QUERY,
         variables: { id }
       })
-      .then((res) => {
+      .then(res => {
         //TODO do this condition in a better way
         if (res.data.Forms === null) {
           this.setState({ nullFormToEdit: true, onModeEdit: false });
@@ -241,12 +262,11 @@ export class NewForm extends PureComponent {
           this.setState({ nullFormToEdit: true, onModeEdit: false });
         }
       })
-      .catch((e) => {
-        console.error(e);
-        LogRocket.error({'getFormData': e});
+      .catch(e => {
+        LogRocket.error({ getFormData: e });
         this.setState({
-            nullFormToEdit: true
-        })
+          nullFormToEdit: true
+        });
       });
   };
   render() {
@@ -313,7 +333,7 @@ export class NewForm extends PureComponent {
                 <Input
                   placeholder="e.g: Newsletters"
                   value={name}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.setState({ name: e.target.value, error: false })}
                   className="form-control"
                 />
@@ -324,7 +344,7 @@ export class NewForm extends PureComponent {
                   className="form-control"
                   placeholder="e.g: This is a Newsletters form for my personal website."
                   value={description}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.setState({
                       description: e.target.value,
                       error: false
@@ -345,7 +365,7 @@ export class NewForm extends PureComponent {
                 <Input
                   placeholder="e.g: newsletters2017"
                   value={customEndpoint}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.setState({
                       customEndpoint: e.target.value,
                       error: false
@@ -384,13 +404,12 @@ export class NewForm extends PureComponent {
                         : generateID}`}
                       style={{ cursor: "pointer" }}
                       onCopy={() =>
-                          this.props.showMessage(
-                              "success",
-                              "Endpoint copied to clipboard.",
-                              undefined,
-                              undefined
-                          )
-                       }
+                        this.props.showMessage(
+                          "success",
+                          "Endpoint copied to clipboard.",
+                          undefined,
+                          undefined
+                        )}
                     >
                       <div className="input-group-addon">
                         <Icon name="fa-clipboard" size={16} />
@@ -428,7 +447,6 @@ export class NewForm extends PureComponent {
                 <Switch
                   onChange={value => {
                     this.setState({ disableForm: value });
-                    console.log("go = ", value);
                   }}
                   value={disableForm}
                 />

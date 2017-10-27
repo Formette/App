@@ -9,11 +9,15 @@ import Error from "../components/molecules/Error";
 import Colors from "../styles/Colors";
 //API
 import { USERNAME_VALIDATION_QUERY } from "../api/Queries";
-import { SIGIN_USER_MUTATION, CREATE_USER_MUTATION, } from "../api/Mutations";
+import { SIGIN_USER_MUTATION, CREATE_USER_MUTATION } from "../api/Mutations";
 import { userSignIn } from "../api/Functions";
 //Utils
-import {generateToken, generateExpiration} from '../services/utilities';
-import LogRocket from 'logrocket';
+import {
+  generateToken,
+  generateExpiration,
+  _formatUsername
+} from "../services/utilities";
+import LogRocket from "logrocket";
 
 export class CreateUser extends React.PureComponent {
   props: {
@@ -33,29 +37,31 @@ export class CreateUser extends React.PureComponent {
     timeoutPassword: 0
   };
   _onCreateUser = () => {
-    const { email, password, username, error } = this.state;
+    const { email, password, error } = this.state;
+    let username = _formatUsername(this.state.username);
     //Verifies if the inputs are empty or not
     if (email && password && username) {
       if (error) {
-        return
+        return;
       }
       if (this._checkPassword(password)) return;
       //Creates a new user
       this.props
-        .createUser({ variables: {
+        .createUser({
+          variables: {
             email,
             password,
             username,
             confirmToken: generateToken(),
             confirmExpires: generateExpiration()
-        } })
+          }
+        })
         .then(() => {
-          LogRocket.track('Registered');
+          LogRocket.track("Registered");
           this._onSignIn(email, password);
         })
-        .catch((e) => {
-          console.error(e);
-          LogRocket.error({'CreateUser': e});
+        .catch(e => {
+          LogRocket.error({ CreateUser: e });
           this.setState({
             error: true,
             errorMsg:
@@ -70,36 +76,38 @@ export class CreateUser extends React.PureComponent {
     }
   };
   _onSignIn = async (email: string, password: string) => {
-      //logs in the user
-      const response = await userSignIn(email, password, this.props.signinUser);
-      if (response.status) {
-          LogRocket.track('Sign in');
-          //checks if the user has the email confirmed
-          if(response.confirmed){
-              //sends to the dashboard
-              this.props.history.push("/");
-          }else{
-              this.props.history.push("/confirm");
-          }
+    //logs in the user
+    const response = await userSignIn(email, password, this.props.signinUser);
+    if (response.status) {
+      LogRocket.track("Sign in");
+      //checks if the user has the email confirmed
+      if (response.confirmed) {
+        //sends to the dashboard
+        this.props.history.push("/");
       } else {
-          LogRocket.error({'SignIn': response});
-          this.setState({
-              error: true,
-              errorMsg: "Ops! Something went wrong, try again."
-          });
+        this.props.history.push("/confirm");
       }
+    } else {
+      LogRocket.error({ SignIn: response });
+      this.setState({
+        error: true,
+        errorMsg: "Ops! Something went wrong, try again."
+      });
+    }
   };
   _onPasswordValidation(password: string) {
     clearTimeout(this.state.timeoutPassword);
     this.setState({
-      timeoutPassword: setTimeout(_ => {
+      timeoutPassword: setTimeout(() => {
         this._checkPassword(password);
       }, 500)
     });
   }
   _checkPassword(password: string) {
     if (password.length <= 8) {
-      LogRocket.warn('With so much room in the box, you chose this tiny thing. We need more than 8 characters, go we know you can.');
+      LogRocket.warn(
+        "With so much room in the box, you chose this tiny thing. We need more than 8 characters, go we know you can."
+      );
       this.setState({
         error: true,
         errorMsg:
@@ -109,10 +117,11 @@ export class CreateUser extends React.PureComponent {
     }
     this.setState({ error: false });
   }
-  _onUsernameValidation(username: string) {
+  _onUsernameValidation(getUsername: string) {
     clearTimeout(this.state.timeoutUserName);
     this.setState({
-      timeoutUserName: setTimeout(_ => {
+      timeoutUserName: setTimeout(() => {
+        let username = _formatUsername(getUsername);
         this.props.client
           .query({
             query: USERNAME_VALIDATION_QUERY,
@@ -120,7 +129,9 @@ export class CreateUser extends React.PureComponent {
           })
           .then(res => {
             if (Object.keys(res.data.allUsers).length !== 0) {
-              LogRocket.info('With so much name in this world, you had to choose this one. Try another.');
+              LogRocket.info(
+                "With so much name in this world, you had to choose this one. Try another."
+              );
               this.setState({
                 error: true,
                 errorMsg:
@@ -131,8 +142,7 @@ export class CreateUser extends React.PureComponent {
             }
           })
           .catch(e => {
-            console.error(e);
-            LogRocket.error({'_onUsernameValidation': e});
+            LogRocket.error({ _onUsernameValidation: e });
           });
       }, 500)
     });
@@ -148,8 +158,8 @@ export class CreateUser extends React.PureComponent {
         <Input
           id="signupUsername"
           value={username}
-          onChange={(e) => this.setState({ username: e.target.value })}
-          onKeyUp={(e) => this._onUsernameValidation(e.target.value)}
+          onChange={e => this.setState({ username: e.target.value })}
+          onKeyUp={e => this._onUsernameValidation(e.target.value)}
           className="form-control"
           placeholder="Username"
           required
@@ -162,7 +172,7 @@ export class CreateUser extends React.PureComponent {
           id="signupEmail"
           type="email"
           value={email}
-          onChange={(e) => this.setState({ email: e.target.value })}
+          onChange={e => this.setState({ email: e.target.value })}
           className="form-control"
           placeholder="Email address"
           required
@@ -176,8 +186,8 @@ export class CreateUser extends React.PureComponent {
           id="signupPassword"
           type="password"
           value={password}
-          onChange={(e) => this.setState({ password: e.target.value })}
-          onKeyUp={(e) => this._onPasswordValidation(e.target.value)}
+          onChange={e => this.setState({ password: e.target.value })}
+          onKeyUp={e => this._onPasswordValidation(e.target.value)}
           className="form-control"
           placeholder="Password"
           required
@@ -207,7 +217,7 @@ export class CreateUser extends React.PureComponent {
 
 const CreateUserWithData = compose(
   graphql(CREATE_USER_MUTATION, { name: "createUser" }),
-  graphql(SIGIN_USER_MUTATION, { name: "signinUser" }),
+  graphql(SIGIN_USER_MUTATION, { name: "signinUser" })
 );
 
 export default withApollo(CreateUserWithData(CreateUser));

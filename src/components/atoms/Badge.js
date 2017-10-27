@@ -23,7 +23,7 @@ Badge.propTypes = {
 
 const BadgeWithStyles = styled(Badge)`
   span {
-    background-color: ${props => props.bg || Colors.text.normal};
+    background-color: ${(props) => props.bg || Colors.text.normal};
   }
 `;
 

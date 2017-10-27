@@ -24,7 +24,7 @@ import { injectGlobal } from "styled-components";
 import Colors from "./styles/Colors";
 //Utilities
 import { API_URL, SUBSCRIPTION_URL, TOKEN } from "./services/Constants";
-import LogRocket from 'logrocket';
+import LogRocket from "logrocket";
 
 const networkInterface = createNetworkInterface({ uri: API_URL });
 
