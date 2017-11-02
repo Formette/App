@@ -5,7 +5,7 @@ import { Graphic } from "../components/molecules/index";
 //Styles
 import Colors from "../styles/Colors";
 
-const NoMatch = props => {
+const NoMatch = (props) => {
   return (
     <Graphic
       text="Omg 😣 No form found to fill! The page you are trying to find is not available."

@@ -59,7 +59,7 @@ export class FormDetails extends PureComponent {
     });
   };
   _showConfirmation = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       onConfirmation: !prevState.onConfirmation
     }));
     LogRocket.track("Opened delete modal on Form Details");
@@ -96,10 +96,10 @@ export class FormDetails extends PureComponent {
   _editForm = () => {
     this.props.history.push(`/edit/${this.props.match.params.id}`);
   };
-  _organizeTableData = content => {
+  _organizeTableData = (content) => {
     let data = [];
     let items = [];
-    content.map(value => {
+    content.map((value) => {
       items = {
         ...value.data[0],
         createdAt: moment(value.createdAt).format("ll")
@@ -228,14 +228,14 @@ export class FormDetails extends PureComponent {
   }
 }
 
-const FormDetailsWithData = compose(
+const formDetailsWithData = compose(
   graphql(FORM_DATA_QUERY, {
     name: "formDataQuery",
-    options: props => ({
+    options: (props) => ({
       variables: { id: props.match.params.id }
     })
   }),
   graphql(DELETE_FORM_MUTATION, { name: "deleteFormMutation" })
 )(FormDetails);
 
-export default FormDetailsWithData;
+export default formDetailsWithData;

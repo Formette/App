@@ -125,14 +125,14 @@ export class ConfirmUser extends React.PureComponent {
         title="Please confirm your email"
         description="We like real people, we need to know if it's not a ghost of the internet."
       >
-        <AlertContainer ref={a => (this.msg = a)} {...ALERT_OPTIONS} />
+        <AlertContainer ref={(a) => (this.msg = a)} {...ALERT_OPTIONS} />
         <label htmlFor="confirmToken" className="sr-only">
           Confirmation Code
         </label>
         <Input
           id="confirmToken"
           value={confirmToken}
-          onChange={e => this.setState({ confirmToken: e.target.value })}
+          onChange={(e) => this.setState({ confirmToken: e.target.value })}
           className="form-control"
           placeholder="Confirmation Code"
           required
@@ -156,10 +156,10 @@ export class ConfirmUser extends React.PureComponent {
   }
 }
 
-const ConfirmUserWithData = compose(
+const confirmUserWithData = compose(
   graphql(USER_CONFIRM_TOKEN_MUTATION, { name: "confirmEmail" }),
   graphql(USER_RESEND_CONFIRMATION_MUTATION, { name: "resendConfirmation" }),
   graphql(USER_QUERY, { name: "userQuery" })
 );
 
-export default ConfirmUserWithData(ConfirmUser);
+export default confirmUserWithData(ConfirmUser);

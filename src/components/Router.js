@@ -8,7 +8,7 @@ import FormDetails from "../containers/FormDetails";
 import Profile from "../containers/Profile";
 import NoMatch from "../containers/NoMatch";
 
-const Main = props => (
+const Main = (props) => (
   <main>
     <Switch>
       <PrivateRoute exact path="/" component={MyForms} />

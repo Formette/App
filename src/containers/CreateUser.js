@@ -60,7 +60,7 @@ export class CreateUser extends React.PureComponent {
           LogRocket.track("Registered");
           this._onSignIn(email, password);
         })
-        .catch(e => {
+        .catch((e) => {
           LogRocket.error({ CreateUser: e });
           this.setState({
             error: true,
@@ -127,7 +127,7 @@ export class CreateUser extends React.PureComponent {
             query: USERNAME_VALIDATION_QUERY,
             variables: { username }
           })
-          .then(res => {
+          .then((res) => {
             if (Object.keys(res.data.allUsers).length !== 0) {
               LogRocket.info(
                 "With so much name in this world, you had to choose this one. Try another."
@@ -158,8 +158,8 @@ export class CreateUser extends React.PureComponent {
         <Input
           id="signupUsername"
           value={username}
-          onChange={e => this.setState({ username: e.target.value })}
-          onKeyUp={e => this._onUsernameValidation(e.target.value)}
+          onChange={(e) => this.setState({ username: e.target.value })}
+          onKeyUp={(e) => this._onUsernameValidation(e.target.value)}
           className="form-control"
           placeholder="Username"
           required
@@ -186,8 +186,8 @@ export class CreateUser extends React.PureComponent {
           id="signupPassword"
           type="password"
           value={password}
-          onChange={e => this.setState({ password: e.target.value })}
-          onKeyUp={e => this._onPasswordValidation(e.target.value)}
+          onChange={(e) => this.setState({ password: e.target.value })}
+          onKeyUp={(e) => this._onPasswordValidation(e.target.value)}
           className="form-control"
           placeholder="Password"
           required
@@ -215,9 +215,9 @@ export class CreateUser extends React.PureComponent {
   }
 }
 
-const CreateUserWithData = compose(
+const createUserWithData = compose(
   graphql(CREATE_USER_MUTATION, { name: "createUser" }),
   graphql(SIGIN_USER_MUTATION, { name: "signinUser" })
 );
 
-export default withApollo(CreateUserWithData(CreateUser));
+export default withApollo(createUserWithData(CreateUser));

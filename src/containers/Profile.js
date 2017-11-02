@@ -47,7 +47,7 @@ export class Profile extends PureComponent {
     this.setState({ username: _getUsername() });
   }
   _showConfirmation = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       onConfirmation: !prevState.onConfirmation
     }));
     LogRocket.track("Opened  modal on change username");
@@ -119,7 +119,7 @@ export class Profile extends PureComponent {
             query: USERNAME_VALIDATION_QUERY,
             variables: { username }
           })
-          .then(res => {
+          .then((res) => {
             if (Object.keys(res.data.allUsers).length !== 0) {
               LogRocket.warn(
                 "With so much name in this world, you had to choose this one. Try another."
@@ -133,7 +133,7 @@ export class Profile extends PureComponent {
               this.setState({ error: false });
             }
           })
-          .catch(e => {
+          .catch((e) => {
             LogRocket.error({ _onUsernameValidation: e });
           });
       }, 500)
@@ -194,8 +194,8 @@ export class Profile extends PureComponent {
                 <Input
                   placeholder="username"
                   defaultValue={userName}
-                  onKeyUp={e => this._onUsernameValidation(e.target.value)}
-                  onChange={e =>
+                  onKeyUp={(e) => this._onUsernameValidation(e.target.value)}
+                  onChange={(e) =>
                     this.setState({ username: e.target.value, error: false })}
                   className="form-control"
                 />

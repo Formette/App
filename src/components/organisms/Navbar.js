@@ -24,8 +24,8 @@ class Navbar extends React.PureComponent {
       shadowScroll: window.scrollY > 10
     });
   };
-  _openDrawer = _ => {
-    this.setState(prevState => ({
+  _openDrawer = () => {
+    this.setState((prevState) => ({
       show: !prevState.show
     }));
   };
@@ -47,7 +47,7 @@ class Navbar extends React.PureComponent {
           {this.props.brand}
         </a>
         <button
-          className={`navbar-toggler collapsed`}
+          className={"navbar-toggler collapsed"}
           type="button"
           onClick={this._openDrawer}
           data-toggle="collapse"
@@ -79,7 +79,7 @@ class Navbar extends React.PureComponent {
               <NavLink
                 className="nav-link"
                 to="/signin"
-                onClick={_ => _logout()}
+                onClick={_logout}
               >
                 Log Out
               </NavLink>

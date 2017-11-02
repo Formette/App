@@ -30,7 +30,7 @@ Graphic.propTypes = {
 
 const GraphicWithStyles = styled(Graphic)`
   i {
-    font-size: ${props => props.size || "100px"};
+    font-size: ${(props) => props.size || "100px"};
     color: ${(props) => props.iconColor || Colors.text.secondary};
   }
   p {

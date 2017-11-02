@@ -51,7 +51,7 @@ export class MyForms extends Component {
     }
     //Checks if the object data is not empty
     if (formsCount >= 0) {
-      allFormses.map(res => {
+      allFormses.map((res) => {
         content.push(
           <Card
             key={res.id}
@@ -109,13 +109,13 @@ export class MyForms extends Component {
   }
 }
 
-const MyFormsWithData = compose(
+const myFormsWithData = compose(
   graphql(ALL_FORMS_QUERY, {
     name: "allFormsQuery",
-    options: props => ({
+    options: (props) => ({
       variables: { userId: _getUserId() }
     })
   })
 )(MyForms);
 
-export default MyFormsWithData;
+export default myFormsWithData;

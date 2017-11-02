@@ -82,8 +82,8 @@ ReactDOM.render(
 );
 
 registerServiceWorker();
-LogRocket.init('hdwf9x/formette', {
-    release: '0.1.0',
+LogRocket.init("hdwf9x/formette", {
+    release: "0.1.0",
 });
 
 // Global style

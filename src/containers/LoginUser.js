@@ -71,7 +71,7 @@ class LoginUser extends React.PureComponent {
           id="signinEmail"
           type="email"
           value={email}
-          onChange={e => this.setState({ email: e.target.value })}
+          onChange={(e) => this.setState({ email: e.target.value })}
           className="form-control"
           placeholder="Email address"
           required
@@ -85,7 +85,7 @@ class LoginUser extends React.PureComponent {
           id="signinPassword"
           type="password"
           value={password}
-          onChange={e => this.setState({ password: e.target.value })}
+          onChange={(e) => this.setState({ password: e.target.value })}
           className="form-control"
           placeholder="Password"
           required
@@ -113,8 +113,8 @@ class LoginUser extends React.PureComponent {
   }
 }
 
-const LoginUserWithData = compose(
+const loginUserWithData = compose(
   graphql(SIGIN_USER_MUTATION, { name: "signinUser" })
 );
 
-export default LoginUserWithData(LoginUser);
+export default loginUserWithData(LoginUser);

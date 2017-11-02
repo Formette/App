@@ -37,7 +37,7 @@ class App extends PureComponent {
   render() {
     return (
       <div className={this.props.className}>
-        <AlertContainer ref={a => (this.msg = a)} {...ALERT_OPTIONS} />
+        <AlertContainer ref={(a) => (this.msg = a)} {...ALERT_OPTIONS} />
         <Navbar
           brand="Formette β"
           username={this.state.username || "username"}

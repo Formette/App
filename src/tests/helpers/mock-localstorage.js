@@ -14,5 +14,5 @@ var localStorageMock = (function() {
             delete store[key];
         }
     };
-})();
-Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+}());
+Object.defineProperty(window, "localStorage", { value: localStorageMock });

@@ -196,7 +196,7 @@ export class NewForm extends PureComponent {
     }
   };
   _showConfirmation = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       onConfirmation: !prevState.onConfirmation
     }));
     LogRocket.track("Opened delete modal on Form Details");
@@ -236,7 +236,7 @@ export class NewForm extends PureComponent {
         query: FORM_DATA_QUERY,
         variables: { id }
       })
-      .then(res => {
+      .then((res) => {
         //TODO do this condition in a better way
         if (res.data.Forms === null) {
           this.setState({ nullFormToEdit: true, onModeEdit: false });
@@ -262,7 +262,7 @@ export class NewForm extends PureComponent {
           this.setState({ nullFormToEdit: true, onModeEdit: false });
         }
       })
-      .catch(e => {
+      .catch((e) => {
         LogRocket.error({ getFormData: e });
         this.setState({
           nullFormToEdit: true
@@ -333,7 +333,7 @@ export class NewForm extends PureComponent {
                 <Input
                   placeholder="e.g: Newsletters"
                   value={name}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.setState({ name: e.target.value, error: false })}
                   className="form-control"
                 />
@@ -344,7 +344,7 @@ export class NewForm extends PureComponent {
                   className="form-control"
                   placeholder="e.g: This is a Newsletters form for my personal website."
                   value={description}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.setState({
                       description: e.target.value,
                       error: false
@@ -445,7 +445,7 @@ export class NewForm extends PureComponent {
                   color={Colors.text.secondary}
                 />
                 <Switch
-                  onChange={value => {
+                  onChange={(value) => {
                     this.setState({ disableForm: value });
                   }}
                   value={disableForm}
@@ -475,10 +475,10 @@ export class NewForm extends PureComponent {
   }
 }
 
-const NewFormWithData = compose(
+const newFormWithData = compose(
   graphql(CREATE_FORM_MUTATION, { name: "createFormMutation" }),
   graphql(UPDATE_FORM_MUTATION, { name: "updateFormMutation" }),
   graphql(DELETE_FORM_MUTATION, { name: "deleteFormMutation" })
 )(NewForm);
 
-export default withApollo(NewFormWithData);
+export default withApollo(newFormWithData);

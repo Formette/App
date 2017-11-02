@@ -21,7 +21,7 @@ const Confirmation = (props) => {
           </Link>
           <Button
             className="btn"
-            onClick={_ => props.onConfirmation()}
+            onClick={() => props.onConfirmation()}
             color={props.onConfirmationColor}
             textColor={Colors.white}
           >
