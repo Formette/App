@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 //Components
 import { Title, SubTitle, Icon } from "../atoms/index";
-
 //Styles
 import Colors from "../../styles/Colors";
 import styled from "styled-components";
@@ -14,23 +13,18 @@ const colors = ["#7568F0", "#8A75F3", "#A384F6", "#A384F6", "#CA9CFB"];
 
 const Card = (props) => {
   return (
-    <div
-      className={`card text-center ${props.className}`}
-      onClick={props.onClick}
-    >
+    <div className={`card text-center ${props.className}`} onClick={props.onClick}>
       <div className="card-body">
         <Icon
           name={props.icon}
           color={`${props.new ? Colors.white : colors[random(0, 4)]}`}
           size={70}
         />
-
         <Title
           className="card-title text-truncate"
           color={`${props.new ? Colors.text.white : Colors.text.normal}`}
           text={props.title}
         />
-
         <SubTitle
           className={`card-subtitle mb-2 ${props.new ? "" : "text-muted"}`}
           color={`${props.new ? Colors.text.white : Colors.text.normal}`}
@@ -78,6 +72,12 @@ const CardWithStyled = styled(Card)`
     font-weight: 500;
     line-height: 1.1;
     display: block;
+  }
+  .card-header{
+    height: 20px;
+    background: #fff;
+    border: none;
+    padding: 0;
   }
   @media (max-width: 465px) {
     width: 8rem;
