@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { NavLink, withRouter } from "react-router-dom";
+//Components
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
 //Styles
 import styled from "styled-components";
 import Colors from "../../styles/Colors";
@@ -75,7 +77,7 @@ class Navbar extends React.PureComponent {
             </li>
           </ul>
           <ul className="navbar-nav">
-            <li className="nav-item">
+              {/*<li className="nav-item">
               <NavLink
                 className="nav-link"
                 to="/signin"
@@ -83,8 +85,23 @@ class Navbar extends React.PureComponent {
               >
                 Log Out
               </NavLink>
+            </li>*/}
+            <li>
+              <UncontrolledDropdown className="user-menu">
+                <DropdownToggle caret>
+                  Hello, <span>{this.props.username}</span>
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem onClick={() => this.props.history.push("/profile")} className="user-link">Profile</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem className="user-link">Docs</DropdownItem>
+                  <DropdownItem className="user-link">Changelog</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={_logout} className="user-link">Logout</DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
             </li>
-            <li className="nav-item">
+              {/*<li className="nav-item">
               <NavLink
                 className="nav-link user-link"
                 activeClassName="active"
@@ -92,7 +109,7 @@ class Navbar extends React.PureComponent {
               >
                 Hello, <span>{this.props.username}</span>
               </NavLink>
-            </li>
+            </li>*/}
           </ul>
         </div>
       </nav>
@@ -134,10 +151,18 @@ const NavbarWithStyles = styled(Navbar)`
       cursor: pointer;
     }
   }
+  .user-menu {
+    &:hover{
+      cursor: pointer;
+    }
+  }
   .user-link {
     color: ${Colors.link.highlight};
-    &:hover {
-      color: ${Colors.link.normal};
+    background: none;
+    &:hover, &:active, &:focus {
+      color: ${Colors.primary};
+      cursor: pointer;
+      outline: none;
     }
   }
   .active {

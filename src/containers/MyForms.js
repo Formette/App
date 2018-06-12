@@ -74,6 +74,9 @@ export class MyForms extends Component {
     this.props.history.push("/new");
   };
   render() {
+    if (this.props.allFormsQuery && this.props.allFormsQuery.loading) {
+          return <div>Loading</div>;
+   }
     if (this.props.allFormsQuery && this.props.allFormsQuery.error) {
       return (
         <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
@@ -98,11 +101,7 @@ export class MyForms extends Component {
             onClick={this._goToNew}
             new
           />
-          {this.props.allFormsQuery.loading ? (
-            this._LoadingAnimationContent()
-          ) : (
             <div>{this._loadContent()}</div>
-          )}
         </div>
       </div>
     );

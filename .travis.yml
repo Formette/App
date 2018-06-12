@@ -8,5 +8,6 @@ script:
   - npm test
   - npm run build
 skip_cleanup: true
-after_success:
-   - surge --project ./build/ --domain app.formette.com
+if: branch = master
+  after_success:
+    - surge --project ./build/ --domain app.formette.com
