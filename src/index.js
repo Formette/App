@@ -15,10 +15,10 @@ import {
   addGraphQLSubscriptions
 } from "subscriptions-transport-ws";
 //Containers
-import App from "./components/App";
-import LoginUser from "./containers/LoginUser";
-import CreateUser from "./containers/CreateUser";
-import ConfirmUser from "./containers/ConfirmUser";
+import App from "./containers/App";
+import LoginUser from "./containers/User/Login";
+import CreateUser from "./containers/User/Create";
+import ConfirmUser from "./containers/User/Confirm/index";
 //Styles
 import { injectGlobal } from "styled-components";
 import Colors from "./styles/Colors";
@@ -83,7 +83,7 @@ ReactDOM.render(
 
 registerServiceWorker();
 LogRocket.init("hdwf9x/formette", {
-    release: "0.1.0",
+  release: "0.1.0"
 });
 
 // Global style

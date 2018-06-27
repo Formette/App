@@ -1,12 +1,13 @@
 //Molecules
-import Card from "./Card";
-import Error from "./Error";
-import Placeholder from "./Placeholder";
-import PlaceholderAnimation from "./PlaceholderAnimation";
-import HorizontalList from "./HorizontalList";
-import Table from "./Table";
-import Graphic from "./Graphic";
-import Confirmation from "./Confirmation";
+import { default as Card } from "./Card/index";
+import { default as Error } from "./Error/index";
+import { default as Placeholder } from "./Placeholder/index";
+import { default as PlaceholderAnimation } from "./PlaceholderAnimation/index";
+import { default as HorizontalList } from "./HorizontalList/index";
+import { default as Table } from "./Table/index";
+import { default as Graphic } from "./Graphic/index";
+import { default as Confirmation } from "./Confirmation/index";
+import { default as NoMatch } from "./NoMatch/index";
 
 export {
   Card,
@@ -16,5 +17,6 @@ export {
   HorizontalList,
   Table,
   Graphic,
-  Confirmation
+  Confirmation,
+  NoMatch
 };

@@ -5,27 +5,26 @@
   "devDependencies": {
     "enzyme": "^2.9.1",
     "flow-bin": "^0.51.0",
-    "react-scripts": "1.0.10",
+    "react-scripts": "^1.1.4",
     "react-test-renderer": "^15.6.1",
-    "surge": "^0.19.0"
+    "surge": "^0.20.1"
   },
   "dependencies": {
     "apollo-client": "^1.7.0",
     "graphql-tag": "^2.4.2",
     "logrocket": "^0.5.5",
-    "moment": "^2.18.1",
+    "moment": "^2.22.2",
     "polished": "^1.3.0",
     "prop-types": "^15.5.10",
-    "react": "^15.6.1",
+    "react": "^16.4.1",
     "react-alert": "^2.2.0",
     "react-apollo": "^1.4.3",
     "react-copy-to-clipboard": "^5.0.0",
-    "react-dom": "^15.6.1",
-    "react-json-table": "^0.1.1",
+    "react-dom": "^16.4.1",
     "react-router-dom": "^4.2.2",
     "react-syntax-highlighter": "^5.6.2",
-    "reactstrap": "^5.0.0-alpha.3",
-    "styled-components": "^2.1.1",
+    "reactstrap": "^5.0.0",
+    "styled-components": "^3.3.3",
     "subscriptions-transport-ws": "^0.8.2"
   },
   "scripts": {

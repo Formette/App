@@ -1,15 +1,15 @@
 //Elements
-import Button from "./Button";
-import Input from "./Input";
-import Link from "./Link";
-import Header from "./Header";
-import Title from "./Title";
-import Text from "./Text";
-import SubTitle from "./SubTitle";
-import Icon from "./Icon";
-import Textarea from "./Textarea";
-import Switch from "./Switch";
-import Badge from "./Badge";
+import { default as Button } from "./Button/index";
+import { default as Input } from "./Input/index";
+import { default as Link } from "./Link/index";
+import { default as Header } from "./Header/index";
+import { default as Title } from "./Title/index";
+import { default as SubTitle } from "./SubTitle/index";
+import { default as Text } from "./Text/index";
+import { default as Textarea } from "./Textarea/index";
+import { default as Switch } from "./Switch/index";
+import { default as Badge } from "./Badge/index";
+import { default as Icon } from "./Icon/index";
 
 export {
   Button,
