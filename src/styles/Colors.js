@@ -1,7 +1,7 @@
 export default {
   primary: "#7950f2",
   default: "#adb5bd",
-  background: "#F7F7F7",
+  background: "#E6EBF1",
   border: "#868e96",
   text: {
     normal: "#212529",

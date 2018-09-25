@@ -1,14 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { NavLink, withRouter } from "react-router-dom";
-//Components
-import {
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown
-} from "reactstrap";
 //Styles
 import styled from "styled-components";
 import Colors from "../../../styles/Colors";
@@ -16,119 +8,56 @@ import { lighten } from "polished";
 //Utilities
 import { _logout } from "../../../services/utilities";
 
-class Navbar extends React.PureComponent {
-  state = {
-    show: false,
-    shadowScroll: false
-  };
-  componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll);
-  }
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-  }
-  handleScroll = () => {
-    this.setState({
-      shadowScroll: window.scrollY > 10
-    });
-  };
-  _openDrawer = () => {
-    this.setState(prevState => ({
-      show: !prevState.show
-    }));
-  };
-  render() {
-    const { show, shadowScroll } = this.state;
-    return (
-      <nav
-        className={`navbar navbar-expand-sm fixed-top ${this.props.className}`}
-        style={
-          shadowScroll
-            ? {
-                boxShadow:
-                  "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)"
-              }
-            : null
-        }
+const Navbar = ({ className, username }) => {
+  return (
+    <nav className={`navbar navbar-expand-sm fixed-top ${className}`}>
+      <a className="navbar-brand" href="/">
+        <i className="fab fa-firstdraft" />
+      </a>
+      <button
+        className={"navbar-toggler collapsed"}
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
       >
-        <a className="navbar-brand" href="/">
-          {this.props.brand}
-        </a>
-        <button
-          className={"navbar-toggler collapsed"}
-          type="button"
-          onClick={this._openDrawer}
-          data-toggle="collapse"
-          data-target="#navbarCollapse"
-          aria-controls="navbarCollapse"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <i
-            className={`fa ${show ? "fa-times" : "fa-bars"}`}
-            aria-hidden="true"
-          >
-            &nbsp;
-          </i>
-        </button>
-        <div
-          className={`navbar-collapse collapse ${show ? "show" : ""}`}
-          id="navbarCollapse"
-        >
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              <NavLink className="nav-link" activeClassName="active" to="/">
-                My forms
-              </NavLink>
-            </li>
-          </ul>
-          <ul className="navbar-nav">
-            {/*<li className="nav-item">
-              <NavLink
-                className="nav-link"
-                to="/signin"
-                onClick={_logout}
-              >
-                Log Out
-              </NavLink>
-            </li>*/}
-            <li>
-              <UncontrolledDropdown className="user-menu">
-                <DropdownToggle caret>
-                  Hello, <span>{this.props.username}</span>
-                </DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem
-                    onClick={() => this.props.history.push("/profile")}
-                    className="user-link"
-                  >
-                    Profile
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem className="user-link">Docs</DropdownItem>
-                  <DropdownItem className="user-link">Changelog</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem onClick={_logout} className="user-link">
-                    Logout
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </li>
-            {/*<li className="nav-item">
-              <NavLink
-                className="nav-link user-link"
-                activeClassName="active"
-                to="/profile"
-              >
-                Hello, <span>{this.props.username}</span>
-              </NavLink>
-            </li>*/}
-          </ul>
-        </div>
-      </nav>
-    );
-  }
-}
+        <i className={`fa fa-bars`} aria-hidden="true">
+          &nbsp;
+        </i>
+      </button>
+      <div className={`navbar-collapse collapse`} id="navbarCollapse">
+        <ul className="navbar-nav mr-auto">
+          <li className="nav-item active">
+            <NavLink className="nav-link" activeClassName="active" to="/">
+              <i className="fas fa-archive" />
+              Forms
+            </NavLink>
+          </li>
+        </ul>
+        <ul className="navbar-nav">
+          <li className="nav-item">
+            <NavLink className="nav-link" to="/signin" onClick={_logout}>
+              <i className="fas fa-sign-out-alt" /> Log Out
+            </NavLink>
+          </li>
+
+          <li className="nav-item">
+            <NavLink
+              className="nav-link user-link"
+              activeClassName="active"
+              to="/profile"
+            >
+              <i className="fas fa-user-circle" /> Hello,{" "}
+              <span>{username}</span>
+            </NavLink>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  );
+};
 
 Navbar.defaultProps = {
   brand: "Formette",
@@ -137,28 +66,31 @@ Navbar.defaultProps = {
 
 Navbar.propTypes = {
   brand: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired
+  username: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired
 };
 
 const NavbarWithStyles = styled(Navbar)`
-  background: ${Colors.background};
+  background: #7950f2;
   .navbar-brand {
     font-size: 25px;
     font-weight: bold;
-    color: ${Colors.text.highlight};
+    color: #fff;
+    opacity: 0.6;
     &:hover {
       color: ${lighten(0.1, Colors.text.highlight)};
     }
     #HW_badge_cont {
       display: inline;
       position: absolute;
-      left: 135px;
+      left: 32px;
       top: 5px;
     }
   }
   .nav-link {
     font-size: 20px;
-    color: ${Colors.link.normal};
+    color: #fff;
+    opacity: 0.6;
     &:hover {
       color: ${Colors.link.highlight};
       cursor: pointer;
@@ -170,21 +102,30 @@ const NavbarWithStyles = styled(Navbar)`
     }
   }
   .user-link {
-    color: ${Colors.link.highlight};
+    color: #fff;
+    opacity: 0.6;
     background: none;
     &:hover,
     &:active,
     &:focus {
-      color: ${Colors.primary};
+      color: #fff;
       cursor: pointer;
       outline: none;
     }
   }
-  .active {
-    color: ${Colors.primary};
-    &:hover {
-      color: ${lighten(0.1, Colors.primary)};
+  li.active {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+  }
+  a.active {
+    i {
+      margin-right: 6px;
     }
+  }
+  a.active,
+  a.active i {
+    opacity: 1;
+    color: #fff;
   }
   .navbar-toggler {
     outline: none;

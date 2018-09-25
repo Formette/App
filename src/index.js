@@ -20,13 +20,15 @@ import LoginUser from "./containers/User/Login";
 import CreateUser from "./containers/User/Create";
 import ConfirmUser from "./containers/User/Confirm/index";
 //Styles
-import { injectGlobal } from "styled-components";
+import { injectGlobal, ThemeProvider } from "styled-components";
 import Colors from "./styles/Colors";
+import theme from "./styles/Theme";
 //Utilities
-import { API_URL, SUBSCRIPTION_URL, TOKEN } from "./services/Constants";
 import LogRocket from "logrocket";
 
-const networkInterface = createNetworkInterface({ uri: API_URL });
+const networkInterface = createNetworkInterface({
+  uri: process.env.REACT_APP_API_URL
+});
 
 // use the auth0IdToken in localStorage for authorized requests
 networkInterface.use([
@@ -37,9 +39,9 @@ networkInterface.use([
       }
 
       // get the authentication token from local storage if it exists
-      if (localStorage.getItem(TOKEN)) {
+      if (localStorage.getItem(process.env.REACT_APP_TOKEN)) {
         req.options.headers.authorization = `Bearer ${localStorage.getItem(
-          TOKEN
+          process.env.REACT_APP_TOKEN
         )}`;
       }
       next();
@@ -48,12 +50,17 @@ networkInterface.use([
 ]);
 
 // Create WebSocket client
-const wsClient = new SubscriptionClient(SUBSCRIPTION_URL, {
-  reconnect: true,
-  connectionParams: {
-    Authorization: `Bearer ${localStorage.getItem(TOKEN)}`
+const wsClient = new SubscriptionClient(
+  process.env.REACT_APP_SUBSCRIPTION_URL,
+  {
+    reconnect: true,
+    connectionParams: {
+      Authorization: `Bearer ${localStorage.getItem(
+        process.env.REACT_APP_TOKEN
+      )}`
+    }
   }
-});
+);
 
 // Extend the network interface with the WebSocket
 const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
@@ -67,24 +74,30 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Router>
-      <div>
-        <Switch>
-          <Route path="/signin" component={LoginUser} />
-          <Route path="/signup" component={CreateUser} />
-          <Route exact path="/confirm" component={ConfirmUser} />
-          <App />
-        </Switch>
-      </div>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <div>
+          <Switch>
+            <Route path="/signin" component={LoginUser} />
+            <Route path="/signup" component={CreateUser} />
+            <Route exact path="/confirm" component={ConfirmUser} />
+            <App />
+          </Switch>
+        </div>
+      </Router>
+    </ThemeProvider>
   </ApolloProvider>,
   document.getElementById("root")
 );
 
 registerServiceWorker();
-LogRocket.init("hdwf9x/formette", {
-  release: "0.1.0"
-});
+
+const isProduction = false;
+if (isProduction) {
+  LogRocket.init("hdwf9x/formette", {
+    release: "0.1.0"
+  });
+}
 
 // Global style
 // eslint-disable-next-line
