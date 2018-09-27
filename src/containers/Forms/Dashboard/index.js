@@ -7,7 +7,7 @@ import { Header, Button } from "../../../components/atoms/index";
 import {
   Placeholder,
   PlaceholderAnimation,
-  Card,
+  OldCard as Card,
   Graphic
 } from "../../../components/molecules/index";
 //Utils

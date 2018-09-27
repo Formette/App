@@ -1,25 +1,41 @@
-import React from "react";
 import PropTypes from "prop-types";
 //Styles
 import styled from "styled-components";
-import Color from "../../../styles/Colors";
 import { lighten } from "polished";
 
-const Button = props => {
-  const rest = Object.assign({}, props);
-  delete rest.textColor;
-  return (
-    <button type={props.type} className={`${props.className}`} {...rest}>
-      {props.children}
-    </button>
-  );
-};
+const Button = styled.button`
+  background: ${props =>
+    props.primary ? props.theme.color.secondary : props.theme.color.default};
+  color: ${props =>
+    props.primary ? props.theme.color.white : props.theme.color.primary};
+  box-shadow: ${props => props.theme.boxShadow};
+  border: 0;
+  border-radius: ${props => props.theme.radius};
+  cursor: pointer;
+  &:hover,
+  &:active,
+  &:visited {
+    background: ${props =>
+      props.primary
+        ? lighten(0.1, props.theme.color.secondary)
+        : lighten(0.1, props.theme.color.default)};
+  }
+  &:focus {
+    outline: 0;
+    box-shadow: 0 0 0 3px
+      ${props =>
+        props.primary
+          ? lighten(0.1, props.theme.color.secondary)
+          : lighten(0.1, props.theme.color.default)};
+  }
+  span {
+    margin-left: 5px;
+  }
+`;
 
 Button.defaultProps = {
   type: "button",
-  children: "text",
-  color: Color.primary,
-  textColor: Color.black
+  children: "text"
 };
 
 Button.propTypes = {
@@ -29,27 +45,4 @@ Button.propTypes = {
   textColor: PropTypes.string
 };
 
-const ButtonWithStyles = styled(Button)`
-  border-radius: 0;
-  background: ${props => (props.color ? props.color : Color.default)};
-  color: ${props => (props.textColor ? props.textColor : Color.black)};
-  border: 0;
-  cursor: pointer;
-  &:hover,
-  &:active,
-  &:visited {
-    background: ${props =>
-      props.color ? lighten(0.1, props.color) : lighten(0.1, Color.default)};
-  }
-  &:focus {
-    outline: 0;
-    box-shadow: 0 0 0 3px
-      ${props =>
-        props.color ? lighten(0.1, props.color) : lighten(0.1, Color.primary)};
-  }
-  span {
-    margin-left: 5px;
-  }
-`;
-
-export default ButtonWithStyles;
+export default Button;

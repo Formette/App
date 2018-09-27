@@ -17,7 +17,11 @@ import {
   Link,
   Badge
 } from "../../../components/atoms/index";
-import { Graphic, Confirmation } from "../../../components/molecules/index";
+import {
+  Graphic,
+  Confirmation,
+  Card
+} from "../../../components/molecules/index";
 //Styles
 import Colors from "../../../styles/Colors";
 //Utils
@@ -289,8 +293,8 @@ export class NewForm extends PureComponent {
         <Graphic text="Ups! No form was found to edit." icon="fa-file-text-o">
           <Button
             className="btn btn-lg btn-primary"
-            color={Colors.primary}
             onClick={() => this.props.history.push("/")}
+            primary
           >
             Go back
           </Button>
@@ -377,9 +381,9 @@ export class NewForm extends PureComponent {
                 />
               </div>
               <Button
-                color={Colors.primary}
                 className="btn btn-lg btn-primary btn-block"
                 onClick={this._createForm}
+                primary
               >
                 {onModeEdit ? "Update" : "Save"} form
               </Button>
@@ -388,7 +392,7 @@ export class NewForm extends PureComponent {
             </form>
           </div>
           <div className="col-md-6" style={{ marginTop: 30 }}>
-            <div className="card">
+            <Card>
               <div className="card-body">
                 <div className="form-group">
                   <SubTitle text="Endpoint:" color={Colors.text.secondary} />
@@ -441,8 +445,8 @@ export class NewForm extends PureComponent {
                   </SyntaxHighlighter>
                 </div>
               </div>
-            </div>
-            <div className="card" style={{ marginTop: 10 }}>
+            </Card>
+            <Card style={{ marginTop: 10 }}>
               <div className="card-body">
                 <SubTitle
                   text="Disable form submissions:"
@@ -471,7 +475,7 @@ export class NewForm extends PureComponent {
                   </div>
                 ) : null}
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       </div>

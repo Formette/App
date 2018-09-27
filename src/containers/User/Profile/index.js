@@ -11,7 +11,7 @@ import {
   Text,
   Link
 } from "../../../components/atoms/index";
-import { Graphic, Confirmation } from "../../../components/molecules/index";
+import { Graphic, Confirmation, Card } from "../../../components/molecules/index";
 //Styles
 import Colors from "../../../styles/Colors";
 //Utils
@@ -160,8 +160,8 @@ export class Profile extends PureComponent {
         <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
           <Button
             className="btn btn-lg btn-primary"
-            color={Colors.primary}
             onClick={_refreshPage}
+            primary
           >
             Try Again
           </Button>
@@ -204,15 +204,15 @@ export class Profile extends PureComponent {
               </div>
               <Button
                 onClick={this._showConfirmation}
-                color={Colors.primary}
                 className="btn btn-lg btn-primary btn-block"
+                primary
               >
                 Update profile
               </Button>
             </form>
           </div>
           <div className="col-md-6">
-            <div className="card" style={{ marginTop: 10 }}>
+            <Card style={{ marginTop: 10 }}>
               <div className="card-body">
                 <SubTitle text="Statistics:" color={Colors.text.secondary} />
                 <Text
@@ -221,8 +221,8 @@ export class Profile extends PureComponent {
                 />
                 <Title text={`${_formsesMeta.count} forms created`} />
               </div>
-            </div>
-            <div className="card" style={{ marginTop: 10 }}>
+            </Card>
+            <Card style={{ marginTop: 10 }}>
               <div className="card-body">
                 <SubTitle text="Current Plan:" color={Colors.text.secondary} />
                 <Text
@@ -234,8 +234,8 @@ export class Profile extends PureComponent {
                   <span className="badge badge-dark">All the features</span>
                 </h2>
               </div>
-            </div>
-            <div className="card" style={{ marginTop: 10 }}>
+            </Card>
+            <Card style={{ marginTop: 10 }}>
               <div className="card-body">
                 <SubTitle text="Settings:" color={Colors.text.secondary} />
                 <Text
@@ -253,7 +253,7 @@ export class Profile extends PureComponent {
                   </li>
                 </ul>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       </div>

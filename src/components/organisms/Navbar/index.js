@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { compose } from "react-apollo";
 import { NavLink, withRouter } from "react-router-dom";
 //Styles
-import styled from "styled-components";
-import Colors from "../../../styles/Colors";
-import { lighten } from "polished";
+import styled, { withTheme } from "styled-components";
+import { darken } from "polished";
 //Utilities
 import { _logout } from "../../../services/utilities";
 
@@ -14,22 +14,9 @@ const Navbar = ({ className, username }) => {
       <a className="navbar-brand" href="/">
         <i className="fab fa-firstdraft" />
       </a>
-      <button
-        className={"navbar-toggler collapsed"}
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarCollapse"
-        aria-controls="navbarCollapse"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i className={`fa fa-bars`} aria-hidden="true">
-          &nbsp;
-        </i>
-      </button>
       <div className={`navbar-collapse collapse`} id="navbarCollapse">
         <ul className="navbar-nav mr-auto">
-          <li className="nav-item active">
+          <li className="nav-item">
             <NavLink className="nav-link" activeClassName="active" to="/">
               <i className="fas fa-archive" />
               Forms
@@ -39,18 +26,19 @@ const Navbar = ({ className, username }) => {
         <ul className="navbar-nav">
           <li className="nav-item">
             <NavLink className="nav-link" to="/signin" onClick={_logout}>
-              <i className="fas fa-sign-out-alt" /> Log Out
+              <i className="fas fa-sign-out-alt" />
+              Log Out
             </NavLink>
           </li>
 
           <li className="nav-item">
             <NavLink
-              className="nav-link user-link"
+              className="nav-link"
               activeClassName="active"
               to="/profile"
             >
-              <i className="fas fa-user-circle" /> Hello,{" "}
-              <span>{username}</span>
+              <i className="fas fa-user-circle" />
+              Hello, <span>{username}</span>
             </NavLink>
           </li>
         </ul>
@@ -71,14 +59,16 @@ Navbar.propTypes = {
 };
 
 const NavbarWithStyles = styled(Navbar)`
-  background: #7950f2;
+  background: ${props => props.theme.color.primary};
+  box-shadow: ${props => props.theme.boxShadow};
   .navbar-brand {
-    font-size: 25px;
-    font-weight: bold;
-    color: #fff;
+    font-size: ${props => props.theme.navbar.brand.fontSize};
+    font-weight: ${props => props.theme.navbar.brand.fontWeight};
+    color: ${props => props.theme.navbar.brand.color};
     opacity: 0.6;
+    margin-right: 50px;
     &:hover {
-      color: ${lighten(0.1, Colors.text.highlight)};
+      color: ${props => darken(0.1, props.theme.navbar.brand.color)};
     }
     #HW_badge_cont {
       display: inline;
@@ -88,48 +78,23 @@ const NavbarWithStyles = styled(Navbar)`
     }
   }
   .nav-link {
-    font-size: 20px;
-    color: #fff;
+    font-size: ${props => props.theme.navbar.link.fontSize};
+    color: ${props => props.theme.navbar.link.color};
     opacity: 0.6;
+    &.active,
     &:hover {
-      color: ${Colors.link.highlight};
-      cursor: pointer;
+      background-color: ${props => props.theme.navbar.link.hover};
+      border-radius: ${props => props.theme.navbar.link.borderRadius};
+      color: ${props => props.theme.navbar.link.color};
+      opacity: 1;
     }
-  }
-  .user-menu {
-    &:hover {
-      cursor: pointer;
-    }
-  }
-  .user-link {
-    color: #fff;
-    opacity: 0.6;
-    background: none;
-    &:hover,
-    &:active,
-    &:focus {
-      color: #fff;
-      cursor: pointer;
-      outline: none;
-    }
-  }
-  li.active {
-    background-color: rgba(255, 255, 255, 0.12);
-    border-radius: 4px;
-  }
-  a.active {
     i {
-      margin-right: 6px;
+      margin-right: ${props => props.theme.navbar.link.marginRight};
     }
-  }
-  a.active,
-  a.active i {
-    opacity: 1;
-    color: #fff;
-  }
-  .navbar-toggler {
-    outline: none;
   }
 `;
 
-export default withRouter(NavbarWithStyles);
+export default compose(
+  withTheme,
+  withRouter
+)(NavbarWithStyles);
