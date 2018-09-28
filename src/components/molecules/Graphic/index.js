@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { Text, Icon } from "../../atoms/index";
 //Styles
 import styled from "styled-components";
-import Colors from "../../../styles/Colors";
 
 const Graphic = props => {
   return (
@@ -18,25 +17,26 @@ const Graphic = props => {
 
 Graphic.defaultProps = {
   icon: "fa-map-signs",
-  text: "Text",
-  iconColor: Colors.text.secondary
+  text: "Text"
 };
 
 Graphic.propTypes = {
   icon: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
-  iconColor: PropTypes.string
+  iconColor: PropTypes.string,
+  children: PropTypes.any,
+  className: PropTypes.string
 };
 
 const GraphicWithStyles = styled(Graphic)`
   i {
-    font-size: ${props => props.size || "100px"};
-    color: ${props => props.iconColor || Colors.text.secondary};
+    font-size: ${props => props.size || props.theme.h1};
+    color: ${props => props.iconColor || props.theme.text.secondary};
   }
   p {
     margin-top: 20px;
     padding: 0 100px 0 100px;
-    color: ${props => props.textColor || Colors.text.secondary};
+    color: ${props => props.textColor || props.theme.text.secondary};
     font-size: 20px;
   }
 `;

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const Placeholder = props => {
@@ -12,6 +13,11 @@ const Placeholder = props => {
 Placeholder.defaultProps = {
   width: 13,
   height: 12
+};
+
+Placeholder.propTypes = {
+  children: PropTypes.any,
+  className: PropTypes.string
 };
 
 const PlaceholderWithStyled = styled(Placeholder)`

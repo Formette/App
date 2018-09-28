@@ -313,11 +313,11 @@ export class NewForm extends PureComponent {
         />
         <div className="row">
           <div className={`col-md-${onModeEdit ? 9 : 12}`}>
-            <SubTitle
-              text={`${onModeEdit ? "Edit" : "New"} Form`}
-              color={Colors.text.secondary}
-            />
-            <Header text={name ? name : generateID} />
+            <SubTitle color={Colors.text.secondary}>{`${
+              onModeEdit ? "Edit" : "New"
+            } Form`}</SubTitle>
+
+            <Header>{name ? name : generateID}</Header>
           </div>
           {onModeEdit ? (
             <div className="col-md-3">
@@ -333,7 +333,7 @@ export class NewForm extends PureComponent {
           <div className="col-md-6" style={{ marginTop: 30 }}>
             <form>
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <SubTitle text="Name:" color={Colors.text.secondary} />
+                <SubTitle color={Colors.text.secondary}>Name:</SubTitle>
                 <Input
                   placeholder="e.g: Newsletters"
                   value={name}
@@ -344,7 +344,7 @@ export class NewForm extends PureComponent {
                 />
               </div>
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <SubTitle text="Description:" color={Colors.text.secondary} />
+                <SubTitle color={Colors.text.secondary}>Description:</SubTitle>
                 <Textarea
                   className="form-control"
                   placeholder="e.g: This is a Newsletters form for my personal website."
@@ -395,7 +395,7 @@ export class NewForm extends PureComponent {
             <Card>
               <div className="card-body">
                 <div className="form-group">
-                  <SubTitle text="Endpoint:" color={Colors.text.secondary} />
+                  <SubTitle color={Colors.text.secondary}>Endpoint:</SubTitle>
                   <div className="input-group">
                     <Input
                       placeholder={`${generateEndpoint}${
@@ -427,7 +427,7 @@ export class NewForm extends PureComponent {
                 </div>
                 <hr />
                 <div>
-                  <SubTitle text="Sample:" color={Colors.text.secondary} />
+                  <SubTitle color={Colors.text.secondary}>Sample:</SubTitle>
                   <Text
                     text="Copy and paste the example of the form below into your project, change its content according to your needs."
                     color={Colors.text.secondary}
@@ -461,7 +461,7 @@ export class NewForm extends PureComponent {
                 {onModeEdit ? (
                   <div>
                     <hr />
-                    <SubTitle text="Settings:" color={Colors.text.secondary} />
+                    <SubTitle color={Colors.text.secondary}>Settings:</SubTitle>
                     <ul className="list-inline">
                       <li>
                         <Link

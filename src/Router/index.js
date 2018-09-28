@@ -2,7 +2,7 @@ import React from "react";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 //Containers
-import MyForms from "../containers/Forms/Dashboard/index";
+import MyForms from "../containers/Forms/FormsList/index";
 import NewForm from "../containers/Forms/Create/index";
 import FormDetails from "../containers/Forms/Details/index";
 import Profile from "../containers/User/Profile/index";

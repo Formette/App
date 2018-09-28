@@ -8,6 +8,8 @@ const Card = styled.div.attrs({
   border-radius: ${props => props.theme.radius};
   border: 1px solid ${props => props.theme.color.border};
   box-shadow: ${props => props.theme.boxShadow};
+  width: ${props => (props.width ? props.width : "auto")};
+  height: ${props => (props.height ? props.height : "auto")};
 `;
 
 export default Card;

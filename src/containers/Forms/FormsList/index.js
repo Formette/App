@@ -1,7 +1,8 @@
 // @flow
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { graphql, compose } from "react-apollo";
-import * as moment from "moment";
+//Container
+import Cards from "./Cards";
 //Components
 import { Header, Button } from "../../../components/atoms/index";
 import {
@@ -12,6 +13,7 @@ import {
 } from "../../../components/molecules/index";
 //Utils
 import { _refreshPage, _getUserId } from "../../../services/utilities";
+import * as moment from "moment";
 import LogRocket from "logrocket";
 //Styles
 import Colors from "../../../styles/Colors";
@@ -74,6 +76,8 @@ export class MyForms extends Component {
     this.props.history.push("/new");
   };
   render() {
+    const { allFormses } = this.props.allFormsQuery;
+
     if (this.props.allFormsQuery && this.props.allFormsQuery.loading) {
       return <div>Loading</div>;
     }
@@ -91,9 +95,12 @@ export class MyForms extends Component {
       );
     }
     return (
-      <div className="row">
-        <div className="col-md-12 col-sm-12 col">
-          <Header text="My Forms" />
+      <Fragment>
+        <Cards data={allFormses} />
+
+        <div className="row">
+          {/*<div className="col-md-12 col-sm-12 col">
+          <Header>My Forms</Header>
           <Card
             icon="fa-plus"
             title="New Form"
@@ -102,8 +109,9 @@ export class MyForms extends Component {
             new
           />
           <div>{this._loadContent()}</div>
+       </div>*/}
         </div>
-      </div>
+      </Fragment>
     );
   }
 }

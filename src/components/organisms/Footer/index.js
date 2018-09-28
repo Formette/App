@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 //Components
 import { Link } from "../../atoms/index";
 //Styles
@@ -43,6 +44,10 @@ const Footer = props => {
       </ul>
     </div>
   );
+};
+
+Footer.propTypes = {
+  className: PropTypes.string
 };
 
 const FooterWithStyled = styled(Footer)`

@@ -2,8 +2,6 @@ import React from "react";
 //Components
 import { Button } from "../../atoms/index";
 import { Graphic } from "../../molecules/index";
-//Styles
-import Colors from "../../../styles/Colors";
 
 const NoMatch = props => {
   return (
@@ -13,7 +11,7 @@ const NoMatch = props => {
     >
       <Button
         className="btn btn-lg btn-primary"
-        color={Colors.primary}
+        color={"black"}
         onClick={() => props.history.push("/")}
       >
         Go back home

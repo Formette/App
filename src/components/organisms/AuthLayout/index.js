@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { Header, SubTitle } from "../../atoms";
 //Styles
 import styled from "styled-components";
-import Colors from "../../../styles/Colors";
 
 const AuthLayout = props => {
   return (
@@ -26,16 +25,17 @@ AuthLayout.defaultProps = {
 AuthLayout.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  children: PropTypes.any
+  children: PropTypes.any,
+  className: PropTypes.string
 };
 
 const AuthLayoutWithStyles = styled(AuthLayout)`
   padding: 150px 0 150px 0;
   h2 {
-    color: ${Colors.text.normal};
+    color: ${props => props.theme.text.secondary};
   }
   h6 {
-    color: ${Colors.text.secondary};
+    color: ${props => props.theme.text.secondary};
     margin-bottom: 25px;
     line-height: 30px;
     font-size: 22px;

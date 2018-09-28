@@ -1,10 +1,11 @@
-import React from "react";
 import PropTypes from "prop-types";
 //Styles
 import styled from "styled-components";
-import Colors from "../../../styles/Colors";
 
-const Header = ({ text, className }) => <h2 className={className}>{text}</h2>;
+const Header = styled.h2`
+  margin-bottom: 30px;
+  color: ${props => props.color || props.theme.text.normal};
+`;
 
 Header.defaultProps = {
   text: "Header Text",
@@ -16,9 +17,4 @@ Header.propTypes = {
   color: PropTypes.string
 };
 
-const HeaderWithStyles = styled(Header)`
-  margin-bottom: 30px;
-  color: ${props => props.color || Colors.text.normal};
-`;
-
-export default HeaderWithStyles;
+export default Header;

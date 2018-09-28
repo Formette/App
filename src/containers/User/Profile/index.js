@@ -11,7 +11,11 @@ import {
   Text,
   Link
 } from "../../../components/atoms/index";
-import { Graphic, Confirmation, Card } from "../../../components/molecules/index";
+import {
+  Graphic,
+  Confirmation,
+  Card
+} from "../../../components/molecules/index";
 //Styles
 import Colors from "../../../styles/Colors";
 //Utils
@@ -183,14 +187,14 @@ export class Profile extends PureComponent {
         />
         <div className="row">
           <div className="col-md-12">
-            <Header text={`Hey, ${username}`} />
+            <Header>{`Hey, ${username}`}</Header>
           </div>
         </div>
         <div className="row">
           <div className="col-md-6">
             <form>
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <SubTitle text="Username:" color={Colors.text.secondary} />
+                <SubTitle color={Colors.text.secondary}>Username:</SubTitle>
                 <Input
                   placeholder="username"
                   defaultValue={userName}
@@ -214,7 +218,7 @@ export class Profile extends PureComponent {
           <div className="col-md-6">
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <SubTitle text="Statistics:" color={Colors.text.secondary} />
+                <SubTitle color={Colors.text.secondary}>Statistics:</SubTitle>
                 <Text
                   text="We are great analysts, here you have your statistics of your forms."
                   color={Colors.text.secondary}
@@ -224,7 +228,7 @@ export class Profile extends PureComponent {
             </Card>
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <SubTitle text="Current Plan:" color={Colors.text.secondary} />
+                <SubTitle color={Colors.text.secondary}>Current Plan:</SubTitle>
                 <Text
                   text="More plans soon, as the platform is in beta you have access to all features."
                   color={Colors.text.secondary}
@@ -237,7 +241,7 @@ export class Profile extends PureComponent {
             </Card>
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <SubTitle text="Settings:" color={Colors.text.secondary} />
+                <SubTitle color={Colors.text.secondary}>Settings:</SubTitle>
                 <Text
                   text="This is a dangerous zone, so be careful, here you will find your settings."
                   color={Colors.text.secondary}

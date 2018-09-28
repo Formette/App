@@ -6,7 +6,7 @@ import { NavLink, withRouter } from "react-router-dom";
 import styled, { withTheme } from "styled-components";
 import { darken } from "polished";
 //Utilities
-import { _logout } from "../../../services/utilities";
+import { _logout } from "../../services/utilities";
 
 const Navbar = ({ className, username }) => {
   return (

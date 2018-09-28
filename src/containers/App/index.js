@@ -1,16 +1,17 @@
 // @flow
 import React, { PureComponent } from "react";
 import { withRouter } from "react-router-dom";
+import { compose } from "react-apollo";
 //Components
 import AlertContainer from "react-alert";
 import { Icon } from "../../components/atoms/index";
-import { Navbar, Footer } from "../../components/organisms/index";
+import { Footer } from "../../components/organisms/index";
+import Navbar from "./Navigation";
 //Utilities
 import { _getUsername } from "../../services/utilities";
 import { ALERT_OPTIONS } from "../../services/Constants";
 //Styles
-import styled from "styled-components";
-import Colors from "../../styles/Colors";
+import styled, { withTheme } from "styled-components";
 //Pages Navigation
 import Router from "../../Router";
 
@@ -25,7 +26,7 @@ class App extends PureComponent {
   showAlert(
     type: string = "success",
     text: string = "Some Text",
-    color: string = Colors.green,
+    color: string = this.props.theme.color.green,
     icon: string = "fa-link"
   ) {
     this.msg.show(text, {
@@ -63,4 +64,7 @@ const AppWithStyles = styled(App)`
   }
 `;
 
-export default withRouter(AppWithStyles);
+export default compose(
+  withRouter,
+  withTheme
+)(AppWithStyles);

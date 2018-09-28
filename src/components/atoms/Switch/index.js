@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 //Styles
 import styled from "styled-components";
-import Colors from "../../../styles/Colors";
 
 const Switch = ({ className, value, square, onChange }) => {
   return (
@@ -18,8 +17,7 @@ const Switch = ({ className, value, square, onChange }) => {
 };
 
 Switch.defaultProps = {
-  square: false,
-  color: Colors.primary
+  square: false
 };
 
 Switch.propTypes = {
@@ -67,11 +65,13 @@ const SwitchWithStyles = styled(Switch)`
   }
 
   input:checked + .slider {
-    background-color: ${props => (props.color ? props.color : Colors.primary)};
+    background-color: ${props =>
+      props.color ? props.color : props.theme.color.primary};
   }
 
   input:focus + .slider {
-    box-shadow: 0 0 1px ${props => (props.color ? props.color : Colors.primary)};
+    box-shadow: 0 0 1px
+      ${props => (props.color ? props.color : props.theme.color.primary)};
   }
 
   input:checked + .slider:before {

@@ -1,10 +1,10 @@
-import React from "react";
 import PropTypes from "prop-types";
 //Styles
 import styled from "styled-components";
-import Colors from "../../../styles/Colors";
 
-const Text = ({ text, className }) => <p className={className}>{text}</p>;
+const TextWithStyles = styled.p`
+  color: ${props => props.color || props.theme.text.normal};
+`;
 
 Text.defaultProps = {
   text: "Description Text",
@@ -16,9 +16,5 @@ Text.propTypes = {
   color: PropTypes.string,
   className: PropTypes.string
 };
-
-const TextWithStyles = styled(Text)`
-  color: ${props => props.color || Colors.text.normal};
-`;
 
 export default TextWithStyles;

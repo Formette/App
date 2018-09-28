@@ -1,10 +1,10 @@
-import React from "react";
 import PropTypes from "prop-types";
 //Styles
 import styled from "styled-components";
-import Colors from "../../../styles/Colors";
 
-const SubTitle = ({ text, className }) => <h6 className={className}>{text}</h6>;
+const SubTitle = styled.h6`
+  color: ${props => props.color || props.theme.text.normal};
+`;
 
 SubTitle.defaultProps = {
   text: "Header Text",
@@ -17,8 +17,4 @@ SubTitle.propTypes = {
   className: PropTypes.string
 };
 
-const SubTitleWithStyles = styled(SubTitle)`
-  color: ${props => props.color || Colors.text.normal};
-`;
-
-export default SubTitleWithStyles;
+export default SubTitle;

@@ -166,8 +166,8 @@ export class FormDetails extends PureComponent {
         />
         <div className="row">
           <div className="col-md-6 col-sm-12">
-            <SubTitle text="All the data for" color={Colors.text.secondary} />
-            <Header className="text-truncate" text={name} />
+            <SubTitle color={Colors.text.secondary} >All the data for</SubTitle>
+            <Header className="text-truncate">{name}</Header>
           </div>
           <div className="col-md-6 col-sm-12">
             <HorizontalList className="float-right">
