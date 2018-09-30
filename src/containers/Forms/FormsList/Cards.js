@@ -56,7 +56,7 @@ class Cards extends PureComponent {
                       onCopy={() => alert(" Endpoint copied to clipboar")}
                     >
                       <Button className="btn btn-md btn-primary" primary>
-                        <Icon name="fas fa-eye" color="#FFF" /> Endpoint
+                        <Icon name="fas fa-link" color="#FFF" /> Endpoint
                       </Button>
                     </CopyToClipboard>
                   </div>

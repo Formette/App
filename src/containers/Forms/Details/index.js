@@ -20,7 +20,6 @@ import {
   _getUserId
 } from "../../../services/utilities";
 import LogRocket from "logrocket";
-import * as moment from "moment";
 //API
 import { FORM_DATA_QUERY } from "../../../api/Queries";
 import { DELETE_FORM_MUTATION } from "../../../api/Mutations";
@@ -90,19 +89,6 @@ export class FormDetails extends PureComponent {
   _editForm = () => {
     this.props.history.push(`/edit/${this.props.match.params.id}`);
   };
-  _organizeTableData = content => {
-    let data = [];
-    let items = [];
-    content.map(value => {
-      items = {
-        ...value.data[0],
-        createdAt: moment(value.createdAt).format("ll")
-      };
-      data.push(items);
-      return true;
-    });
-    return data;
-  };
   render() {
     if (this.props.formDataQuery && this.props.formDataQuery.loading) {
       return <div>Loading</div>;
@@ -142,10 +128,6 @@ export class FormDetails extends PureComponent {
       endpoint,
       contents
     } = this.props.formDataQuery.Forms;
-
-    console.log("contents = ", contents);
-
-    const items = this._organizeTableData(contents);
     const point = endpoint.split("/");
     const { onConfirmation, url } = this.state;
     return (
@@ -180,7 +162,7 @@ export class FormDetails extends PureComponent {
                 onCopy={() => alert("Change this")}
               >
                 <Button className="btn btn-lg" primary>
-                  <Icon name="fas fa-eye" />
+                  <Icon name="fas fa-link" />
                   <span>Endpoint</span>
                 </Button>
               </CopyToClipboard>
@@ -191,13 +173,13 @@ export class FormDetails extends PureComponent {
           <div className="col-md-12">
             <Card>
               <div className="card-body">
-                {Object.keys(items).length === 0 ? (
+                {Object.keys(contents).length === 0 ? (
                   <div>
                     This form is so sad ... You do not have any submissions yet,
                     help it, go! Look for data for this poor guy.
                   </div>
                 ) : (
-                  <Table />
+                  <Table data={contents} />
                 )}
               </div>
             </Card>

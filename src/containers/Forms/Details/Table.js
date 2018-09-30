@@ -1,72 +1,51 @@
 import React, { Component } from "react";
 //Components
 import DynamicTable from "@atlaskit/dynamic-table";
-import presidents from "./presidents.json";
-
-function createKey(input) {
-  return input ? input.replace(/^(the|a|an)/, "").replace(/\s/g, "") : input;
-}
+//Utils
+import * as moment from "moment";
 
 class Table extends Component {
+  state = {
+    isLoading: true
+  };
   _onCreateHead = () => {
-    return {
-      cells: [
-        {
-          key: "name",
-          content: "Name",
+    const { data: content } = this.props;
+    const cells = [];
+    const keys = Object.keys(content[0].data[0]);
+
+    keys.map(item => {
+      if (item !== "__typename") {
+        cells.push({
+          key: item,
+          content: item,
           isSortable: true,
           width: undefined
-        },
-        {
-          key: "party",
-          content: "Party",
-          shouldTruncate: true,
-          isSortable: true,
-          width: undefined
-        },
-        {
-          key: "term",
-          content: "Term",
-          shouldTruncate: true,
-          isSortable: true,
-          width: undefined
-        },
-        {
-          key: "content",
-          content: "Comment",
-          shouldTruncate: true
-        },
-        {
-          key: "more",
-          shouldTruncate: true
-        }
-      ]
-    };
+        });
+      }
+    });
+
+    return { cells: [...cells] };
+  };
+  _onGenerate = data => {
+    const result = [];
+    for (let [key, value] of Object.entries(data)) {
+      result.push({
+        key: key,
+        content: value
+      });
+    }
+    return result;
   };
   _onCreateRows = () => {
-    return presidents.map((president, index) => ({
-      key: `row-${index}-${president.nm}`,
-      cells: [
-        {
-          key: createKey(president.nm),
-          content: president.nm
-        },
-        {
-          key: createKey(president.pp),
-          content: president.pp
-        },
-        {
-          key: president.id,
-          content: president.tm
-        },
-        {
-          content: "Joe"
-        },
-        {
-          content: president.nm
-        }
-      ]
-    }));
+    const { data } = this.props;
+    const rows = [];
+    data.map((res, index) => {
+      rows.push({
+        key: `row-${index}-${res.id}`,
+        cells: this._onGenerate(res.data[0])
+      });
+    });
+    return rows;
   };
   render() {
     return (
