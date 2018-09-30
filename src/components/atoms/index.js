@@ -1,6 +1,7 @@
 //Elements
 import { default as Button } from "./Button/index";
 import { default as Input } from "./Input/index";
+import { default as InputGroup } from "./Input/InputGroup";
 import { default as Link } from "./Link/index";
 import { default as Header } from "./Header/index";
 import { default as Title } from "./Title/index";
@@ -10,10 +11,12 @@ import { default as Textarea } from "./Textarea/index";
 import { default as Switch } from "./Switch/index";
 import { default as Badge } from "./Badge/index";
 import { default as Icon } from "./Icon/index";
+import { default as Content } from "./Content/index";
 
 export {
   Button,
   Input,
+  InputGroup,
   Link,
   Header,
   Title,
@@ -22,5 +25,6 @@ export {
   Textarea,
   Icon,
   Switch,
-  Badge
+  Badge,
+  Content
 };

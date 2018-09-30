@@ -36,7 +36,7 @@ const properties = {
     ative: "#5996E9"
   },
   link: {
-    normal: "#adb5bd",
+    normal: "#868e96",
     highlight: "#212529",
     active: "#868e96",
     hover: "#868e96"

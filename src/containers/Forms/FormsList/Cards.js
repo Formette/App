@@ -1,45 +1,68 @@
 import React, { PureComponent, Fragment } from "react";
 //Components
+import { Button, Icon, Link } from "../../../components/atoms";
 import {
   Card,
   CardBody,
   CardHeader,
   CardFooter
 } from "../../../components/molecules";
+import CopyToClipboard from "react-copy-to-clipboard";
 //Utils
 import * as moment from "moment";
+import { random, _getUsername } from "../../../services/utilities";
 
+const colors = ["#7568F0", "#8A75F3", "#A384F6", "#A384F6", "#CA9CFB"];
 class Cards extends PureComponent {
+  state = {
+    url: `https://api.formette.com/${_getUsername()}/`
+  };
   render() {
     const { data } = this.props;
     return (
       <Fragment>
         {data.map(item => {
           return (
-            <Card width="250px" key={item.id}>
-              <CardHeader>
-                <h5 className="card-title">{item.name}</h5>
-                <h6 className="card-subtitle mb-2 text-muted">
-                  {moment(item.createdAt).format("ll")}
-                </h6>
-              </CardHeader>
-              <CardBody>
-                <i className="far fa-file-alt" />
-              </CardBody>
-              <CardFooter>
-                <div className="d-flex justify-content-between">
-                  <span>
-                    <i className="fas fa-eye" />
-                  </span>
-                  <span>
-                    <i className="fas fa-clone" />
-                  </span>
-                  <span>
-                    <i className="fas fa-trash-alt" />
-                  </span>
-                </div>
-              </CardFooter>
-            </Card>
+            <div
+              key={item.id}
+              className="col-12 col-sm-12 col-md-4 col-lg-3"
+              style={{ marginBottom: "30px" }}
+            >
+              <Card>
+                <CardHeader>
+                  <h5
+                    className="card-title"
+                    style={{ color: colors[random(0, 4)] }}
+                  >
+                    <Icon name="fas fa-file-alt" /> {item.name}
+                  </h5>
+                  <h6 className="card-subtitle mb-2 text-muted">
+                    <Icon name="fas fa-calendar text-muted" />{" "}
+                    {moment(item.createdAt).format("ll")}
+                  </h6>
+                </CardHeader>
+                <CardBody>
+                  <Icon name="fas fa-database" />{" "}
+                  {`${item._contentsMeta.count}`} reponses{" "}
+                  <Link decoration="underline" href={`#/form/${item.id}`}>
+                    View data
+                  </Link>
+                </CardBody>
+                <CardFooter>
+                  <div className="text-right">
+                    <CopyToClipboard
+                      text={`${this.state.url}${item.endpoint.split("/")[1]}`}
+                      style={{ cursor: "pointer" }}
+                      onCopy={() => alert(" Endpoint copied to clipboar")}
+                    >
+                      <Button className="btn btn-md btn-primary" primary>
+                        <Icon name="fas fa-eye" color="#FFF" /> Endpoint
+                      </Button>
+                    </CopyToClipboard>
+                  </div>
+                </CardFooter>
+              </Card>
+            </div>
           );
         })}
       </Fragment>

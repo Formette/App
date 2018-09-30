@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 //Styles
 import styled from "styled-components";
 
-const SubTitle = styled.h6`
+const SubTitle = styled.h5`
   color: ${props => props.color || props.theme.text.normal};
 `;
 

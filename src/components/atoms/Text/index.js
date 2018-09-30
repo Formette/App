@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const TextWithStyles = styled.p`
-  color: ${props => props.color || props.theme.text.normal};
+  color: ${props => props.color || props.theme.text.secondary};
 `;
 
 Text.defaultProps = {

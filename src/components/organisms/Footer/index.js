@@ -12,32 +12,31 @@ const Footer = props => {
     <div className={`container-fluid ${props.className}`}>
       <ul>
         <li>
-          <Link href={`${protocol}${url}/about`} target="_blank">
-            About
-          </Link>
-        </li>
-        <li>
           <Link href={`${protocol}docs.${url}`} target="_blank">
             Docs
           </Link>
         </li>
         <li>
-          <Link href={`${protocol}${url}/roadmap`} target="_blank">
-            Roadmap
+          <Link
+            href={`https://www.iubenda.com/privacy-policy/54274847/legal?ifr=true&height=690`}
+            target="_blank"
+          >
+            Terms & Privacy Policy
           </Link>
         </li>
         <li>
-          <Link href={`${protocol}${url}/terms`} target="_blank">
-            Terms
+          <Link
+            href={`https://statuspage.freshping.io/263-Formette`}
+            target="_blank"
+          >
+            Status
           </Link>
         </li>
         <li>
-          <Link href={`${protocol}${url}/privacy`} target="_blank">
-            Privacy Policy
-          </Link>
-        </li>
-        <li>
-          <Link href={`${protocol}${url}/feedback`} target="_blank">
+          <Link
+            href={`https://formette.freshdesk.com/support/home`}
+            target="_blank"
+          >
             Feedback
           </Link>
         </li>

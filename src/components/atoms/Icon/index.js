@@ -2,12 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 //Styles
 import styled from "styled-components";
-import Colors from "../../../styles/Colors";
 
 const Icon = props => (
-  <i className={`fas ${props.name} ${props.className}`} style={props.style}>
-    &zwnj;
-  </i>
+  <i className={`${props.name} ${props.className}`} style={props.style} />
 );
 
 Icon.defaultProps = {
@@ -25,8 +22,8 @@ Icon.propTypes = {
 };
 
 const IconWithStyles = styled(Icon)`
-  font-size: ${props => props.size || 20}px;
-  color: ${props => props.color || Colors.text.normal};
+  font-size: ${props => (props.size ? `${props.size}px` : "inhered")};
+  color: ${props => props.color || "inhered"};
 `;
 
 export default IconWithStyles;

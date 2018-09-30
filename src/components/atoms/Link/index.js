@@ -6,7 +6,8 @@ import { lighten } from "polished";
 const Link = styled.a`
   color: ${props =>
     props.color ? props.color : props.theme.link.normal} !important;
-  text-decoration: none !important;
+  text-decoration: ${props =>
+    props.decoration ? props.decoration : "none"} !important;
   &:hover {
     color: ${props =>
       props.color

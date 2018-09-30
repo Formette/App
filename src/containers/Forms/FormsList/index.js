@@ -2,19 +2,13 @@
 import React, { Component, Fragment } from "react";
 import { graphql, compose } from "react-apollo";
 //Container
+import Tools from "./Tools";
 import Cards from "./Cards";
 //Components
-import { Header, Button } from "../../../components/atoms/index";
-import {
-  Placeholder,
-  PlaceholderAnimation,
-  OldCard as Card,
-  Graphic
-} from "../../../components/molecules/index";
+import { Button, Icon } from "../../../components/atoms/index";
+import { Graphic } from "../../../components/molecules/index";
 //Utils
 import { _refreshPage, _getUserId } from "../../../services/utilities";
-import * as moment from "moment";
-import LogRocket from "logrocket";
 //Styles
 import Colors from "../../../styles/Colors";
 //API
@@ -28,49 +22,7 @@ export class MyForms extends Component {
   state = {
     loading: true,
     loadingTimeout: 0,
-    hasError: "",
-    data: []
-  };
-  _LoadingAnimationContent = (type: string = "loading", length: number = 6) => {
-    const content = [];
-    for (let i = 0; i <= length; i++) {
-      if (type !== "loading") {
-        content.push(<Placeholder key={i} width={208} height={193} />);
-      } else {
-        content.push(<PlaceholderAnimation key={i} />);
-      }
-    }
-    return content;
-  };
-  _loadContent = () => {
-    const { allFormses } = this.props.allFormsQuery;
-    const formsCount = Object.keys(allFormses).length;
-    const content = [];
-    let length = 0;
-    //checks if the number of forms created from the user
-    if (formsCount === 0) {
-      return this._LoadingAnimationContent("normal");
-    }
-    //Checks if the object data is not empty
-    if (formsCount >= 0) {
-      allFormses.map(res => {
-        content.push(
-          <Card
-            key={res.id}
-            title={res.name}
-            date={moment(res.createdAt).format("ll")}
-            onClick={() => this.props.history.push(`/form/${res.id}`)}
-          />
-        );
-        return true;
-      });
-      //for interface
-      if (formsCount < 6) {
-        length = 6 - Number(formsCount);
-      }
-      LogRocket.track("Loaded Forms");
-      return content.concat(this._LoadingAnimationContent("normal", length));
-    }
+    hasError: ""
   };
   _goToNew = () => {
     this.props.history.push("/new");
@@ -96,20 +48,17 @@ export class MyForms extends Component {
     }
     return (
       <Fragment>
-        <Cards data={allFormses} />
-
+        <Tools
+          title="My forms"
+          description="Create, view and collect that for your applications"
+          InputPlaceholder="Search forms"
+        >
+          <Button className="btn btn-lg" onClick={this._goToNew} primary>
+            <Icon name="fas fa-plus" color="#FFF" /> New form
+          </Button>
+        </Tools>
         <div className="row">
-          {/*<div className="col-md-12 col-sm-12 col">
-          <Header>My Forms</Header>
-          <Card
-            icon="fa-plus"
-            title="New Form"
-            date="Create from scratch"
-            onClick={this._goToNew}
-            new
-          />
-          <div>{this._loadContent()}</div>
-       </div>*/}
+          <Cards data={allFormses} />
         </div>
       </Fragment>
     );

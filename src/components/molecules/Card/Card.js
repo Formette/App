@@ -10,6 +10,7 @@ const Card = styled.div.attrs({
   box-shadow: ${props => props.theme.boxShadow};
   width: ${props => (props.width ? props.width : "auto")};
   height: ${props => (props.height ? props.height : "auto")};
+  cursor: ${props => (props.pointer ? "pointer" : "inhered")};
 `;
 
 export default Card;

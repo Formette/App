@@ -43,7 +43,7 @@ class App extends PureComponent {
           brand="Formette β"
           username={this.state.username || "username"}
         />
-        <div className="container content">
+        <div className="container-fluid content">
           <Router
             updateUsername={this._updateUsername}
             showMessage={(type, text, ...rest) =>
@@ -58,7 +58,7 @@ class App extends PureComponent {
 }
 
 const AppWithStyles = styled(App)`
-  margin-top: 120px;
+  margin-top: 100px;
   .content {
     min-height: calc(88vh - 70px);
   }

@@ -1,23 +1,18 @@
 // @flow
 import React, { PureComponent } from "react";
 import { graphql, compose } from "react-apollo";
-import * as moment from "moment";
+//Containers
+import Tools from "../FormsList/Tools";
+import Table from "./Table";
 //Components
 import CopyToClipboard from "react-copy-to-clipboard";
+import { Button, Icon } from "../../../components/atoms/index";
 import {
-  SubTitle,
-  Header,
-  Button,
-  Icon
-} from "../../../components/atoms/index";
-import {
+  Card,
   HorizontalList,
-  Table,
   Graphic,
   Confirmation
 } from "../../../components/molecules/index";
-//Styles
-import Colors from "../../../styles/Colors";
 //Utils
 import {
   _getUsername,
@@ -25,6 +20,7 @@ import {
   _getUserId
 } from "../../../services/utilities";
 import LogRocket from "logrocket";
+import * as moment from "moment";
 //API
 import { FORM_DATA_QUERY } from "../../../api/Queries";
 import { DELETE_FORM_MUTATION } from "../../../api/Mutations";
@@ -39,7 +35,6 @@ export class FormDetails extends PureComponent {
   props: {
     formDataQuery: any,
     deleteFormMutation: any,
-    showMessage: () => mixed,
     history: any,
     match: any
   };
@@ -80,12 +75,7 @@ export class FormDetails extends PureComponent {
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
       //Shows feedback and updates the store
-      this.props.showMessage(
-        "success",
-        "Form deleted successfully",
-        undefined,
-        "fa-trash"
-      );
+      alert("Change this to the new alert");
       LogRocket.info("Form deleted successfully");
       LogRocket.track("Deleted Form");
       //redirects the user to the main page
@@ -94,12 +84,7 @@ export class FormDetails extends PureComponent {
       LogRocket.warn(
         "What a disgrace but it was not possible to delete the form, try again."
       );
-      this.props.showMessage(
-        "error",
-        "What a disgrace but it was not possible to delete the form, try again.",
-        Colors.red,
-        "fa-exclamation-triangle"
-      );
+      alert("Change this to the new alert");
     }
   };
   _editForm = () => {
@@ -127,8 +112,8 @@ export class FormDetails extends PureComponent {
         <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
           <Button
             className="btn btn-lg btn-primary"
-            color={Colors.primary}
             onClick={_refreshPage}
+            primary
           >
             Try Again
           </Button>
@@ -143,15 +128,23 @@ export class FormDetails extends PureComponent {
         >
           <Button
             className="btn btn-lg btn-primary"
-            color={Colors.primary}
             onClick={() => this.props.history.push("/")}
+            primary
           >
             Go back home
           </Button>
         </Graphic>
       );
     }
-    const { name, endpoint, contents } = this.props.formDataQuery.Forms;
+    const {
+      name,
+      description,
+      endpoint,
+      contents
+    } = this.props.formDataQuery.Forms;
+
+    console.log("contents = ", contents);
+
     const items = this._organizeTableData(contents);
     const point = endpoint.split("/");
     const { onConfirmation, url } = this.state;
@@ -164,64 +157,39 @@ export class FormDetails extends PureComponent {
           onCancel={this._showConfirmation}
           onConfirmation={this._onDeleteForm}
         />
-        <div className="row">
-          <div className="col-md-6 col-sm-12">
-            <SubTitle color={Colors.text.secondary} >All the data for</SubTitle>
-            <Header className="text-truncate">{name}</Header>
-          </div>
-          <div className="col-md-6 col-sm-12">
-            <HorizontalList className="float-right">
-              <li>
-                <CopyToClipboard
-                  text={`${url}${point[1]}`}
-                  style={{ cursor: "pointer" }}
-                  onCopy={() =>
-                    this.props.showMessage(
-                      "success",
-                      "Endpoint copied to clipboard",
-                      undefined,
-                      undefined
-                    )
-                  }
-                >
-                  <Button
-                    className="btn"
-                    color={Colors.default}
-                    textColor={Colors.white}
-                  >
-                    <Icon color={Colors.white} name="fa-link" />
-                    <span>Endpoint</span>
-                  </Button>
-                </CopyToClipboard>
-              </li>
-              <li>
-                <Button
-                  className="btn"
-                  color={Colors.default}
-                  textColor={Colors.white}
-                  onClick={this._editForm}
-                >
-                  <Icon color={Colors.white} name="fa-pencil" />
-                  <span>Edit</span>
+        <Tools
+          title={name}
+          description={description}
+          InputPlaceholder={`Search on ${name}`}
+        >
+          <HorizontalList className="float-right">
+            <li>
+              <Button className="btn btn-lg" onClick={this._editForm}>
+                <Icon name="fas fa-pen" />
+              </Button>
+            </li>
+            <li>
+              <Button className="btn btn-lg" onClick={this._showConfirmation}>
+                <Icon name="fas fa-trash" />
+              </Button>
+            </li>
+            <li>
+              <CopyToClipboard
+                text={`${url}${point[1]}`}
+                style={{ cursor: "pointer" }}
+                onCopy={() => alert("Change this")}
+              >
+                <Button className="btn btn-lg" primary>
+                  <Icon name="fas fa-eye" />
+                  <span>Endpoint</span>
                 </Button>
-              </li>
-              <li>
-                <Button
-                  className="btn"
-                  color={Colors.red}
-                  textColor={Colors.white}
-                  onClick={this._showConfirmation}
-                >
-                  <Icon color={Colors.white} name="fa-trash-o" />
-                  <span>Delete</span>
-                </Button>
-              </li>
-            </HorizontalList>
-          </div>
-        </div>
+              </CopyToClipboard>
+            </li>
+          </HorizontalList>
+        </Tools>
         <div className="row">
           <div className="col-md-12">
-            <div className="card">
+            <Card>
               <div className="card-body">
                 {Object.keys(items).length === 0 ? (
                   <div>
@@ -229,10 +197,10 @@ export class FormDetails extends PureComponent {
                     help it, go! Look for data for this poor guy.
                   </div>
                 ) : (
-                  <Table data={items} />
+                  <Table />
                 )}
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       </div>
