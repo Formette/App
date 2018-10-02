@@ -49,7 +49,7 @@ Footer.propTypes = {
   className: PropTypes.string
 };
 
-const FooterWithStyled = styled(Footer)`
+export default styled(Footer)`
   height: 40px;
   ul {
     margin: 0;
@@ -76,5 +76,3 @@ const FooterWithStyled = styled(Footer)`
     }
   }
 `;
-
-export default FooterWithStyled;

@@ -3,18 +3,17 @@ import PropTypes from "prop-types";
 //Components
 import { Title, Text, Button, Link } from "../../atoms/index";
 //Styles
-import Colors from "../../../styles/Colors";
 import styled from "styled-components";
 
-const Confirmation = props => {
+const Confirmation = ({ className, show, title, description, ...props }) => {
   return (
     <div
-      className={`card mx-auto animated zoomInUp ${props.className}`}
-      style={{ display: props.show ? "inline" : "none" }}
+      className={`card mx-auto animated zoomInUp ${className}`}
+      style={{ display: show ? "inline" : "none" }}
     >
       <div className="card-body">
-        <Title text={props.title} />
-        <Text text={props.description} />
+        <Title>{title}</Title>
+        <Text>{description}</Text>
         <div className="text-right">
           <Link className="cancelAction" onClick={() => props.onCancel()}>
             Cancel
@@ -23,7 +22,7 @@ const Confirmation = props => {
             className="btn"
             onClick={() => props.onConfirmation()}
             color={props.onConfirmationColor}
-            textColor={Colors.white}
+            primary
           >
             {props.onConfirmationText}
           </Button>
@@ -37,11 +36,12 @@ Confirmation.defaultProps = {
   title: "Form Title",
   description: "Form Date",
   onConfirmationText: "Delete",
-  onConfirmationColor: Colors.red,
+  onConfirmationColor: "red",
   show: false
 };
 
 Confirmation.propTypes = {
+  className: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,
   onConfirmationText: PropTypes.string,
@@ -51,7 +51,7 @@ Confirmation.propTypes = {
   onCancel: PropTypes.func
 };
 
-const ConfirmationWithStyled = styled(Confirmation)`
+export default styled(Confirmation)`
   width: 20rem;
   position: absolute;
   left: 0;
@@ -62,5 +62,3 @@ const ConfirmationWithStyled = styled(Confirmation)`
     margin-right: 10px;
   }
 `;
-
-export default ConfirmationWithStyled;

@@ -5,8 +5,6 @@ import { graphql, compose } from "react-apollo";
 import AuthLayout from "../../../components/organisms/AuthLayout/index";
 import { Input, Button, Link } from "../../../components/atoms/index";
 import Error from "../../../components/molecules/Error";
-//Styles
-import Colors from "../../../styles/Colors";
 //API
 import { SIGIN_USER_MUTATION } from "../../../api/Mutations";
 import { userSignIn } from "../../../api/Functions";
@@ -93,10 +91,10 @@ class LoginUser extends React.PureComponent {
         />
 
         <Button
-          className="btn btn-lg btn-primary btn-block"
+          className="btn btn-lg btn-block"
           onClick={this._onSignIn}
           style={{ marginTop: 10, marginBottom: 10 }}
-          color={Colors.primary}
+          primary
         >
           Sign In
         </Button>

@@ -28,7 +28,7 @@ Graphic.propTypes = {
   className: PropTypes.string
 };
 
-const GraphicWithStyles = styled(Graphic)`
+export default styled(Graphic)`
   i {
     font-size: ${props => props.size || props.theme.h1};
     color: ${props => props.iconColor || props.theme.text.secondary};
@@ -40,5 +40,3 @@ const GraphicWithStyles = styled(Graphic)`
     font-size: 20px;
   }
 `;
-
-export default GraphicWithStyles;

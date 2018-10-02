@@ -11,7 +11,8 @@ import {
   Card,
   HorizontalList,
   Graphic,
-  Confirmation
+  Confirmation,
+  Loader
 } from "../../../components/molecules/index";
 //Utils
 import {
@@ -91,7 +92,7 @@ export class FormDetails extends PureComponent {
   };
   render() {
     if (this.props.formDataQuery && this.props.formDataQuery.loading) {
-      return <div>Loading</div>;
+      return <Loader />;
     }
     if (this.props.formDataQuery && this.props.formDataQuery.error) {
       return (
@@ -173,14 +174,7 @@ export class FormDetails extends PureComponent {
           <div className="col-md-12">
             <Card>
               <div className="card-body">
-                {Object.keys(contents).length === 0 ? (
-                  <div>
-                    This form is so sad ... You do not have any submissions yet,
-                    help it, go! Look for data for this poor guy.
-                  </div>
-                ) : (
-                  <Table data={contents} />
-                )}
+                <Table data={contents} />
               </div>
             </Card>
           </div>
@@ -190,7 +184,7 @@ export class FormDetails extends PureComponent {
   }
 }
 
-const formDetailsWithData = compose(
+export default compose(
   graphql(FORM_DATA_QUERY, {
     name: "formDataQuery",
     options: props => ({
@@ -199,5 +193,3 @@ const formDetailsWithData = compose(
   }),
   graphql(DELETE_FORM_MUTATION, { name: "deleteFormMutation" })
 )(FormDetails);
-
-export default formDetailsWithData;

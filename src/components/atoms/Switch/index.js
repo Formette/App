@@ -26,7 +26,7 @@ Switch.propTypes = {
   className: PropTypes.string
 };
 
-const SwitchWithStyles = styled(Switch)`
+export default styled(Switch)`
   /* The switch - the box around the slider */
   position: relative;
   display: inline-block;
@@ -89,5 +89,3 @@ const SwitchWithStyles = styled(Switch)`
     border-radius: 50%;
   }
 `;
-
-export default SwitchWithStyles;

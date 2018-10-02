@@ -21,9 +21,7 @@ Icon.propTypes = {
   style: PropTypes.any
 };
 
-const IconWithStyles = styled(Icon)`
+export default styled(Icon)`
   font-size: ${props => (props.size ? `${props.size}px` : "inhered")};
   color: ${props => props.color || "inhered"};
 `;
-
-export default IconWithStyles;

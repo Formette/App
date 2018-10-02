@@ -22,8 +22,6 @@ import {
   Confirmation,
   Card
 } from "../../../components/molecules/index";
-//Styles
-import Colors from "../../../styles/Colors";
 //Utils
 import { _getUsername, guid, _getUserId } from "../../../services/utilities";
 import LogRocket from "logrocket";
@@ -42,7 +40,6 @@ export class NewForm extends PureComponent {
     updateFormMutation: any,
     deleteFormMutation: any,
     router: any,
-    showMessage: () => mixed,
     history: any,
     match: any,
     client: any
@@ -119,12 +116,7 @@ export class NewForm extends PureComponent {
             }
           });
           //Shows feedback and updates the store
-          this.props.showMessage(
-            "success",
-            "Form created successfully",
-            undefined,
-            "fa-plus"
-          );
+          alert("Form created successfully");
           LogRocket.log("Form created successfully");
           LogRocket.track("Created Form");
           //redirects the user to the main page
@@ -181,12 +173,7 @@ export class NewForm extends PureComponent {
         }
       });
       //Shows feedback and updates the store
-      this.props.showMessage(
-        "success",
-        "Form updated successfully",
-        undefined,
-        "fa-pencil"
-      );
+      alert("Form updated successfully");
       LogRocket.log("Form updated successfully");
       LogRocket.track("Updated Form");
       //redirects the user to the main page
@@ -212,12 +199,7 @@ export class NewForm extends PureComponent {
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
       //Shows feedback and updates the store
-      this.props.showMessage(
-        "success",
-        "Form deleted successfully",
-        undefined,
-        "fa-trash"
-      );
+      alert("Form deleted successfully");
       LogRocket.log("Form deleted successfully");
       LogRocket.track("Deleted Form");
       //redirects the user to the main page
@@ -226,11 +208,8 @@ export class NewForm extends PureComponent {
       LogRocket.error(
         "What a disgrace but it was not possible to delete the form, try again."
       );
-      this.props.showMessage(
-        "error",
-        "What a disgrace but it was not possible to delete the form, try again.",
-        Colors.red,
-        "fa-exclamation-triangle"
+      alert(
+        "What a disgrace but it was not possible to delete the form, try again."
       );
     }
   };
@@ -313,19 +292,13 @@ export class NewForm extends PureComponent {
         />
         <div className="row">
           <div className={`col-md-${onModeEdit ? 9 : 12}`}>
-            <SubTitle color={Colors.text.secondary}>{`${
-              onModeEdit ? "Edit" : "New"
-            } Form`}</SubTitle>
+            <SubTitle>{`${onModeEdit ? "Edit" : "New"} Form`}</SubTitle>
 
             <Header>{name ? name : generateID}</Header>
           </div>
           {onModeEdit ? (
             <div className="col-md-3">
-              <Badge
-                className="float-right"
-                text="Edit mode"
-                bg={Colors.yellow}
-              />
+              <Badge className="float-right" text="Edit mode" />
             </div>
           ) : null}
         </div>
@@ -333,7 +306,7 @@ export class NewForm extends PureComponent {
           <div className="col-md-6" style={{ marginTop: 30 }}>
             <form>
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <SubTitle color={Colors.text.secondary}>Name:</SubTitle>
+                <SubTitle>Name:</SubTitle>
                 <Input
                   placeholder="e.g: Newsletters"
                   value={name}
@@ -344,7 +317,7 @@ export class NewForm extends PureComponent {
                 />
               </div>
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <SubTitle color={Colors.text.secondary}>Description:</SubTitle>
+                <SubTitle>Description:</SubTitle>
                 <Textarea
                   className="form-control"
                   placeholder="e.g: This is a Newsletters form for my personal website."
@@ -360,14 +333,11 @@ export class NewForm extends PureComponent {
               </div>
               <hr />
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <SubTitle
-                  text="Custom endpoint:"
-                  color={Colors.text.secondary}
-                />
-                <Text
-                  text="You can choose a custom endpoint but note that the name has to be unique compared to your previously created forms."
-                  color={Colors.text.secondary}
-                />
+                <SubTitle>Custom endpoint:</SubTitle>
+                <Text>
+                  You can choose a custom endpoint but note that the name has to
+                  be unique compared to your previously created forms.
+                </Text>
                 <Input
                   placeholder="e.g: newsletters2017"
                   value={customEndpoint}
@@ -388,14 +358,14 @@ export class NewForm extends PureComponent {
                 {onModeEdit ? "Update" : "Save"} form
               </Button>
               <br />
-              {error ? <Text text={errorMsg} color={Colors.red} /> : ""}
+              {error ? <Text color="red">{errorMsg}</Text> : ""}
             </form>
           </div>
           <div className="col-md-6" style={{ marginTop: 30 }}>
             <Card>
               <div className="card-body">
                 <div className="form-group">
-                  <SubTitle color={Colors.text.secondary}>Endpoint:</SubTitle>
+                  <SubTitle>Endpoint:</SubTitle>
                   <div className="input-group">
                     <Input
                       placeholder={`${generateEndpoint}${
@@ -410,28 +380,21 @@ export class NewForm extends PureComponent {
                         customEndpoint ? customEndpoint : generateID
                       }`}
                       style={{ cursor: "pointer" }}
-                      onCopy={() =>
-                        this.props.showMessage(
-                          "success",
-                          "Endpoint copied to clipboard.",
-                          undefined,
-                          undefined
-                        )
-                      }
+                      onCopy={() => alert("Endpoint copied to clipboard.")}
                     >
                       <div className="input-group-addon">
-                        <Icon name="fa-clipboard" size={16} />
+                        <Icon name="fas fa-clipboard" size={16} />
                       </div>
                     </CopyToClipboard>
                   </div>
                 </div>
                 <hr />
                 <div>
-                  <SubTitle color={Colors.text.secondary}>Sample:</SubTitle>
-                  <Text
-                    text="Copy and paste the example of the form below into your project, change its content according to your needs."
-                    color={Colors.text.secondary}
-                  />
+                  <SubTitle>Sample:</SubTitle>
+                  <Text>
+                    Copy and paste the example of the form below into your
+                    project, change its content according to your needs.
+                  </Text>
                   <SyntaxHighlighter language="javascript" style={docco}>
                     {'<form action="' +
                       generateEndpoint +
@@ -448,10 +411,7 @@ export class NewForm extends PureComponent {
             </Card>
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <SubTitle
-                  text="Disable form submissions:"
-                  color={Colors.text.secondary}
-                />
+                <SubTitle>Disable form submissions:</SubTitle>
                 <Switch
                   onChange={value => {
                     this.setState({ disableForm: value });
@@ -461,13 +421,10 @@ export class NewForm extends PureComponent {
                 {onModeEdit ? (
                   <div>
                     <hr />
-                    <SubTitle color={Colors.text.secondary}>Settings:</SubTitle>
+                    <SubTitle>Settings:</SubTitle>
                     <ul className="list-inline">
                       <li>
-                        <Link
-                          color={Colors.red}
-                          onClick={this._showConfirmation}
-                        >
+                        <Link color="red" onClick={this._showConfirmation}>
                           Delete form
                         </Link>
                       </li>

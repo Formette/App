@@ -5,13 +5,13 @@ import { Header, SubTitle } from "../../atoms";
 //Styles
 import styled from "styled-components";
 
-const AuthLayout = props => {
+const AuthLayout = ({ className, title, description, children }) => {
   return (
-    <div className={`container ${props.className}`}>
+    <div className={`container ${className}`}>
       <form className="form-signin">
-        <Header text={props.title} />
-        <SubTitle text={props.description} />
-        {props.children}
+        <Header>{title}</Header>
+        <SubTitle>{description}</SubTitle>
+        {children}
       </form>
     </div>
   );
@@ -29,12 +29,12 @@ AuthLayout.propTypes = {
   className: PropTypes.string
 };
 
-const AuthLayoutWithStyles = styled(AuthLayout)`
+export default styled(AuthLayout)`
   padding: 150px 0 150px 0;
   h2 {
-    color: ${props => props.theme.text.secondary};
+    color: ${props => props.theme.text.primary};
   }
-  h6 {
+  h5 {
     color: ${props => props.theme.text.secondary};
     margin-bottom: 25px;
     line-height: 30px;
@@ -46,5 +46,3 @@ const AuthLayoutWithStyles = styled(AuthLayout)`
     margin: 0 auto;
   }
 `;
-
-export default AuthLayoutWithStyles;

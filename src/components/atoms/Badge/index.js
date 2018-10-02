@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 //Styles
 import styled from "styled-components";
-import Colors from "../../../styles/Colors";
 
 const Badge = ({ text, className }) => {
   return (
@@ -23,10 +22,8 @@ Badge.propTypes = {
   className: PropTypes.string
 };
 
-const BadgeWithStyles = styled(Badge)`
+export default styled(Badge)`
   span {
-    background-color: ${props => props.bg || Colors.text.normal};
+    background-color: ${props => props.bg || props.theme.color.primary};
   }
 `;
-
-export default BadgeWithStyles;

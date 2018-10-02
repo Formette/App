@@ -6,8 +6,6 @@ import AlertContainer from "react-alert";
 import AuthLayout from "../../../components/organisms/AuthLayout/index";
 import { Input, Button, Link, Icon } from "../../../components/atoms/index";
 import { Error, Graphic } from "../../../components/molecules/index";
-//Styles
-import Colors from "../../../styles/Colors";
 //API
 import { USER_QUERY } from "../../../api/Queries";
 import {
@@ -43,7 +41,7 @@ export class ConfirmUser extends React.PureComponent {
   showAlert(
     type: string = "success",
     text: string = "Some Text",
-    color: string = Colors.green,
+    color: string = "green",
     icon: string = "fa-link"
   ) {
     this.msg.show(text, {
@@ -80,12 +78,7 @@ export class ConfirmUser extends React.PureComponent {
           email
         }
       });
-      this.showAlert(
-        "success",
-        "Your code has been resent, check your email.",
-        Colors.green,
-        "fa-envelope"
-      );
+      alert("Your code has been resent, check your email.");
     } catch (e) {
       LogRocket.error({ ResendConfirmationCode: e });
       this.setState({
@@ -101,11 +94,7 @@ export class ConfirmUser extends React.PureComponent {
     if (this.props.userQuery && this.props.userQuery.error) {
       return (
         <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
-          <Button
-            className="btn btn-lg btn-primary"
-            color={Colors.primary}
-            onClick={_refreshPage}
-          >
+          <Button className="btn btn-lg" onClick={_refreshPage} primary>
             Try Again
           </Button>
         </Graphic>
@@ -140,10 +129,10 @@ export class ConfirmUser extends React.PureComponent {
         />
 
         <Button
-          className="btn btn-lg btn-primary btn-block"
+          className="btn btn-lg  btn-block"
           style={{ marginTop: 10, marginBottom: 10 }}
-          color={Colors.primary}
           onClick={this._onSendConfirmationCode}
+          primary
         >
           Confirm Account
         </Button>

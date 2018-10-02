@@ -16,8 +16,6 @@ import {
   Confirmation,
   Card
 } from "../../../components/molecules/index";
-//Styles
-import Colors from "../../../styles/Colors";
 //Utils
 import {
   _getUsername,
@@ -37,8 +35,7 @@ export class Profile extends PureComponent {
     updateUser: any,
     client: any,
     router: any,
-    updateUsername: any,
-    showMessage: () => mixed
+    updateUsername: any
   };
   state = {
     username: "",
@@ -84,22 +81,12 @@ export class Profile extends PureComponent {
         this.setState({ username });
         //this updates the navbar to the new username
         this.props.updateUsername();
-        this.props.showMessage(
-          "success",
-          "Change made successfully",
-          undefined,
-          undefined
-        );
+        alert("Change made successfully");
         LogRocket.info("Change made successfully");
         LogRocket.track("Updated username");
       } catch (e) {
         LogRocket.error({ _updateProfile: e });
-        this.props.showMessage(
-          "error",
-          "Something went wrong, try again...",
-          Colors.red,
-          "fa-times"
-        );
+        alert("Something went wrong, try again...");
       }
     } else {
       LogRocket.warn(
@@ -183,7 +170,7 @@ export class Profile extends PureComponent {
           onCancel={this._showConfirmation}
           onConfirmation={this._updateProfile}
           onConfirmationText="Confirm"
-          onConfirmationColor={Colors.green}
+          onConfirmationColor="green"
         />
         <div className="row">
           <div className="col-md-12">
@@ -194,7 +181,7 @@ export class Profile extends PureComponent {
           <div className="col-md-6">
             <form>
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <SubTitle color={Colors.text.secondary}>Username:</SubTitle>
+                <SubTitle>Username:</SubTitle>
                 <Input
                   placeholder="username"
                   defaultValue={userName}
@@ -204,7 +191,7 @@ export class Profile extends PureComponent {
                   }
                   className="form-control"
                 />
-                {error ? <Text text={errorMsg} color={Colors.red} /> : ""}
+                {error ? <Text color="red">{errorMsg}</Text> : ""}
               </div>
               <Button
                 onClick={this._showConfirmation}
@@ -218,22 +205,21 @@ export class Profile extends PureComponent {
           <div className="col-md-6">
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <SubTitle color={Colors.text.secondary}>Statistics:</SubTitle>
-                <Text
-                  text="We are great analysts, here you have your statistics of your forms."
-                  color={Colors.text.secondary}
-                />
-                <Title text={`${_formsesMeta.count} forms created`} />
+                <SubTitle>Statistics:</SubTitle>
+                <Text>
+                  We are great analysts, here you have your statistics of your
+                  forms.
+                </Text>
+                <Title>{`${_formsesMeta.count} forms created`}</Title>
               </div>
             </Card>
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <SubTitle color={Colors.text.secondary}>Current Plan:</SubTitle>
-                <Text
-                  text="More plans soon, as the platform is in beta you have access to all features."
-                  color={Colors.text.secondary}
-                />
-
+                <SubTitle>Current Plan:</SubTitle>
+                <Text>
+                  More plans soon, as the platform is in beta you have access to
+                  all features.
+                </Text>
                 <h2>
                   <span className="badge badge-dark">All the features</span>
                 </h2>
@@ -241,11 +227,11 @@ export class Profile extends PureComponent {
             </Card>
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <SubTitle color={Colors.text.secondary}>Settings:</SubTitle>
-                <Text
-                  text="This is a dangerous zone, so be careful, here you will find your settings."
-                  color={Colors.text.secondary}
-                />
+                <SubTitle>Settings:</SubTitle>
+                <Text>
+                  This is a dangerous zone, so be careful, here you will find
+                  your settings.
+                </Text>
                 <ul className="list-inline">
                   <li>
                     <Link onClick={_logout}>Log Out</Link>

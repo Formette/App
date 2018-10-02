@@ -20,7 +20,7 @@ Placeholder.propTypes = {
   className: PropTypes.string
 };
 
-const PlaceholderWithStyled = styled(Placeholder)`
+export default styled(Placeholder)`
   width: ${props => props.width}px;
   height: ${props => props.height}px;
   background: #f0f0f0;
@@ -34,5 +34,3 @@ const PlaceholderWithStyled = styled(Placeholder)`
     height: 157px;
   }
 `;
-
-export default PlaceholderWithStyled;

@@ -16,8 +16,6 @@ Error.propTypes = {
   show: PropTypes.bool
 };
 
-const ErrorWithStyles = styled(Error)`
+export default styled(Error)`
   color: ${props => props.theme.color.red} !important;
 `;
-
-export default ErrorWithStyles;

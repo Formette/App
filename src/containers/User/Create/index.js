@@ -5,8 +5,6 @@ import { graphql, compose, withApollo } from "react-apollo";
 import AuthLayout from "../../../components/organisms/AuthLayout/index";
 import { Input, Button, Link } from "../../../components/atoms/index";
 import Error from "../../../components/molecules/Error";
-//Styles
-import Colors from "../../../styles/Colors";
 //API
 import { USERNAME_VALIDATION_QUERY } from "../../../api/Queries";
 import {
@@ -198,10 +196,10 @@ export class CreateUser extends React.PureComponent {
         />
 
         <Button
-          className="btn btn-lg btn-primary btn-block"
+          className="btn btn-lg btn-block"
           onClick={this._onCreateUser}
           style={{ marginTop: 10, marginBottom: 10 }}
-          color={Colors.primary}
+          primary
         >
           Create Account
         </Button>

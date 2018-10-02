@@ -6,11 +6,9 @@ import Tools from "./Tools";
 import Cards from "./Cards";
 //Components
 import { Button, Icon } from "../../../components/atoms/index";
-import { Graphic } from "../../../components/molecules/index";
+import { Graphic, Loader } from "../../../components/molecules/index";
 //Utils
 import { _refreshPage, _getUserId } from "../../../services/utilities";
-//Styles
-import Colors from "../../../styles/Colors";
 //API
 import { ALL_FORMS_QUERY } from "../../../api/Queries";
 
@@ -29,18 +27,10 @@ export class MyForms extends Component {
   };
   render() {
     const { allFormses } = this.props.allFormsQuery;
-
-    if (this.props.allFormsQuery && this.props.allFormsQuery.loading) {
-      return <div>Loading</div>;
-    }
     if (this.props.allFormsQuery && this.props.allFormsQuery.error) {
       return (
         <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
-          <Button
-            className="btn btn-lg btn-primary"
-            color={Colors.primary}
-            onClick={_refreshPage}
-          >
+          <Button className="btn btn-lg" onClick={_refreshPage} primary>
             Try Again
           </Button>
         </Graphic>
@@ -50,7 +40,7 @@ export class MyForms extends Component {
       <Fragment>
         <Tools
           title="My forms"
-          description="Create, view and collect that for your applications"
+          description="Create, view and collect data for your applications"
           InputPlaceholder="Search forms"
         >
           <Button className="btn btn-lg" onClick={this._goToNew} primary>
@@ -58,14 +48,18 @@ export class MyForms extends Component {
           </Button>
         </Tools>
         <div className="row">
-          <Cards data={allFormses} />
+          {this.props.allFormsQuery && this.props.allFormsQuery.loading ? (
+            <Loader />
+          ) : (
+            <Cards data={allFormses} />
+          )}
         </div>
       </Fragment>
     );
   }
 }
 
-const myFormsWithData = compose(
+export default compose(
   graphql(ALL_FORMS_QUERY, {
     name: "allFormsQuery",
     options: props => ({
@@ -73,5 +67,3 @@ const myFormsWithData = compose(
     })
   })
 )(MyForms);
-
-export default myFormsWithData;

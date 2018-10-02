@@ -21,7 +21,6 @@ import CreateUser from "./containers/User/Create";
 import ConfirmUser from "./containers/User/Confirm/index";
 //Styles
 import { injectGlobal, ThemeProvider } from "styled-components";
-import Colors from "./styles/Colors";
 import theme from "./styles/Theme";
 //Utilities
 import LogRocket from "logrocket";
@@ -104,7 +103,7 @@ if (isProduction) {
 injectGlobal`
   body, html {
     margin: 0;
-    background: ${Colors.background};
+    background: ${theme.color.background};
     font-family: 'Roboto', sans-serif;
   }
   #HW_frame_cont.HW_visible {

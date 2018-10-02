@@ -48,6 +48,14 @@ class Table extends Component {
     return rows;
   };
   render() {
+    if (Object.keys(this.props.data).length === 0) {
+      return (
+        <div>
+          This form is so sad ... You do not have any submissions yet, help it,
+          go! Look for data for this poor guy.
+        </div>
+      );
+    }
     return (
       <DynamicTable
         head={this._onCreateHead()}
