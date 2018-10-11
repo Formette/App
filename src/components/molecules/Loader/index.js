@@ -25,6 +25,9 @@ Loader.propTypes = {
 };
 
 export default styled(Loader)`
-  margin: 0 auto;
-  margin-top: 100px;
+  width: 100%;
+  div {
+    margin: 0 auto;
+    margin-top: 100px;
+  }
 `;

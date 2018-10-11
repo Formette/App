@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 //Components
 import DynamicTable from "@atlaskit/dynamic-table";
+import { Graphic } from "../../../components/molecules";
 //Utils
 //import * as moment from "moment";
 
@@ -52,10 +53,11 @@ class Table extends Component {
   render() {
     if (Object.keys(this.props.data).length === 0) {
       return (
-        <div>
-          This form is so sad ... You do not have any submissions yet, help it,
-          go! Look for data for this poor guy.
-        </div>
+        <Graphic
+          title="Form without data"
+          description="This form has not received any data yet, paste the endpoint into the form of your site to start collecting data."
+          imgType="data"
+        />
       );
     }
     return (

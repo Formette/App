@@ -270,7 +270,11 @@ export class NewForm extends PureComponent {
 
     if (nullFormToEdit) {
       return (
-        <Graphic text="Ups! No form was found to edit." icon="fa-file-text-o">
+        <Graphic
+          title="Where is the form?"
+          description="Ups! No form was found to edit."
+          imgType="empty"
+        >
           <Button
             className="btn btn-lg btn-primary"
             onClick={() => this.props.history.push("/")}

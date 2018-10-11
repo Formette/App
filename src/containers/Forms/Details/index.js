@@ -99,7 +99,11 @@ export class FormDetails extends PureComponent {
     }
     if (this.props.formDataQuery && this.props.formDataQuery.error) {
       return (
-        <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
+        <Graphic
+          title="Error..."
+          description="Ups! Something went wrong try again."
+          icon="error"
+        >
           <Button
             className="btn btn-lg btn-primary"
             onClick={_refreshPage}
@@ -113,8 +117,10 @@ export class FormDetails extends PureComponent {
     if (this.props.formDataQuery.Forms === null) {
       return (
         <Graphic
-          text="Hello Indiana Jones, are you in unfamiliar lands? You are a great explorer but this form does
+          title="No data to show"
+          description="Hello Indiana Jones, are you in unfamiliar lands? You are a great explorer but this form does
                               not exist and may contain mysterious dangers. Come back home."
+          imgType="empty"
         >
           <Button
             className="btn btn-lg btn-primary"

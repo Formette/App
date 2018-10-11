@@ -88,7 +88,11 @@ export class MyForms extends Component {
     const { isLoading, isSearching, data } = this.state;
     if (this.props.allFormsQuery && this.props.allFormsQuery.error) {
       return (
-        <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
+        <Graphic
+          title="Error..."
+          description="Ups! Something went wrong try again."
+          imgType="error"
+        >
           <Button className="btn btn-lg" onClick={_refreshPage} primary>
             Try Again
           </Button>

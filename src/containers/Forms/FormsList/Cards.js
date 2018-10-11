@@ -5,7 +5,8 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardFooter
+  CardFooter,
+  Graphic
 } from "../../../components/molecules";
 import CopyToClipboard from "react-copy-to-clipboard";
 //Utils
@@ -20,6 +21,15 @@ class Cards extends PureComponent {
   };
   render() {
     const { data, alert } = this.props;
+    if (Object.keys(data).length === 0) {
+      return (
+        <Graphic
+          title="No search results"
+          description="No form was found with the words in the search box. Try searching in other words."
+          imgType="notfound"
+        />
+      );
+    }
     return (
       <Fragment>
         {data.map(item => {

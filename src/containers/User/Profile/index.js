@@ -149,7 +149,11 @@ export class Profile extends PureComponent {
     }
     if (this.props.userQuery && this.props.userQuery.error) {
       return (
-        <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
+        <Graphic
+          title="Error..."
+          description="Ups! Something went wrong try again."
+          imgType="error"
+        >
           <Button
             className="btn btn-lg btn-primary"
             onClick={_refreshPage}

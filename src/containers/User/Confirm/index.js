@@ -79,7 +79,11 @@ export class ConfirmUser extends React.PureComponent {
     }
     if (this.props.userQuery && this.props.userQuery.error) {
       return (
-        <Graphic text="Ups! Something went wrong try again." icon="fa-plug">
+        <Graphic
+          title="error..."
+          description="Ups! Something went wrong try again."
+          imgType="error"
+        >
           <Button className="btn btn-lg" onClick={_refreshPage} primary>
             Try Again
           </Button>
