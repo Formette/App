@@ -25,6 +25,7 @@ import {
   _formatUsername
 } from "../../../services/utilities";
 import LogRocket from "logrocket";
+import { withAlert } from "react-alert";
 //API
 import { USER_QUERY, USERNAME_VALIDATION_QUERY } from "../../../api/Queries";
 import { UPDATE_USER_MUTATION } from "../../../api/Mutations";
@@ -81,12 +82,12 @@ export class Profile extends PureComponent {
         this.setState({ username });
         //this updates the navbar to the new username
         this.props.updateUsername();
-        alert("Change made successfully");
+        this.props.alert.success("Change made successfully");
         LogRocket.info("Change made successfully");
         LogRocket.track("Updated username");
       } catch (e) {
         LogRocket.error({ _updateProfile: e });
-        alert("Something went wrong, try again...");
+        this.props.alert.error("Something went wrong, try again...");
       }
     } else {
       LogRocket.warn(
@@ -252,6 +253,7 @@ export class Profile extends PureComponent {
 }
 
 const profileWithData = compose(
+  withAlert,
   graphql(USER_QUERY, { name: "userQuery" }),
   graphql(UPDATE_USER_MUTATION, { name: "updateUser" })
 )(Profile);

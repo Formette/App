@@ -11,6 +11,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 //Utils
 import * as moment from "moment";
 import { random, _getUsername } from "../../../services/utilities";
+import { withAlert } from "react-alert";
 
 const colors = ["#7568F0", "#8A75F3", "#A384F6", "#A384F6", "#CA9CFB"];
 class Cards extends PureComponent {
@@ -18,7 +19,7 @@ class Cards extends PureComponent {
     url: `https://api.formette.com/${_getUsername()}/`
   };
   render() {
-    const { data } = this.props;
+    const { data, alert } = this.props;
     return (
       <Fragment>
         {data.map(item => {
@@ -53,7 +54,9 @@ class Cards extends PureComponent {
                     <CopyToClipboard
                       text={`${this.state.url}${item.endpoint.split("/")[1]}`}
                       style={{ cursor: "pointer" }}
-                      onCopy={() => alert(" Endpoint copied to clipboar")}
+                      onCopy={() =>
+                        alert.success("Endpoint copied to clipboard")
+                      }
                     >
                       <Button className="btn btn-md btn-primary" primary>
                         <Icon name="fas fa-link" color="#FFF" /> Endpoint
@@ -70,4 +73,4 @@ class Cards extends PureComponent {
   }
 }
 
-export default Cards;
+export default withAlert(Cards);

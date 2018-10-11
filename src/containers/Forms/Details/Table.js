@@ -2,7 +2,7 @@ import React, { Component } from "react";
 //Components
 import DynamicTable from "@atlaskit/dynamic-table";
 //Utils
-import * as moment from "moment";
+//import * as moment from "moment";
 
 class Table extends Component {
   state = {
@@ -22,6 +22,7 @@ class Table extends Component {
           width: undefined
         });
       }
+      return true;
     });
 
     return { cells: [...cells] };
@@ -44,6 +45,7 @@ class Table extends Component {
         key: `row-${index}-${res.id}`,
         cells: this._onGenerate(res.data[0])
       });
+      return true;
     });
     return rows;
   };

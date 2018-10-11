@@ -3,7 +3,6 @@ import React, { PureComponent } from "react";
 import { withRouter } from "react-router-dom";
 import { compose } from "react-apollo";
 //Components
-import AlertContainer from "react-alert";
 import { Footer } from "../../components/organisms/index";
 import Navbar from "./Navigation";
 //Utilities

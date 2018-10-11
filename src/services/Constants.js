@@ -1,9 +1,6 @@
 const ALERT_OPTIONS = {
-  offset: 14,
   position: "bottom left",
-  theme: "dark",
-  time: 3000,
-  transition: "fade"
+  timeout: 3000
 };
 
 export { ALERT_OPTIONS };

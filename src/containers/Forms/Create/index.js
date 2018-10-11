@@ -25,6 +25,7 @@ import {
 //Utils
 import { _getUsername, guid, _getUserId } from "../../../services/utilities";
 import LogRocket from "logrocket";
+import { withAlert } from "react-alert";
 //API
 import {
   CREATE_FORM_MUTATION,
@@ -116,7 +117,7 @@ export class NewForm extends PureComponent {
             }
           });
           //Shows feedback and updates the store
-          alert("Form created successfully");
+          this.props.alert.success("Form created successfully");
           LogRocket.log("Form created successfully");
           LogRocket.track("Created Form");
           //redirects the user to the main page
@@ -173,7 +174,7 @@ export class NewForm extends PureComponent {
         }
       });
       //Shows feedback and updates the store
-      alert("Form updated successfully");
+      this.props.alert.success("Form updated successfully");
       LogRocket.log("Form updated successfully");
       LogRocket.track("Updated Form");
       //redirects the user to the main page
@@ -199,7 +200,7 @@ export class NewForm extends PureComponent {
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
       //Shows feedback and updates the store
-      alert("Form deleted successfully");
+      this.props.alert.success("Form deleted successfully");
       LogRocket.log("Form deleted successfully");
       LogRocket.track("Deleted Form");
       //redirects the user to the main page
@@ -208,7 +209,7 @@ export class NewForm extends PureComponent {
       LogRocket.error(
         "What a disgrace but it was not possible to delete the form, try again."
       );
-      alert(
+      this.props.alert.error(
         "What a disgrace but it was not possible to delete the form, try again."
       );
     }
@@ -380,7 +381,11 @@ export class NewForm extends PureComponent {
                         customEndpoint ? customEndpoint : generateID
                       }`}
                       style={{ cursor: "pointer" }}
-                      onCopy={() => alert("Endpoint copied to clipboard.")}
+                      onCopy={() =>
+                        this.props.alert.success(
+                          "Endpoint copied to clipboard."
+                        )
+                      }
                     >
                       <div className="input-group-addon">
                         <Icon name="fas fa-clipboard" size={16} />
@@ -441,6 +446,7 @@ export class NewForm extends PureComponent {
 }
 
 const newFormWithData = compose(
+  withAlert,
   graphql(CREATE_FORM_MUTATION, { name: "createFormMutation" }),
   graphql(UPDATE_FORM_MUTATION, { name: "updateFormMutation" }),
   graphql(DELETE_FORM_MUTATION, { name: "deleteFormMutation" })

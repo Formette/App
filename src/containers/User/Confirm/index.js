@@ -2,9 +2,8 @@
 import React from "react";
 import { graphql, compose } from "react-apollo";
 //Components
-import AlertContainer from "react-alert";
 import AuthLayout from "../../../components/organisms/AuthLayout/index";
-import { Input, Button, Link, Icon } from "../../../components/atoms/index";
+import { Input, Button, Link } from "../../../components/atoms/index";
 import { Error, Graphic } from "../../../components/molecules/index";
 //API
 import { USER_QUERY } from "../../../api/Queries";
@@ -14,11 +13,10 @@ import {
 } from "../../../api/Mutations";
 //Utils
 import { getUrlParam, _refreshPage } from "../../../services/utilities";
-import { ALERT_OPTIONS } from "../../../services/Constants";
 import LogRocket from "logrocket";
+import { withAlert } from "react-alert";
 
 export class ConfirmUser extends React.PureComponent {
-  msg: () => mixed;
   props: {
     userQuery: any,
     confirmEmail: any,
@@ -37,18 +35,6 @@ export class ConfirmUser extends React.PureComponent {
         confirmToken: getUrlParam("token")
       });
     }
-  }
-  showAlert(
-    type: string = "success",
-    text: string = "Some Text",
-    color: string = "green",
-    icon: string = "fa-link"
-  ) {
-    this.msg.show(text, {
-      time: 3000,
-      type,
-      icon: <Icon name={icon} color={color} />
-    });
   }
   _onSendConfirmationCode = async () => {
     //verifies the user and saves in the DB
@@ -78,7 +64,7 @@ export class ConfirmUser extends React.PureComponent {
           email
         }
       });
-      alert("Your code has been resent, check your email.");
+      this.props.alert.show("Your code has been resent, check your email.");
     } catch (e) {
       LogRocket.error({ ResendConfirmationCode: e });
       this.setState({
@@ -114,7 +100,6 @@ export class ConfirmUser extends React.PureComponent {
         title="Please confirm your email"
         description="We like real people, we need to know if it's not a ghost of the internet."
       >
-        <AlertContainer ref={a => (this.msg = a)} {...ALERT_OPTIONS} />
         <label htmlFor="confirmToken" className="sr-only">
           Confirmation Code
         </label>
@@ -146,6 +131,7 @@ export class ConfirmUser extends React.PureComponent {
 }
 
 const confirmUserWithData = compose(
+  withAlert,
   graphql(USER_CONFIRM_TOKEN_MUTATION, { name: "confirmEmail" }),
   graphql(USER_RESEND_CONFIRMATION_MUTATION, { name: "resendConfirmation" }),
   graphql(USER_QUERY, { name: "userQuery" })

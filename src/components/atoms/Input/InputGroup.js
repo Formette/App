@@ -4,7 +4,13 @@ import Icon from "../Icon";
 //Styles
 import styled from "styled-components";
 
-const InputGroup = ({ className, InputProps, IconProps }) => {
+const InputGroup = ({
+  className,
+  InputProps,
+  IconProps,
+  onChange,
+  onKeyUp
+}) => {
   return (
     <div className={`${className} input-group input-group-lg`}>
       <div className="input-group-prepend">
@@ -12,14 +18,18 @@ const InputGroup = ({ className, InputProps, IconProps }) => {
           <Icon {...IconProps} />
         </span>
       </div>
-      <input {...InputProps} />
+      <input onChange={onChange} onKeyUp={onKeyUp} {...InputProps} />
     </div>
   );
 };
 
 InputGroup.defaultProps = {
   IconProps: { name: "fas fa-plus" },
-  InputProps: { type: "text", className: "form-control", placeholder: "Some Text" }
+  InputProps: {
+    type: "text",
+    className: "form-control",
+    placeholder: "Some Text"
+  }
 };
 
 export default styled(InputGroup)`
@@ -28,8 +38,8 @@ export default styled(InputGroup)`
   .input-group-text {
     background-color: ${props => props.theme.color.white};
     border: none;
-    i{
-        color: ${props => props.theme.text.secondary};
+    i {
+      color: ${props => props.theme.text.secondary};
     }
   }
   input {

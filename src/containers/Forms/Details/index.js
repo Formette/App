@@ -6,7 +6,7 @@ import Tools from "../FormsList/Tools";
 import Table from "./Table";
 //Components
 import CopyToClipboard from "react-copy-to-clipboard";
-import { Button, Icon } from "../../../components/atoms/index";
+import { Button, Icon, InputGroup } from "../../../components/atoms/index";
 import {
   Card,
   HorizontalList,
@@ -21,6 +21,7 @@ import {
   _getUserId
 } from "../../../services/utilities";
 import LogRocket from "logrocket";
+import { withAlert } from "react-alert";
 //API
 import { FORM_DATA_QUERY } from "../../../api/Queries";
 import { DELETE_FORM_MUTATION } from "../../../api/Mutations";
@@ -75,7 +76,7 @@ export class FormDetails extends PureComponent {
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
       //Shows feedback and updates the store
-      alert("Change this to the new alert");
+      this.props.alert.success("Form deleted successfully");
       LogRocket.info("Form deleted successfully");
       LogRocket.track("Deleted Form");
       //redirects the user to the main page
@@ -84,7 +85,9 @@ export class FormDetails extends PureComponent {
       LogRocket.warn(
         "What a disgrace but it was not possible to delete the form, try again."
       );
-      alert("Change this to the new alert");
+      this.props.alert.error(
+        "What a disgrace but it was not possible to delete the form, try again."
+      );
     }
   };
   _editForm = () => {
@@ -145,30 +148,44 @@ export class FormDetails extends PureComponent {
           description={description}
           InputPlaceholder={`Search on ${name}`}
         >
-          <HorizontalList className="float-right">
-            <li>
-              <Button className="btn btn-lg" onClick={this._editForm}>
-                <Icon name="fas fa-pen" />
-              </Button>
-            </li>
-            <li>
-              <Button className="btn btn-lg" onClick={this._showConfirmation}>
-                <Icon name="fas fa-trash" />
-              </Button>
-            </li>
-            <li>
-              <CopyToClipboard
-                text={`${url}${point[1]}`}
-                style={{ cursor: "pointer" }}
-                onCopy={() => alert("Change this")}
-              >
-                <Button className="btn btn-lg" primary>
-                  <Icon name="fas fa-link" />
-                  <span>Endpoint</span>
+          <div className="col">
+            <InputGroup
+              InputProps={{
+                type: "text",
+                className: "form-control",
+                placeholder: "Search forms"
+              }}
+              IconProps={{ name: "fas fa-search" }}
+            />
+          </div>
+          <div className="col">
+            <HorizontalList className="float-right">
+              <li>
+                <Button className="btn btn-lg" onClick={this._editForm}>
+                  <Icon name="fas fa-pen" />
                 </Button>
-              </CopyToClipboard>
-            </li>
-          </HorizontalList>
+              </li>
+              <li>
+                <Button className="btn btn-lg" onClick={this._showConfirmation}>
+                  <Icon name="fas fa-trash" />
+                </Button>
+              </li>
+              <li>
+                <CopyToClipboard
+                  text={`${url}${point[1]}`}
+                  style={{ cursor: "pointer" }}
+                  onCopy={() =>
+                    this.props.alert.success("Endpoint copied to clipboard.")
+                  }
+                >
+                  <Button className="btn btn-lg" primary>
+                    <Icon name="fas fa-link" />
+                    <span>Endpoint</span>
+                  </Button>
+                </CopyToClipboard>
+              </li>
+            </HorizontalList>
+          </div>
         </Tools>
         <div className="row">
           <div className="col-md-12">
@@ -185,6 +202,7 @@ export class FormDetails extends PureComponent {
 }
 
 export default compose(
+  withAlert,
   graphql(FORM_DATA_QUERY, {
     name: "formDataQuery",
     options: props => ({

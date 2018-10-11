@@ -22,7 +22,11 @@ import ConfirmUser from "./containers/User/Confirm/index";
 //Styles
 import { injectGlobal, ThemeProvider } from "styled-components";
 import theme from "./styles/Theme";
+//Alert
+import { Provider as AlertProvider } from "react-alert";
+import AlertTemplate from "./styles/AlertTemplate";
 //Utilities
+import { ALERT_OPTIONS } from "./services/Constants";
 import LogRocket from "logrocket";
 
 const networkInterface = createNetworkInterface({
@@ -74,16 +78,18 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ThemeProvider theme={theme}>
-      <Router>
-        <div>
-          <Switch>
-            <Route path="/signin" component={LoginUser} />
-            <Route path="/signup" component={CreateUser} />
-            <Route exact path="/confirm" component={ConfirmUser} />
-            <App />
-          </Switch>
-        </div>
-      </Router>
+      <AlertProvider template={AlertTemplate} {...ALERT_OPTIONS}>
+        <Router>
+          <div>
+            <Switch>
+              <Route path="/signin" component={LoginUser} />
+              <Route path="/signup" component={CreateUser} />
+              <Route exact path="/confirm" component={ConfirmUser} />
+              <App />
+            </Switch>
+          </div>
+        </Router>
+      </AlertProvider>
     </ThemeProvider>
   </ApolloProvider>,
   document.getElementById("root")
