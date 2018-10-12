@@ -1,26 +1,29 @@
 // @flow
 import React, { PureComponent } from "react";
 import { graphql, compose, withApollo } from "react-apollo";
+//Containers
+import Tools from "../FormsList/Tools";
 //Components
 import CopyToClipboard from "react-copy-to-clipboard";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/styles";
 import {
   SubTitle,
-  Header,
   Input,
+  InputGroup,
   Button,
   Text,
   Textarea,
   Icon,
   Switch,
-  Link,
-  Badge
+  Link
 } from "../../../components/atoms/index";
 import {
   Graphic,
   Confirmation,
-  Card
+  Card,
+  CardBody,
+  HorizontalList
 } from "../../../components/molecules/index";
 //Utils
 import { _getUsername, guid, _getUserId } from "../../../services/utilities";
@@ -296,49 +299,90 @@ export class NewForm extends PureComponent {
           onConfirmation={this._onDeleteForm}
           actionProps={{ danger: true }}
         />
-        <div className="row">
-          <div className={`col-md-${onModeEdit ? 9 : 12}`}>
-            <SubTitle>{`${onModeEdit ? "Edit" : "New"} Form`}</SubTitle>
-            <Header>{name ? name : generateID}</Header>
+
+        <Tools
+          title={name ? name : generateID}
+          description="Create a new form to collect various types of data"
+          titleTruncate
+          textTruncate
+        >
+          <div className="col">
+            <InputGroup
+              InputProps={{
+                type: "text",
+                className: "form-control",
+                placeholder: `${generateEndpoint}${
+                  customEndpoint ? customEndpoint : generateID
+                }`,
+                readOnly: true
+              }}
+              IconProps={{ name: "fas fa-link" }}
+            />
           </div>
-          {onModeEdit ? (
-            <div className="col-md-3">
-              <Badge className="float-right" text="Edit mode" />
-            </div>
-          ) : null}
-        </div>
+          <div className="col">
+            <HorizontalList>
+              <li>
+                <CopyToClipboard
+                  text={`${generateEndpoint}${
+                    customEndpoint ? customEndpoint : generateID
+                  }`}
+                  style={{ cursor: "pointer" }}
+                  onCopy={() =>
+                    this.props.alert.success("Endpoint copied to clipboard.")
+                  }
+                >
+                  <Button className="btn btn-lg">
+                    <Icon name="fas fa-clipboard" />
+                  </Button>
+                </CopyToClipboard>
+              </li>
+              <li>
+                <Button
+                  className="btn btn-lg align-right"
+                  onClick={this._createForm}
+                  primary
+                >
+                  <Icon name="fas fa-save" color="#FFF" />{" "}
+                  {onModeEdit ? "Update" : "Save"} form
+                </Button>
+              </li>
+            </HorizontalList>
+          </div>
+        </Tools>
+
         <div className="row">
           <div className="col-md-6" style={{ marginTop: 30 }}>
             <form>
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <SubTitle>Name:</SubTitle>
+                <Text highlight>Name:</Text>
                 <Input
                   placeholder="e.g: Newsletters"
                   value={name}
                   onChange={e =>
                     this.setState({ name: e.target.value, error: false })
                   }
-                  className="form-control"
+                  className={`form-control ${error && "is-invalid"}`}
+                  invalid
                 />
+                {error && <Text danger>{errorMsg}</Text>}
               </div>
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <SubTitle>Description:</SubTitle>
+                <Text highlight>Description:</Text>
                 <Textarea
                   className="form-control"
                   placeholder="e.g: This is a Newsletters form for my personal website."
                   value={description}
                   onChange={e =>
                     this.setState({
-                      description: e.target.value,
-                      error: false
+                      description: e.target.value
                     })
                   }
                   rows="3"
                 />
               </div>
-              <hr />
+
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <SubTitle>Custom endpoint:</SubTitle>
+                <Text highlight>Custom endpoint:</Text>
                 <Text>
                   You can choose a custom endpoint but note that the name has to
                   be unique compared to your previously created forms.
@@ -348,58 +392,19 @@ export class NewForm extends PureComponent {
                   value={customEndpoint}
                   onChange={e =>
                     this.setState({
-                      customEndpoint: e.target.value,
-                      error: false
+                      customEndpoint: e.target.value
                     })
                   }
                   className="form-control"
                 />
               </div>
-              <Button
-                className="btn btn-lg btn-primary btn-block"
-                onClick={this._createForm}
-                primary
-              >
-                {onModeEdit ? "Update" : "Save"} form
-              </Button>
-              <br />
-              {error ? <Text color="red">{errorMsg}</Text> : ""}
             </form>
           </div>
           <div className="col-md-6" style={{ marginTop: 30 }}>
             <Card>
               <div className="card-body">
-                <div className="form-group">
-                  <SubTitle>Endpoint:</SubTitle>
-                  <div className="input-group">
-                    <Input
-                      placeholder={`${generateEndpoint}${
-                        customEndpoint ? customEndpoint : generateID
-                      }`}
-                      className="form-control"
-                      style={{ margin: 0 }}
-                      readOnly
-                    />
-                    <CopyToClipboard
-                      text={`${generateEndpoint}${
-                        customEndpoint ? customEndpoint : generateID
-                      }`}
-                      style={{ cursor: "pointer" }}
-                      onCopy={() =>
-                        this.props.alert.success(
-                          "Endpoint copied to clipboard."
-                        )
-                      }
-                    >
-                      <div className="input-group-append">
-                        <Icon name="fas fa-clipboard" size={16} />
-                      </div>
-                    </CopyToClipboard>
-                  </div>
-                </div>
-                <hr />
                 <div>
-                  <SubTitle>Sample:</SubTitle>
+                  <Text highlight>Sample:</Text>
                   <Text>
                     Copy and paste the example of the form below into your
                     project, change its content according to your needs.
@@ -420,7 +425,7 @@ export class NewForm extends PureComponent {
             </Card>
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <SubTitle>Disable form submissions:</SubTitle>
+                <Text highlight>Disable form submissions:</Text>
                 <Switch
                   onChange={value => {
                     this.setState({ disableForm: value });

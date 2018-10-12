@@ -152,10 +152,10 @@ export class FormDetails extends PureComponent {
         />
         <Tools
           title={name}
-          description={description}
-          InputPlaceholder={`Search on ${name}`}
+          description={description || "This form has no description"}
+          titleTruncate
         >
-          <div className="col">
+          {/* <div className="col">
             <InputGroup
               InputProps={{
                 type: "text",
@@ -165,6 +165,7 @@ export class FormDetails extends PureComponent {
               IconProps={{ name: "fas fa-search" }}
             />
           </div>
+          */}
           <div className="col">
             <HorizontalList className="float-right">
               <li>

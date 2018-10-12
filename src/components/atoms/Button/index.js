@@ -24,7 +24,11 @@ const Button = styled.button`
     background: ${props =>
       props.primary
         ? lighten(0.1, props.theme.color.secondary)
-        : lighten(0.1, props.theme.color.default)} !important;
+        : props.warning
+          ? lighten(0.1, props.theme.color.yellow)
+          : props.danger
+            ? lighten(0.1, props.theme.color.red)
+            : lighten(0.1, props.theme.color.default)} !important;
   }
   &:active,
   &:visited {

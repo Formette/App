@@ -104,6 +104,8 @@ export class MyForms extends Component {
         <Tools
           title="My forms"
           description="Create, view and collect data for your applications"
+          titleTruncate
+          textTruncate
         >
           <div className="col">
             <InputGroup

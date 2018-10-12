@@ -84,5 +84,8 @@ module.exports = {
   },
   _onHandleExpression(str: string) {
     return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+  },
+  _capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 };

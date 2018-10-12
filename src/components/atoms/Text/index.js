@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const TextWithStyles = styled.p`
-  color: ${props => props.color || props.theme.text.secondary};
+  color: ${props =>
+    props.highlight
+      ? props.theme.color.primary
+      : props.danger
+        ? props.theme.color.red
+        : props.color || props.theme.text.secondary};
+  font-weight: ${props => props.highlight && "bold"};
 `;
 
 Text.defaultProps = {

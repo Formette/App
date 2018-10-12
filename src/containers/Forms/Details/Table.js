@@ -3,7 +3,8 @@ import React, { Component } from "react";
 import DynamicTable from "@atlaskit/dynamic-table";
 import { Graphic } from "../../../components/molecules";
 //Utils
-//import * as moment from "moment";
+import * as moment from "moment";
+import { _capitalizeFirstLetter } from "../../../services/utilities";
 
 class Table extends Component {
   state = {
@@ -13,19 +14,26 @@ class Table extends Component {
     const { data: content } = this.props;
     const cells = [];
     const keys = Object.keys(content[0].data[0]);
-
+    const dateKey = Object.keys(content[0]);
     keys.map(item => {
       if (item !== "__typename") {
         cells.push({
           key: item,
-          content: item,
-          isSortable: true,
+          content: _capitalizeFirstLetter(item),
+          isSortable: false,
+          shouldTruncate: true,
           width: undefined
         });
       }
       return true;
     });
-
+    cells.push({
+      key: dateKey[2],
+      content: _capitalizeFirstLetter(dateKey[2]),
+      isSortable: false,
+      shouldTruncate: true,
+      width: undefined
+    });
     return { cells: [...cells] };
   };
   _onGenerate = data => {
@@ -42,12 +50,14 @@ class Table extends Component {
     const { data } = this.props;
     const rows = [];
     data.map((res, index) => {
+      let createdAt = moment(res.createdAt).format("ll");
       rows.push({
         key: `row-${index}-${res.id}`,
-        cells: this._onGenerate(res.data[0])
+        cells: this._onGenerate({ ...res.data[0], createdAt })
       });
       return true;
     });
+    //console.log("rows = ", rows);
     return rows;
   };
   render() {
@@ -69,10 +79,6 @@ class Table extends Component {
         loadingSpinnerSize="large"
         isLoading={false}
         isFixedSize
-        defaultSortKey="term"
-        defaultSortOrder="ASC"
-        onSort={() => console.log("onSort")}
-        onSetPage={() => console.log("onSetPage")}
       />
     );
   }

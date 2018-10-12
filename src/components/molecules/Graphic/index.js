@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 //Components
-import { Text, Icon, SubTitle } from "../../atoms/index";
+import { Text, SubTitle } from "../../atoms/index";
 //Styles
 import styled from "styled-components";
 

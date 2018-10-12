@@ -36,7 +36,8 @@ export default styled(InputGroup)`
   box-shadow: ${props => props.theme.boxShadow};
   border: 1px solid ${props => props.theme.color.border};
   .input-group-text {
-    background-color: ${props => props.theme.color.white};
+    background-color: ${props =>
+      props.InputProps.readOnly ? "#E9ECEF" : props.theme.color.white};
     border: none;
     i {
       color: ${props => props.theme.text.secondary};
