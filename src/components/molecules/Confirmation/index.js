@@ -5,7 +5,7 @@ import { Title, Text, Button, Link } from "../../atoms/index";
 //Styles
 import styled from "styled-components";
 
-const Confirmation = ({ className, show, title, description, ...props }) => {
+const Confirmation = ({ className, show, title, description, actionProps, ...props }) => {
   return (
     <div
       className={`card mx-auto animated zoomInUp ${className}`}
@@ -22,7 +22,7 @@ const Confirmation = ({ className, show, title, description, ...props }) => {
             className="btn"
             onClick={() => props.onConfirmation()}
             color={props.onConfirmationColor}
-            primary
+            {...actionProps}
           >
             {props.onConfirmationText}
           </Button>

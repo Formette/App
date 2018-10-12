@@ -148,6 +148,7 @@ export class FormDetails extends PureComponent {
           show={onConfirmation}
           onCancel={this._showConfirmation}
           onConfirmation={this._onDeleteForm}
+          actionProps={{ danger: true }}
         />
         <Tools
           title={name}

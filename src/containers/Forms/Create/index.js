@@ -294,11 +294,11 @@ export class NewForm extends PureComponent {
           show={onConfirmation}
           onCancel={this._showConfirmation}
           onConfirmation={this._onDeleteForm}
+          actionProps={{ danger: true }}
         />
         <div className="row">
           <div className={`col-md-${onModeEdit ? 9 : 12}`}>
             <SubTitle>{`${onModeEdit ? "Edit" : "New"} Form`}</SubTitle>
-
             <Header>{name ? name : generateID}</Header>
           </div>
           {onModeEdit ? (
@@ -391,7 +391,7 @@ export class NewForm extends PureComponent {
                         )
                       }
                     >
-                      <div className="input-group-addon">
+                      <div className="input-group-append">
                         <Icon name="fas fa-clipboard" size={16} />
                       </div>
                     </CopyToClipboard>

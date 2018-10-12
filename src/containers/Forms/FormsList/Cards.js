@@ -27,6 +27,7 @@ class Cards extends PureComponent {
           title="No search results"
           description="No form was found with the words in the search box. Try searching in other words."
           imgType="notfound"
+          top={55}
         />
       );
     }
@@ -42,7 +43,7 @@ class Cards extends PureComponent {
               <Card>
                 <CardHeader>
                   <h5
-                    className="card-title"
+                    className="card-title text-truncate"
                     style={{ color: colors[random(0, 4)] }}
                   >
                     <Icon name="fas fa-file-alt" /> {item.name}

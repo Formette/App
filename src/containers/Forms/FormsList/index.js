@@ -125,7 +125,18 @@ export class MyForms extends Component {
           </div>
         </Tools>
         <div className="row">
-          {isLoading || isSearching ? <Loader /> : <Cards data={data} />}
+          {isLoading || isSearching ? (
+            <Loader />
+          ) : Object.keys(allFormses).length === 0 ? (
+            <Graphic
+              title="No forms created"
+              description="No form has been created yet, start by creating a new one and then added to your site to collect data"
+              imgType="empty"
+              top={55}
+            />
+          ) : (
+            <Cards data={data} />
+          )}
         </div>
       </Fragment>
     );

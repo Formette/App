@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 const Graphic = ({ title, description, imgType, className, children }) => {
   return (
-    <div className={`col ${className} text-center `}>
+    <div className={`${className} text-center `}>
       <img src={`imgs/${imgType}.svg`} alt={imgType} />
       <SubTitle>{title}</SubTitle>
       <Text>{description}</Text>
@@ -30,7 +30,7 @@ Graphic.propTypes = {
 
 export default styled(Graphic)`
   margin: 0 auto;
-  margin-top: 80px;
+  margin-top: ${props => props.top || 0}px;
   img {
     width: 300px;
   }
@@ -39,7 +39,7 @@ export default styled(Graphic)`
     margin-top: 10px;
     padding: 0 100px 0 100px;
   }
-  p {
-    padding: 0 350px;
+  @media (min-width: 992px) {
+    width: 50%;
   }
 `;

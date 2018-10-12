@@ -14,7 +14,8 @@ import {
 import {
   Graphic,
   Confirmation,
-  Card
+  Card,
+  Loader
 } from "../../../components/molecules/index";
 //Utils
 import {
@@ -145,7 +146,7 @@ export class Profile extends PureComponent {
   }
   render() {
     if (this.props.userQuery && this.props.userQuery.loading) {
-      return <div>Loading</div>;
+      return <Loader />;
     }
     if (this.props.userQuery && this.props.userQuery.error) {
       return (
@@ -175,7 +176,7 @@ export class Profile extends PureComponent {
           onCancel={this._showConfirmation}
           onConfirmation={this._updateProfile}
           onConfirmationText="Confirm"
-          onConfirmationColor="green"
+          actionProps={{ primary: true }}
         />
         <div className="row">
           <div className="col-md-12">

@@ -7,8 +7,9 @@ const NoMatch = props => {
   return (
     <Graphic
       title="Page not found"
-      description="Omg 😣 No form found to fill! The page you are trying to find is not available."
+      description="The page you are trying to find is not available."
       imgType="lost"
+      top={200}
     >
       <Button
         className="btn btn-lg"
