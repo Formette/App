@@ -6,7 +6,7 @@ import Tools from "../FormsList/Tools";
 import Table from "./Table";
 //Components
 import CopyToClipboard from "react-copy-to-clipboard";
-import { Button, Icon, InputGroup } from "../../../components/atoms/index";
+import { Button, Icon } from "../../../components/atoms/index";
 import {
   Card,
   HorizontalList,

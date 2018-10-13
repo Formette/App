@@ -9,4 +9,4 @@ script:
   - npm run build
 skip_cleanup: true
 after_success:
-#  - surge --project ./build/ --domain app.formette.com
+  - surge --project ./build/ --domain app.formette.com
