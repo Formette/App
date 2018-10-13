@@ -11,13 +11,20 @@ branches:
 script:
   - npm test
   - npm run build
-skip_cleanup: true
 deploy:
 - provider: surge
   project: ./build/
   domain: app.formette.com 
-  on: master
+  skip_cleanup: true
+  on:
+    branches:    
+      only:      
+        - master 
 - provider: surge
   project: ./build/
   domain: beta.formette.com 
-  on: develop
+  skip_cleanup: true
+  on:
+    branches:    
+      only:      
+        - develop 
