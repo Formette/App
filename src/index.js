@@ -95,14 +95,13 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-registerServiceWorker();
-
-const isProduction = false;
-if (isProduction) {
+if (process.env.REACT_APP_IS_PRODUCTION) {
   LogRocket.init("hdwf9x/formette", {
     release: "0.1.0"
   });
 }
+
+registerServiceWorker();
 
 // Global style
 // eslint-disable-next-line

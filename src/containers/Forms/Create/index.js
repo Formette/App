@@ -51,7 +51,9 @@ export class NewForm extends PureComponent {
     name: "",
     description: "",
     customEndpoint: "",
-    generateEndpoint: `https://api.formette.com/${_getUsername()}/`,
+    generateEndpoint: `${
+      process.env.REACT_APP_ENDPOINT_URL
+    }/${_getUsername()}/`,
     generateID: guid(),
     disableForm: false,
     oldData: [],
