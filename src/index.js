@@ -15,18 +15,23 @@ import {
   addGraphQLSubscriptions
 } from "subscriptions-transport-ws";
 //Containers
-import App from "./components/App";
-import LoginUser from "./containers/LoginUser";
-import CreateUser from "./containers/CreateUser";
-import ConfirmUser from "./containers/ConfirmUser";
+import App from "./containers/App";
+import LoginUser from "./containers/User/Login";
+import CreateUser from "./containers/User/Create";
+import ConfirmUser from "./containers/User/Confirm/index";
 //Styles
-import { injectGlobal } from "styled-components";
-import Colors from "./styles/Colors";
+import { injectGlobal, ThemeProvider } from "styled-components";
+import theme from "./styles/Theme";
+//Alert
+import { Provider as AlertProvider } from "react-alert";
+import AlertTemplate from "./styles/AlertTemplate";
 //Utilities
-import { API_URL, SUBSCRIPTION_URL, TOKEN } from "./services/Constants";
+import { ALERT_OPTIONS } from "./services/Constants";
 import LogRocket from "logrocket";
 
-const networkInterface = createNetworkInterface({ uri: API_URL });
+const networkInterface = createNetworkInterface({
+  uri: process.env.REACT_APP_API_URL
+});
 
 // use the auth0IdToken in localStorage for authorized requests
 networkInterface.use([
@@ -37,9 +42,9 @@ networkInterface.use([
       }
 
       // get the authentication token from local storage if it exists
-      if (localStorage.getItem(TOKEN)) {
+      if (localStorage.getItem(process.env.REACT_APP_TOKEN)) {
         req.options.headers.authorization = `Bearer ${localStorage.getItem(
-          TOKEN
+          process.env.REACT_APP_TOKEN
         )}`;
       }
       next();
@@ -48,12 +53,17 @@ networkInterface.use([
 ]);
 
 // Create WebSocket client
-const wsClient = new SubscriptionClient(SUBSCRIPTION_URL, {
-  reconnect: true,
-  connectionParams: {
-    Authorization: `Bearer ${localStorage.getItem(TOKEN)}`
+const wsClient = new SubscriptionClient(
+  process.env.REACT_APP_SUBSCRIPTION_URL,
+  {
+    reconnect: true,
+    connectionParams: {
+      Authorization: `Bearer ${localStorage.getItem(
+        process.env.REACT_APP_TOKEN
+      )}`
+    }
   }
-});
+);
 
 // Extend the network interface with the WebSocket
 const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
@@ -67,31 +77,38 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Router>
-      <div>
-        <Switch>
-          <Route path="/signin" component={LoginUser} />
-          <Route path="/signup" component={CreateUser} />
-          <Route exact path="/confirm" component={ConfirmUser} />
-          <App />
-        </Switch>
-      </div>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <AlertProvider template={AlertTemplate} {...ALERT_OPTIONS}>
+        <Router>
+          <div>
+            <Switch>
+              <Route path="/signin" component={LoginUser} />
+              <Route path="/signup" component={CreateUser} />
+              <Route exact path="/confirm" component={ConfirmUser} />
+              <App />
+            </Switch>
+          </div>
+        </Router>
+      </AlertProvider>
+    </ThemeProvider>
   </ApolloProvider>,
   document.getElementById("root")
 );
 
+if (process.env.REACT_APP_IS_PRODUCTION) {
+  LogRocket.init("hdwf9x/formette", {
+    release: "0.1.0"
+  });
+}
+
 registerServiceWorker();
-LogRocket.init("hdwf9x/formette", {
-    release: "0.1.0",
-});
 
 // Global style
 // eslint-disable-next-line
 injectGlobal`
   body, html {
     margin: 0;
-    background: ${Colors.background};
+    background: ${theme.color.background};
     font-family: 'Roboto', sans-serif;
   }
   #HW_frame_cont.HW_visible {

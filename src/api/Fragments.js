@@ -38,6 +38,10 @@ const ESSENTIAL_FORM_FIELDS_FRAGMENT = gql`
     id
     name
     createdAt
+    endpoint
+    _contentsMeta {
+      count
+    }
   }
 `;
 
