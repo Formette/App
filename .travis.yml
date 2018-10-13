@@ -4,9 +4,14 @@ node_js:
 cache:
   directories:
   - node_modules
+branches:
+  only:
+  - master
+  - develop
 script:
   - npm test
   - npm run build
 skip_cleanup: true
 after_success:
-  - surge --project ./build/ --domain app.formette.com
+  on: master
+    - surge --project ./build/ --domain app.formette.com
