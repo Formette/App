@@ -12,8 +12,12 @@ script:
   - npm test
   - npm run build
 skip_cleanup: true
-after_success:
+deploy:
+- provider: surge
+  project: ./build/
+  domain: app.formette.com 
   on: master
-    - surge --project ./build/ --domain app.formette.com
+- provider: surge
+  project: ./build/
+  domain: beta.formette.com 
   on: develop
-    - surge --project ./build/ --domain beta.formette.com
