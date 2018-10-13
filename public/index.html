@@ -29,13 +29,9 @@
     <meta property="og:description" content="Bring your forms to life, without having a need for any coding or a backend. Formette can help give your site super powers." />
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
     <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/font-awesome.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="css/animate.css" crossorigin="anonymous">
-    <!-- Begin of Chaport Live Chat code -->
-    <script async type="text/javascript">
-        (function(w, d){ w.chaport = { app_id : '59eb426b3c8d6104b6383034' }; var s = d.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://app.chaport.com/javascripts/insert.js'; var ss = d.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);})(window, document);
-    </script>
-    <!-- End of Chaport Live Chat code -->
+    <script src="https://wchat.freshchat.com/js/widget.js"></script>
   </head>
   <body>
     <div id="root"></div>
@@ -49,6 +45,12 @@
   </script>
   <script async src="//cdn.headwayapp.co/widget.js"></script>
   <!-- End of headwayapp code -->
+  <script>
+    window.fcWidget.init({
+      token: "aee3b8f8-6746-4776-83f4-f1f3cd60f915",
+      host: "https://wchat.freshchat.com"
+    });
+  </script>
   <script>
       (function (i, s, o, g, r, a, m) {
           i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {

@@ -81,5 +81,11 @@ module.exports = {
     str = str.replace(/\s+/g, ""); //removes the spaces
     str = str.toLowerCase(); //all the letter to lowercase
     return module.exports._removeAccents(str); //removes all the string accents
+  },
+  _onHandleExpression(str: string) {
+    return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+  },
+  _capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 };
