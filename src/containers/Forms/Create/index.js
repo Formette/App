@@ -22,7 +22,6 @@ import {
   Graphic,
   Confirmation,
   Card,
-  CardBody,
   HorizontalList
 } from "../../../components/molecules/index";
 //Utils

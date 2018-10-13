@@ -57,11 +57,13 @@ function registerValidSW(swUrl) {
               // It's the perfect time to display a "New content is
               // available; please refresh." message in your web app.
               console.log("New content is available; please refresh.");
+              alert("New content is available; please refresh.");
             } else {
               // At this point, everything has been precached.
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
               console.log("Content is cached for offline use.");
+              alert("Content is cached for offline use.");
             }
           }
         };
@@ -69,13 +71,14 @@ function registerValidSW(swUrl) {
     })
     .catch(error => {
       console.error("Error during service worker registration:", error);
+      alert("Error during service worker registration:");
     });
 }
 
 function checkValidServiceWorker(swUrl) {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl)
-    .then((response) => {
+    .then(response => {
       // Ensure service worker exists, and that we really are getting a JS file.
       if (
         response.status === 404 ||
@@ -96,6 +99,7 @@ function checkValidServiceWorker(swUrl) {
       console.log(
         "No internet connection found. App is running in offline mode."
       );
+      alert("No internet connection found. App is running in offline mode.");
     });
 }
 

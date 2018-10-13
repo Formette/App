@@ -12,7 +12,7 @@ const Navbar = ({ className, username }) => {
   return (
     <nav className={`navbar navbar-expand-sm fixed-top ${className}`}>
       <a className="navbar-brand" href="/">
-        <i className="fab fa-firstdraft" />
+        <i className="fas fa-box" />
       </a>
       <div className={`navbar-collapse collapse`} id="navbarCollapse">
         <ul className="navbar-nav mr-auto">
