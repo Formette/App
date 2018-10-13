@@ -307,7 +307,10 @@ export class NewForm extends PureComponent {
           titleTruncate
           textTruncate
         >
-          <div className="col">
+          <div
+            className="col-sm-auto col-md-6"
+            style={{ marginBottom: "20px" }}
+          >
             <InputGroup
               InputProps={{
                 type: "text",
@@ -320,7 +323,7 @@ export class NewForm extends PureComponent {
               IconProps={{ name: "fas fa-link" }}
             />
           </div>
-          <div className="col">
+          <div className="col-sm-auto col-md-6">
             <HorizontalList>
               <li>
                 <CopyToClipboard

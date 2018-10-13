@@ -68,6 +68,21 @@ const navigation = {
       borderRadius: properties.radius,
       marginRight: "6px"
     }
+  },
+  mobileNavbar: {
+    backgroundColor: globals.color.default,
+    brand: {
+      fontSize: typography.h4,
+      fontWeight: "bold",
+      color: globals.color.primary
+    },
+    link: {
+      fontSize: typography.h5,
+      color: globals.color.primary,
+      hover: "rgba(255, 255, 255, 0.12)",
+      borderRadius: properties.radius,
+      marginRight: "6px"
+    }
   }
 };
 
