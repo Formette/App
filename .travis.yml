@@ -15,3 +15,5 @@ skip_cleanup: true
 after_success:
   on: master
     - surge --project ./build/ --domain app.formette.com
+  on: develop
+    - surge --project ./build/ --domain beta.formette.com
