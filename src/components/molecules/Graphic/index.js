@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 const Graphic = ({ title, description, imgType, className, children }) => {
   return (
-    <div className={`${className} text-center `}>
+    <div className={`${className} text-center animated fadeIn`}>
       <img src={`imgs/${imgType}.svg`} alt={imgType} />
       <SubTitle>{title}</SubTitle>
       <Text>{description}</Text>

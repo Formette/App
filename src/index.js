@@ -116,4 +116,7 @@ injectGlobal`
     top: 60px !important;
     z-index: 9999;
   }
+  .toastify{
+    z-index: 9999;
+  }
 `;
