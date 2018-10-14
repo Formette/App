@@ -16,7 +16,9 @@ import { userSignIn } from "../../../api/Functions";
 import {
   generateToken,
   generateExpiration,
-  _formatUsername
+  _formatUsername,
+  _validateEmail,
+  _emailBlackList
 } from "../../../services/utilities";
 import LogRocket from "logrocket";
 
@@ -40,11 +42,29 @@ export class CreateUser extends React.PureComponent {
   _onCreateUser = () => {
     const { email, password, error } = this.state;
     let username = _formatUsername(this.state.username);
+
     //Verifies if the inputs are empty or not
     if (email && password && username) {
       if (error) {
         return;
       }
+
+      if (!_validateEmail(email)) {
+        this.setState({
+          error: true,
+          errorMsg: "Email entered is not valid."
+        });
+        return;
+      }
+
+      if (_emailBlackList(email)) {
+        this.setState({
+          error: true,
+          errorMsg: "Sorry, we do not support this email service."
+        });
+        return;
+      }
+
       if (this._checkPassword(password)) return;
       //Creates a new user
       this.props
@@ -148,6 +168,11 @@ export class CreateUser extends React.PureComponent {
       }, 500)
     });
   }
+  _handleKeyEnter = event => {
+    if (event.key == "Enter") {
+      this._onCreateUser();
+    }
+  };
   render() {
     const { email, password, username, error, errorMsg } = this.state;
     const { history } = this.props;
@@ -159,9 +184,12 @@ export class CreateUser extends React.PureComponent {
         <Input
           id="signupUsername"
           value={username}
-          onChange={e => this.setState({ username: e.target.value })}
+          onChange={e =>
+            this.setState({ username: e.target.value, error: false })
+          }
+          onKeyPress={this._handleKeyEnter}
           onKeyUp={e => this._onUsernameValidation(e.target.value)}
-          className="form-control"
+          className={`form-control ${error && "is-invalid"}`}
           placeholder="Username"
           required
           autoFocus
@@ -173,8 +201,9 @@ export class CreateUser extends React.PureComponent {
           id="signupEmail"
           type="email"
           value={email}
-          onChange={e => this.setState({ email: e.target.value })}
-          className="form-control"
+          onChange={e => this.setState({ email: e.target.value, error: false })}
+          onKeyPress={this._handleKeyEnter}
+          className={`form-control ${error && "is-invalid"}`}
           placeholder="Email address"
           required
           autoFocus
@@ -187,9 +216,12 @@ export class CreateUser extends React.PureComponent {
           id="signupPassword"
           type="password"
           value={password}
-          onChange={e => this.setState({ password: e.target.value })}
+          onChange={e =>
+            this.setState({ password: e.target.value, error: false })
+          }
+          onKeyPress={this._handleKeyEnter}
           onKeyUp={e => this._onPasswordValidation(e.target.value)}
-          className="form-control"
+          className={`form-control ${error && "is-invalid"}`}
           placeholder="Password"
           required
           autoFocus

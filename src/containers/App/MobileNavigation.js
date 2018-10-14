@@ -2,12 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "react-apollo";
 import { NavLink, withRouter } from "react-router-dom";
-//components
-import { Button, Icon } from "../../components/atoms/index";
-import { HorizontalList } from "../../components/molecules/index";
 //Styles
 import styled, { withTheme } from "styled-components";
-import { darken } from "polished";
 
 const MobileNavigation = ({ className }) => {
   return (

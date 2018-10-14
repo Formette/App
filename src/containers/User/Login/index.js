@@ -57,6 +57,11 @@ class LoginUser extends React.PureComponent {
       });
     }
   };
+  _handleKeyEnter = event => {
+    if (event.key == "Enter") {
+      this._onSignIn();
+    }
+  };
   render() {
     const { email, password, error, errorMsg } = this.state;
     const { history } = this.props;
@@ -69,8 +74,9 @@ class LoginUser extends React.PureComponent {
           id="signinEmail"
           type="email"
           value={email}
-          onChange={e => this.setState({ email: e.target.value })}
-          className="form-control"
+          onChange={e => this.setState({ email: e.target.value, error: false })}
+          onKeyPress={this._handleKeyEnter}
+          className={`form-control ${error && "is-invalid"}`}
           placeholder="Email address"
           required
           autoFocus
@@ -83,8 +89,11 @@ class LoginUser extends React.PureComponent {
           id="signinPassword"
           type="password"
           value={password}
-          onChange={e => this.setState({ password: e.target.value })}
-          className="form-control"
+          onChange={e =>
+            this.setState({ password: e.target.value, error: false })
+          }
+          onKeyPress={this._handleKeyEnter}
+          className={`form-control ${error && "is-invalid"}`}
           placeholder="Password"
           required
           autoFocus
