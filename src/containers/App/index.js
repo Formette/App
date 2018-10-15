@@ -5,6 +5,7 @@ import { compose } from "react-apollo";
 //Components
 import { Footer } from "../../components/organisms/index";
 import Navbar from "./Navigation";
+import MobileNavbar from "./MobileNavigation";
 //Utilities
 import { _getUsername } from "../../services/utilities";
 //Styles
@@ -30,6 +31,7 @@ class App extends PureComponent {
           <Router updateUsername={this._updateUsername} />
         </div>
         <Footer />
+        <MobileNavbar />
       </div>
     );
   }
