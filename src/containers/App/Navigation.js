@@ -11,7 +11,7 @@ import { _logout } from "../../services/utilities";
 const Navbar = ({ className, username }) => {
   return (
     <nav className={`navbar navbar-expand-sm fixed-top ${className}`}>
-      <a className="navbar-brand" href="/">
+      <a className="navbar-brand" href="#/">
         <i className="fas fa-box" />
       </a>
       <div className={`navbar-collapse collapse`} id="navbarCollapse">

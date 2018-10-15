@@ -3,20 +3,19 @@ import React, { PureComponent } from "react";
 import { graphql, compose, withApollo } from "react-apollo";
 //Components
 import {
-  Header,
   SubTitle,
-  Title,
   Input,
   Button,
   Text,
-  Link
-} from "../../../components/atoms/index";
+  Link,
+  Header
+} from "../../../components/atoms";
 import {
   Graphic,
   Confirmation,
   Card,
   Loader
-} from "../../../components/molecules/index";
+} from "../../../components/molecules";
 //Utils
 import {
   _getUsername,
@@ -187,7 +186,7 @@ export class Profile extends PureComponent {
           <div className="col-md-6">
             <form>
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <SubTitle>Username:</SubTitle>
+                <Text highlight>Username:</Text>
                 <Input
                   placeholder="username"
                   defaultValue={userName}
@@ -211,29 +210,29 @@ export class Profile extends PureComponent {
           <div className="col-md-6">
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <SubTitle>Statistics:</SubTitle>
+                <Text highlight>Statistics:</Text>
                 <Text>
                   We are great analysts, here you have your statistics of your
                   forms.
                 </Text>
-                <Title>{`${_formsesMeta.count} forms created`}</Title>
+                <SubTitle>{`${_formsesMeta.count} forms created`}</SubTitle>
               </div>
             </Card>
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <SubTitle>Current Plan:</SubTitle>
+                <Text highlight>Current Plan:</Text>
                 <Text>
                   More plans soon, as the platform is in beta you have access to
                   all features.
                 </Text>
-                <h2>
+                <SubTitle>
                   <span className="badge badge-dark">All the features</span>
-                </h2>
+                </SubTitle>
               </div>
             </Card>
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <SubTitle>Settings:</SubTitle>
+                <Text highlight>Settings:</Text>
                 <Text>
                   This is a dangerous zone, so be careful, here you will find
                   your settings.
