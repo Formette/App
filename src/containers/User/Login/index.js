@@ -58,7 +58,7 @@ class LoginUser extends React.PureComponent {
     }
   };
   _handleKeyEnter = event => {
-    if (event.key == "Enter") {
+    if (event.key === "Enter") {
       this._onSignIn();
     }
   };
