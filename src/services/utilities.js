@@ -87,5 +87,20 @@ module.exports = {
   },
   _capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+  },
+  _validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  },
+  _emailBlackList(email) {
+    const list = ["demo", "mailinator", "maildrop"];
+    if (email.includes("@")) {
+      const data = email.split("@");
+      console.log("data = ", data);
+      const string = data[1].split(".");
+      console.log("string = ", string);
+      return list.indexOf(string[0]) > -1;
+    }
+    return false;
   }
 };

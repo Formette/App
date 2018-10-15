@@ -121,6 +121,7 @@ export class FormDetails extends PureComponent {
           description="Hello Indiana Jones, are you in unfamiliar lands? You are a great explorer but this form does
                               not exist and may contain mysterious dangers. Come back home."
           imgType="empty"
+          top={200}
         >
           <Button
             className="btn btn-lg btn-primary"
