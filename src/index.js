@@ -16,8 +16,8 @@ import {
 } from "subscriptions-transport-ws";
 //Containers
 import App from "./containers/App";
-//import LoginUser from "./containers/User/Login";
-//import CreateUser from "./containers/User/Create";
+import LoginUser from "./containers/User/Login";
+import CreateUser from "./containers/User/Create";
 import ConfirmUser from "./containers/User/Confirm/index";
 //Styles
 import { injectGlobal, ThemeProvider } from "styled-components";
@@ -74,16 +74,6 @@ const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
 
 const client = new ApolloClient({
   networkInterface: networkInterfaceWithSubscriptions
-});
-
-const LoginUser = Loadable({
-  loader: () => import("./containers/User/Login"),
-  loading: () => null
-});
-
-const CreateUser = Loadable({
-  loader: () => import("./containers/User/Create"),
-  loading: () => null
 });
 
 ReactDOM.render(

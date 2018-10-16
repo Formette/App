@@ -1,11 +1,11 @@
 // @flow
 import React, { PureComponent } from "react";
 import { graphql, compose, withApollo } from "react-apollo";
+import Loadable from "react-loadable";
 //Containers
 import Tools from "../FormsList/Tools";
 //Components
 import CopyToClipboard from "react-copy-to-clipboard";
-import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/styles";
 import {
   SubTitle,
@@ -17,13 +17,14 @@ import {
   Icon,
   Switch,
   Link
-} from "../../../components/atoms/index";
+} from "../../../components/atoms";
 import {
   Graphic,
   Confirmation,
   Card,
-  HorizontalList
-} from "../../../components/molecules/index";
+  HorizontalList,
+  Loader
+} from "../../../components/molecules";
 //Utils
 import { _getUsername, guid, _getUserId } from "../../../services/utilities";
 import LogRocket from "logrocket";
@@ -36,6 +37,13 @@ import {
 } from "../../../api/Mutations";
 import { ALL_FORMS_QUERY, FORM_DATA_QUERY } from "../../../api/Queries";
 import { deleteForm } from "../../../api/Functions";
+
+const SyntaxHighlighter = Loadable({
+  loader: () => import("react-syntax-highlighter"),
+  loading() {
+    return <Loader />;
+  }
+});
 
 export class NewForm extends PureComponent {
   props: {

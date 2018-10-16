@@ -15,7 +15,7 @@ import Dropdown, {
   DropdownItem
 } from "@atlaskit/dropdown-menu";
 //Utils
-import * as moment from "moment";
+import moment from "moment";
 import { random, _getUsername, _getUserId } from "../../../services/utilities";
 import { withAlert } from "react-alert";
 import LogRocket from "logrocket";

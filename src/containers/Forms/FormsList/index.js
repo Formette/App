@@ -128,7 +128,7 @@ export class MyForms extends Component {
         </Tools>
         <div className="row">
           {isLoading || isSearching ? (
-            <Loader />
+            <Loader top={100} />
           ) : Object.keys(allFormses).length === 0 ? (
             <Graphic
               title="No forms created"

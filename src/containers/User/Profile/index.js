@@ -145,7 +145,7 @@ export class Profile extends PureComponent {
   }
   render() {
     if (this.props.userQuery && this.props.userQuery.loading) {
-      return <Loader />;
+      return <Loader top={100} />;
     }
     if (this.props.userQuery && this.props.userQuery.error) {
       return (

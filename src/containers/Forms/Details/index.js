@@ -95,7 +95,7 @@ export class FormDetails extends PureComponent {
   };
   render() {
     if (this.props.formDataQuery && this.props.formDataQuery.loading) {
-      return <Loader />;
+      return <Loader top={100} />;
     }
     if (this.props.formDataQuery && this.props.formDataQuery.error) {
       return (
