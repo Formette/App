@@ -36,8 +36,7 @@ const FormDetails = Loadable({
 
 const Profile = Loadable({
   loader: () => import("../containers/User/Profile"),
-  loading: Loading,
-  delay: 1000
+  loading: Loading
 });
 
 const NoMatch = Loadable({

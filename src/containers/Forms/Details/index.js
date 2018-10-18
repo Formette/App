@@ -6,20 +6,18 @@ import Tools from "../FormsList/Tools";
 import Table from "./Table";
 //Components
 import CopyToClipboard from "react-copy-to-clipboard";
-import { Button, Icon } from "../../../components/atoms/index";
+import { Button, Icon } from "../../../components/atoms";
 import {
   Card,
   HorizontalList,
   Graphic,
   Confirmation,
   Loader
-} from "../../../components/molecules/index";
+} from "../../../components/molecules";
+//hocs
+import { withUser } from "../../../hocs";
 //Utils
-import {
-  _getUsername,
-  _refreshPage,
-  _getUserId
-} from "../../../services/utilities";
+import { _refreshPage } from "../../../services/utilities";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 //API
@@ -31,7 +29,7 @@ import { deleteForm } from "../../../api/Functions";
 export class FormDetails extends PureComponent {
   state = {
     onConfirmation: false,
-    url: `https://api.formette.com/${_getUsername()}/`
+    url: `${process.env.REACT_APP_ENDPOINT_URL}`
   };
   props: {
     formDataQuery: any,
@@ -72,7 +70,7 @@ export class FormDetails extends PureComponent {
   _onDeleteForm = async () => {
     //deletes the form in the DB
     const { id } = this.props.match.params;
-    const userId = _getUserId();
+    const userId = this.props.user.state.profile.id;
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
       //Shows feedback and updates the store
@@ -141,6 +139,7 @@ export class FormDetails extends PureComponent {
     } = this.props.formDataQuery.Forms;
     const point = endpoint.split("/");
     const { onConfirmation, url } = this.state;
+    const { userName } = this.props.user.state;
     return (
       <div>
         <Confirmation
@@ -181,7 +180,7 @@ export class FormDetails extends PureComponent {
               </li>
               <li>
                 <CopyToClipboard
-                  text={`${url}${point[1]}`}
+                  text={`${url}/${userName}/${point[1]}`}
                   style={{ cursor: "pointer" }}
                   onCopy={() =>
                     this.props.alert.success("Endpoint copied to clipboard.")
@@ -211,6 +210,7 @@ export class FormDetails extends PureComponent {
 }
 
 export default compose(
+  withUser,
   withAlert,
   graphql(FORM_DATA_QUERY, {
     name: "formDataQuery",

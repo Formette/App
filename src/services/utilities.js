@@ -9,29 +9,9 @@ module.exports = {
   _logout() {
     // remove token from local storage and reload page to reset apollo client
     window.localStorage.removeItem("graphcoolToken");
-    module.exports._deleteUsername();
-    module.exports._deleteUserId();
     setTimeout(() => {
       window.location.reload();
     }, 200);
-  },
-  _saveUsername(username: string) {
-    window.localStorage.setItem("username", username);
-  },
-  _deleteUsername() {
-    window.localStorage.removeItem("username");
-  },
-  _getUsername() {
-    return window.localStorage.getItem("username");
-  },
-  _saveUserId(userId: string) {
-    window.localStorage.setItem("userId", userId);
-  },
-  _deleteUserId() {
-    window.localStorage.removeItem("userId");
-  },
-  _getUserId() {
-    return window.localStorage.getItem("userId");
   },
   guid() {
     function s4() {
@@ -97,9 +77,7 @@ module.exports = {
     const list = ["demo", "mailinator", "maildrop"];
     if (email.includes("@")) {
       const data = email.split("@");
-      console.log("data = ", data);
       const string = data[1].split(".");
-      console.log("string = ", string);
       return list.indexOf(string[0]) > -1;
     }
     return false;

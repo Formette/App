@@ -25,8 +25,10 @@ import {
   HorizontalList,
   Loader
 } from "../../../components/molecules";
+//hocs
+import { withUser } from "../../../hocs";
 //Utils
-import { _getUsername, guid, _getUserId } from "../../../services/utilities";
+import { guid } from "../../../services/utilities";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 //API
@@ -59,9 +61,7 @@ export class NewForm extends PureComponent {
     name: "",
     description: "",
     customEndpoint: "",
-    generateEndpoint: `${
-      process.env.REACT_APP_ENDPOINT_URL
-    }/${_getUsername()}/`,
+    generateEndpoint: `${process.env.REACT_APP_ENDPOINT_URL}`,
     generateID: guid(),
     disableForm: false,
     oldData: [],
@@ -90,7 +90,7 @@ export class NewForm extends PureComponent {
     //Verifies if the inputs are empty or not
     if (name) {
       if (error) return;
-      const userId = _getUserId();
+      const userId = this.props.user.state.profile.id;
       let endpoint = customEndpoint
         ? `${userId}/${customEndpoint}`
         : `${userId}/${generateID}`;
@@ -208,7 +208,7 @@ export class NewForm extends PureComponent {
   _onDeleteForm = () => {
     //deletes the form in the DB
     const { id } = this.props.match.params;
-    const userId = _getUserId();
+    const userId = this.props.user.state.profile.id;
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
       //Shows feedback and updates the store
@@ -279,6 +279,7 @@ export class NewForm extends PureComponent {
       nullFormToEdit,
       onConfirmation
     } = this.state;
+    const { userName } = this.props.user.state;
 
     if (nullFormToEdit) {
       return (
@@ -323,7 +324,7 @@ export class NewForm extends PureComponent {
               InputProps={{
                 type: "text",
                 className: "form-control",
-                placeholder: `${generateEndpoint}${
+                placeholder: `${generateEndpoint}/${userName}/${
                   customEndpoint ? customEndpoint : generateID
                 }`,
                 readOnly: true
@@ -335,7 +336,7 @@ export class NewForm extends PureComponent {
             <HorizontalList>
               <li>
                 <CopyToClipboard
-                  text={`${generateEndpoint}${
+                  text={`${generateEndpoint}/${userName}/${
                     customEndpoint ? customEndpoint : generateID
                   }`}
                   style={{ cursor: "pointer" }}
@@ -424,7 +425,7 @@ export class NewForm extends PureComponent {
                   <SyntaxHighlighter language="javascript" style={docco}>
                     {'<form action="' +
                       generateEndpoint +
-                      "" +
+                      `/${userName}/` +
                       (customEndpoint ? customEndpoint : generateID) +
                       '" method="post" target="_blank">\n' +
                       '  <input type="text" name="email" placeholder="Email" />\n' +
@@ -467,6 +468,7 @@ export class NewForm extends PureComponent {
 }
 
 const newFormWithData = compose(
+  withUser,
   withAlert,
   graphql(CREATE_FORM_MUTATION, { name: "createFormMutation" }),
   graphql(UPDATE_FORM_MUTATION, { name: "updateFormMutation" }),

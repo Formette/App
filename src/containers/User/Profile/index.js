@@ -10,33 +10,22 @@ import {
   Link,
   Header
 } from "../../../components/atoms";
-import {
-  Graphic,
-  Confirmation,
-  Card,
-  Loader
-} from "../../../components/molecules";
+import { Confirmation, Card } from "../../../components/molecules";
+//hocs
+import { withUser } from "../../../hocs";
 //Utils
-import {
-  _getUsername,
-  _logout,
-  _saveUsername,
-  _refreshPage,
-  _formatUsername
-} from "../../../services/utilities";
+import { _logout, _formatUsername } from "../../../services/utilities";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 //API
-import { USER_QUERY, USERNAME_VALIDATION_QUERY } from "../../../api/Queries";
+import { USERNAME_VALIDATION_QUERY } from "../../../api/Queries";
 import { UPDATE_USER_MUTATION } from "../../../api/Mutations";
 
 export class Profile extends PureComponent {
   props: {
-    userQuery: any,
     updateUser: any,
     client: any,
-    router: any,
-    updateUsername: any
+    router: any
   };
   state = {
     username: "",
@@ -45,9 +34,6 @@ export class Profile extends PureComponent {
     timeoutUserName: 0,
     onConfirmation: false
   };
-  componentDidMount() {
-    this.setState({ username: _getUsername() });
-  }
   _showConfirmation = () => {
     this.setState(prevState => ({
       onConfirmation: !prevState.onConfirmation
@@ -68,7 +54,7 @@ export class Profile extends PureComponent {
       if (error) {
         return;
       }
-      const userId = this.props.userQuery.user.id;
+      const userId = this.props.user.state.profile.id;
       //updates the user username and some else info in the DB
       try {
         await this.props.updateUser({
@@ -78,10 +64,8 @@ export class Profile extends PureComponent {
           }
         });
         //Shows feedback and updates the localStorage
-        _saveUsername(username);
         this.setState({ username });
-        //this updates the navbar to the new username
-        this.props.updateUsername();
+        this.props.user.changeUsername(username);
         this.props.alert.success("Change made successfully");
         LogRocket.info("Change made successfully");
         LogRocket.track("Updated username");
@@ -132,7 +116,8 @@ export class Profile extends PureComponent {
     });
   }
   _isTheSameUsername(username: string) {
-    if (_getUsername() === username) {
+    const { user } = this.props;
+    if (user.state.userName === username) {
       LogRocket.warn(
         "If it's the same as before, what's the point of changing?"
       );
@@ -144,28 +129,8 @@ export class Profile extends PureComponent {
     }
   }
   render() {
-    if (this.props.userQuery && this.props.userQuery.loading) {
-      return <Loader top={100} />;
-    }
-    if (this.props.userQuery && this.props.userQuery.error) {
-      return (
-        <Graphic
-          title="Error..."
-          description="Ups! Something went wrong try again."
-          imgType="error"
-        >
-          <Button
-            className="btn btn-lg btn-primary"
-            onClick={_refreshPage}
-            primary
-          >
-            Try Again
-          </Button>
-        </Graphic>
-      );
-    }
-    const { userName, _formsesMeta } = this.props.userQuery.user;
-    const { error, errorMsg, username, onConfirmation } = this.state;
+    const { error, errorMsg, onConfirmation } = this.state;
+    const { userName, formsesMeta } = this.props.user.state;
     return (
       <div>
         <Confirmation
@@ -179,7 +144,7 @@ export class Profile extends PureComponent {
         />
         <div className="row">
           <div className="col-md-12">
-            <Header>{`Hey, ${username}`}</Header>
+            <Header>{`Hey, ${this.state.username || userName}`}</Header>
           </div>
         </div>
         <div className="row">
@@ -215,7 +180,7 @@ export class Profile extends PureComponent {
                   We are great analysts, here you have your statistics of your
                   forms.
                 </Text>
-                <SubTitle>{`${_formsesMeta.count} forms created`}</SubTitle>
+                <SubTitle>{`${formsesMeta} forms created`}</SubTitle>
               </div>
             </Card>
             <Card style={{ marginTop: 10 }}>
@@ -257,8 +222,8 @@ export class Profile extends PureComponent {
 }
 
 const profileWithData = compose(
+  withUser,
   withAlert,
-  graphql(USER_QUERY, { name: "userQuery" }),
   graphql(UPDATE_USER_MUTATION, { name: "updateUser" })
 )(Profile);
 

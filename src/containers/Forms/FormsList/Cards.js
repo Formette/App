@@ -14,9 +14,11 @@ import Dropdown, {
   DropdownItemGroup,
   DropdownItem
 } from "@atlaskit/dropdown-menu";
+//hocs
+import { withUser } from "../../../hocs";
 //Utils
 import moment from "moment";
-import { random, _getUsername, _getUserId } from "../../../services/utilities";
+import { random } from "../../../services/utilities";
 import { withAlert } from "react-alert";
 import LogRocket from "logrocket";
 //API
@@ -27,14 +29,14 @@ import { deleteForm } from "../../../api/Functions";
 const colors = ["#7568F0", "#8A75F3", "#A384F6", "#A384F6", "#CA9CFB"];
 class Cards extends PureComponent {
   state = {
-    url: `${process.env.REACT_APP_ENDPOINT_URL}/${_getUsername()}/`,
+    url: `${process.env.REACT_APP_ENDPOINT_URL}`,
     onConfirmation: false,
     formId: null
   };
   _onDeleteForm = async () => {
     //deletes the form in the DB
     const { formId: id } = this.state;
-    const userId = _getUserId();
+    const userId = this.props.user.state.profile.id;
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
       //Shows feedback and updates the store
@@ -59,7 +61,7 @@ class Cards extends PureComponent {
     LogRocket.track("Opened delete modal on Form Details");
   };
   render() {
-    const { data, alert } = this.props;
+    const { data, alert, user } = this.props;
     const { onConfirmation } = this.state;
     if (Object.keys(data).length === 0) {
       return (
@@ -133,7 +135,9 @@ class Cards extends PureComponent {
                 <CardFooter>
                   <div className="text-right">
                     <CopyToClipboard
-                      text={`${this.state.url}${item.endpoint.split("/")[1]}`}
+                      text={`${this.state.url}/${user.state.userName}/${
+                        item.endpoint.split("/")[1]
+                      }`}
                       style={{ cursor: "pointer" }}
                       onCopy={() =>
                         alert.success("Endpoint copied to clipboard")
@@ -155,6 +159,7 @@ class Cards extends PureComponent {
 }
 
 export default compose(
+  withUser,
   withAlert,
   graphql(DELETE_FORM_MUTATION, { name: "deleteFormMutation" })
 )(Cards);

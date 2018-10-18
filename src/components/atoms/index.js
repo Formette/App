@@ -12,6 +12,7 @@ import { default as Switch } from "./Switch/index";
 import { default as Badge } from "./Badge/index";
 import { default as Icon } from "./Icon/index";
 import { default as Content } from "./Content/index";
+import { default as Alert } from "./Alert/index";
 
 export {
   Button,
@@ -26,5 +27,6 @@ export {
   Icon,
   Switch,
   Badge,
-  Content
+  Content,
+  Alert
 };
