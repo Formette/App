@@ -57,7 +57,6 @@ class Table extends Component {
       });
       return true;
     });
-    //console.log("rows = ", rows);
     return rows;
   };
   render() {

@@ -2,7 +2,6 @@
 //API
 import { ALL_FORMS_QUERY } from "./Queries";
 //Utilities
-import { _saveUsername, _saveUserId } from "../services/utilities";
 import LogRocket from "logrocket";
 
 /*
@@ -15,6 +14,7 @@ import LogRocket from "logrocket";
 const userSignIn = async (email: string, password: string, signinUser: any) => {
   try {
     let confirmed = "";
+    let rest = null;
     await signinUser({
       variables: {
         email,
@@ -23,9 +23,8 @@ const userSignIn = async (email: string, password: string, signinUser: any) => {
       update: (store, { data: { signinUser } }) => {
         try {
           window.localStorage.setItem("graphcoolToken", signinUser.token);
-          _saveUsername(signinUser.user.userName);
-          _saveUserId(signinUser.user.id);
           confirmed = signinUser.user.confirmed;
+          rest = signinUser.user;
           //LogRocket
           LogRocket.identify(signinUser.user.id, {
             name: signinUser.user.userName,
@@ -36,7 +35,7 @@ const userSignIn = async (email: string, password: string, signinUser: any) => {
         }
       }
     });
-    return { status: true, confirmed };
+    return { status: true, confirmed, rest };
   } catch (e) {
     return { status: false };
   }

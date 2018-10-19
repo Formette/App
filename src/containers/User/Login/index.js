@@ -1,15 +1,19 @@
 // @flow
-import React from "react";
+import React, { Fragment } from "react";
 import { graphql, compose } from "react-apollo";
 //Components
-import AuthLayout from "../../../components/organisms/AuthLayout/index";
-import { Input, Button, Link } from "../../../components/atoms/index";
+import AuthLayout from "../../../components/organisms/AuthLayout";
+import { Input, Button, Link } from "../../../components/atoms";
 import Error from "../../../components/molecules/Error";
+import { Footer } from "../../../components/organisms";
+//hocs
+import { withUser } from "../../../hocs";
 //API
 import { SIGIN_USER_MUTATION } from "../../../api/Mutations";
 import { userSignIn } from "../../../api/Functions";
 //Utils
 import LogRocket from "logrocket";
+import { _isLoggedIn } from "../../../services/utilities";
 
 class LoginUser extends React.PureComponent {
   props: {
@@ -19,6 +23,11 @@ class LoginUser extends React.PureComponent {
     history: any,
     router: any
   };
+  componentDidMount() {
+    if (_isLoggedIn()) {
+      this.props.history.push("/");
+    }
+  }
   state = {
     email: "",
     password: "",
@@ -33,13 +42,9 @@ class LoginUser extends React.PureComponent {
       const response = await userSignIn(email, password, this.props.signinUser);
       if (response.status) {
         LogRocket.track("Signed In");
-        //checks if the user has the email confirmed
-        if (response.confirmed) {
-          //sends to the dashboard
-          this.props.history.push("/");
-        } else {
-          this.props.history.push("/confirm");
-        }
+        this.props.user.updateUser(response.rest);
+        //sends to the dashboard
+        this.props.history.push("/");
       } else {
         LogRocket.log("Ops! Invalid Email or password.");
         this.setState({
@@ -66,61 +71,67 @@ class LoginUser extends React.PureComponent {
     const { email, password, error, errorMsg } = this.state;
     const { history } = this.props;
     return (
-      <AuthLayout description="Welcome back, Come quick! Your forms are waiting for you">
-        <label htmlFor="signinEmail" className="sr-only">
-          Email address
-        </label>
-        <Input
-          id="signinEmail"
-          type="email"
-          value={email}
-          onChange={e => this.setState({ email: e.target.value, error: false })}
-          onKeyPress={this._handleKeyEnter}
-          className={`form-control ${error && "is-invalid"}`}
-          placeholder="Email address"
-          required
-          autoFocus
-        />
+      <Fragment>
+        <AuthLayout description="Welcome back, Come quick! Your forms are waiting for you">
+          <label htmlFor="signinEmail" className="sr-only">
+            Email address
+          </label>
+          <Input
+            id="signinEmail"
+            type="email"
+            value={email}
+            onChange={e =>
+              this.setState({ email: e.target.value, error: false })
+            }
+            onKeyPress={this._handleKeyEnter}
+            className={`form-control ${error && "is-invalid"}`}
+            placeholder="Email address"
+            required
+            autoFocus
+          />
 
-        <label htmlFor="signinPassword" className="sr-only">
-          Password
-        </label>
-        <Input
-          id="signinPassword"
-          type="password"
-          value={password}
-          onChange={e =>
-            this.setState({ password: e.target.value, error: false })
-          }
-          onKeyPress={this._handleKeyEnter}
-          className={`form-control ${error && "is-invalid"}`}
-          placeholder="Password"
-          required
-          autoFocus
-        />
+          <label htmlFor="signinPassword" className="sr-only">
+            Password
+          </label>
+          <Input
+            id="signinPassword"
+            type="password"
+            value={password}
+            onChange={e =>
+              this.setState({ password: e.target.value, error: false })
+            }
+            onKeyPress={this._handleKeyEnter}
+            className={`form-control ${error && "is-invalid"}`}
+            placeholder="Password"
+            required
+            autoFocus
+          />
 
-        <Button
-          className="btn btn-lg btn-block"
-          onClick={this._onSignIn}
-          style={{ marginTop: 10, marginBottom: 10 }}
-          primary
-        >
-          Sign In
-        </Button>
+          <Button
+            className="btn btn-lg btn-block"
+            onClick={this._onSignIn}
+            style={{ marginTop: 10, marginBottom: 10 }}
+            primary
+          >
+            Sign In
+          </Button>
 
-        <Link onClick={() => history.push("/signup")}>
-          Do not have an account yet? Omg is free.{" "}
-          <u>
-            <strong>Create here!</strong>
-          </u>
-        </Link>
-        <Error show={error}>{errorMsg}</Error>
-      </AuthLayout>
+          <Link onClick={() => history.push("/signup")}>
+            Do not have an account yet? Omg is free.{" "}
+            <u>
+              <strong>Create here!</strong>
+            </u>
+          </Link>
+          <Error show={error}>{errorMsg}</Error>
+        </AuthLayout>
+        <Footer />
+      </Fragment>
     );
   }
 }
 
 const loginUserWithData = compose(
+  withUser,
   graphql(SIGIN_USER_MUTATION, { name: "signinUser" })
 );
 
