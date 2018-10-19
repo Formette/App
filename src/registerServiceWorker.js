@@ -9,7 +9,7 @@ import Toastify from "toastify-js";
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
 const toastOption = {
-  duration: 9000,
+  duration: 10000,
   close: true,
   gravity: "top", // `top` or `bottom`
   positionLeft: false // `true` or `false`

@@ -4,15 +4,16 @@ import { graphql, compose } from "react-apollo";
 //Components
 import AuthLayout from "../../../components/organisms/AuthLayout/index";
 import { Input, Button, Link } from "../../../components/atoms/index";
-import { Error, Graphic } from "../../../components/molecules/index";
+import { Error } from "../../../components/molecules/index";
+//hocs
+import { withUser } from "../../../hocs";
 //API
-import { USER_QUERY } from "../../../api/Queries";
 import {
   USER_CONFIRM_TOKEN_MUTATION,
   USER_RESEND_CONFIRMATION_MUTATION
 } from "../../../api/Mutations";
 //Utils
-import { getUrlParam, _refreshPage } from "../../../services/utilities";
+import { getUrlParam, _isLoggedIn } from "../../../services/utilities";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 
@@ -30,10 +31,27 @@ export class ConfirmUser extends React.PureComponent {
     errorMsg: ""
   };
   componentDidMount() {
+    console.log(this.props);
+    const { user, history } = this.props;
+
+    //Checks if the user clicked on link send
     if (getUrlParam("token")) {
       this.setState({
         confirmToken: getUrlParam("token")
       });
+    } else {
+      //Checks if a user is login if not redirect to signin page
+      if (!_isLoggedIn()) {
+        history.push("/signin");
+        return;
+      }
+      //Checks if the user already confirmed, redirect to main page
+      if (user.state.profile.confirmed) {
+        history.push("/");
+        return;
+      } else {
+        this._onResendConfirmationCode();
+      }
     }
   }
   _onSendConfirmationCode = async () => {
@@ -58,13 +76,13 @@ export class ConfirmUser extends React.PureComponent {
   _onResendConfirmationCode = async () => {
     //If the code is invalid resend a new code
     try {
-      const email = this.props.userQuery.user.email;
+      const email = this.props.user.state.profile.email;
       await this.props.resendConfirmation({
         variables: {
           email
         }
       });
-      this.props.alert.show("Your code has been resent, check your email.");
+      this.props.alert.show("Your code has been sent, check your email.");
     } catch (e) {
       LogRocket.error({ ResendConfirmationCode: e });
       this.setState({
@@ -74,30 +92,6 @@ export class ConfirmUser extends React.PureComponent {
     }
   };
   render() {
-    if (this.props.userQuery && this.props.userQuery.loading) {
-      return <div>Loading</div>;
-    }
-    if (this.props.userQuery && this.props.userQuery.error) {
-      return (
-        <Graphic
-          title="error..."
-          description="Ups! Something went wrong try again."
-          imgType="error"
-        >
-          <Button className="btn btn-lg" onClick={_refreshPage} primary>
-            Try Again
-          </Button>
-        </Graphic>
-      );
-    }
-    if (this.props.userQuery.user === null) {
-      this.props.history.push("/signin");
-      return true;
-    }
-    if (this.props.userQuery.user.confirmed) {
-      this.props.history.push("/");
-      return true;
-    }
     const { confirmToken, error, errorMsg } = this.state;
     return (
       <AuthLayout
@@ -135,10 +129,10 @@ export class ConfirmUser extends React.PureComponent {
 }
 
 const confirmUserWithData = compose(
+  withUser,
   withAlert,
   graphql(USER_CONFIRM_TOKEN_MUTATION, { name: "confirmEmail" }),
-  graphql(USER_RESEND_CONFIRMATION_MUTATION, { name: "resendConfirmation" }),
-  graphql(USER_QUERY, { name: "userQuery" })
+  graphql(USER_RESEND_CONFIRMATION_MUTATION, { name: "resendConfirmation" })
 );
 
 export default confirmUserWithData(ConfirmUser);

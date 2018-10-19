@@ -10,7 +10,7 @@ const MobileNavigation = ({ className }) => {
     <nav className={`navbar fixed-bottom ${className}`}>
       <ul className="nav mx-auto">
         <li className="nav-item">
-          <NavLink className="nav-link" activeClassName="active" to="#/">
+          <NavLink className="nav-link" activeClassName="active" to="/">
             <i className="fas fa-archive" />
           </NavLink>
         </li>
