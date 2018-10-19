@@ -1,11 +1,11 @@
 // @flow
 import React, { PureComponent } from "react";
 import { graphql, compose, withApollo } from "react-apollo";
+import Loadable from "react-loadable";
 //Containers
 import Tools from "../FormsList/Tools";
 //Components
 import CopyToClipboard from "react-copy-to-clipboard";
-import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/styles";
 import {
   SubTitle,
@@ -17,15 +17,18 @@ import {
   Icon,
   Switch,
   Link
-} from "../../../components/atoms/index";
+} from "../../../components/atoms";
 import {
   Graphic,
   Confirmation,
   Card,
-  HorizontalList
-} from "../../../components/molecules/index";
+  HorizontalList,
+  Loader
+} from "../../../components/molecules";
+//hocs
+import { withUser } from "../../../hocs";
 //Utils
-import { _getUsername, guid, _getUserId } from "../../../services/utilities";
+import { guid } from "../../../services/utilities";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 //API
@@ -36,6 +39,13 @@ import {
 } from "../../../api/Mutations";
 import { ALL_FORMS_QUERY, FORM_DATA_QUERY } from "../../../api/Queries";
 import { deleteForm } from "../../../api/Functions";
+
+const SyntaxHighlighter = Loadable({
+  loader: () => import("react-syntax-highlighter"),
+  loading() {
+    return <Loader />;
+  }
+});
 
 export class NewForm extends PureComponent {
   props: {
@@ -51,9 +61,7 @@ export class NewForm extends PureComponent {
     name: "",
     description: "",
     customEndpoint: "",
-    generateEndpoint: `${
-      process.env.REACT_APP_ENDPOINT_URL
-    }/${_getUsername()}/`,
+    generateEndpoint: `${process.env.REACT_APP_ENDPOINT_URL}`,
     generateID: guid(),
     disableForm: false,
     oldData: [],
@@ -82,7 +90,7 @@ export class NewForm extends PureComponent {
     //Verifies if the inputs are empty or not
     if (name) {
       if (error) return;
-      const userId = _getUserId();
+      const userId = this.props.user.state.profile.id;
       let endpoint = customEndpoint
         ? `${userId}/${customEndpoint}`
         : `${userId}/${generateID}`;
@@ -125,7 +133,7 @@ export class NewForm extends PureComponent {
           LogRocket.log("Form created successfully");
           LogRocket.track("Created Form");
           //redirects the user to the main page
-          this.props.history.push("/");
+          this.props.history.goBack();
         }
       } catch (e) {
         LogRocket.error({ CreateForm: e });
@@ -182,7 +190,7 @@ export class NewForm extends PureComponent {
       LogRocket.log("Form updated successfully");
       LogRocket.track("Updated Form");
       //redirects the user to the main page
-      this.props.history.push("/");
+      this.props.history.goBack();
     } catch (e) {
       LogRocket.error({ UpdateForm: e });
       this.setState({
@@ -200,7 +208,7 @@ export class NewForm extends PureComponent {
   _onDeleteForm = () => {
     //deletes the form in the DB
     const { id } = this.props.match.params;
-    const userId = _getUserId();
+    const userId = this.props.user.state.profile.id;
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
       //Shows feedback and updates the store
@@ -271,6 +279,7 @@ export class NewForm extends PureComponent {
       nullFormToEdit,
       onConfirmation
     } = this.state;
+    const { userName } = this.props.user.state;
 
     if (nullFormToEdit) {
       return (
@@ -307,12 +316,15 @@ export class NewForm extends PureComponent {
           titleTruncate
           textTruncate
         >
-          <div className="col">
+          <div
+            className="col-sm-auto col-md-6"
+            style={{ marginBottom: "20px" }}
+          >
             <InputGroup
               InputProps={{
                 type: "text",
                 className: "form-control",
-                placeholder: `${generateEndpoint}${
+                placeholder: `${generateEndpoint}/${userName}/${
                   customEndpoint ? customEndpoint : generateID
                 }`,
                 readOnly: true
@@ -320,11 +332,11 @@ export class NewForm extends PureComponent {
               IconProps={{ name: "fas fa-link" }}
             />
           </div>
-          <div className="col">
+          <div className="col-sm-auto col-md-6">
             <HorizontalList>
               <li>
                 <CopyToClipboard
-                  text={`${generateEndpoint}${
+                  text={`${generateEndpoint}/${userName}/${
                     customEndpoint ? customEndpoint : generateID
                   }`}
                   style={{ cursor: "pointer" }}
@@ -413,7 +425,7 @@ export class NewForm extends PureComponent {
                   <SyntaxHighlighter language="javascript" style={docco}>
                     {'<form action="' +
                       generateEndpoint +
-                      "" +
+                      `/${userName}/` +
                       (customEndpoint ? customEndpoint : generateID) +
                       '" method="post" target="_blank">\n' +
                       '  <input type="text" name="email" placeholder="Email" />\n' +
@@ -456,6 +468,7 @@ export class NewForm extends PureComponent {
 }
 
 const newFormWithData = compose(
+  withUser,
   withAlert,
   graphql(CREATE_FORM_MUTATION, { name: "createFormMutation" }),
   graphql(UPDATE_FORM_MUTATION, { name: "updateFormMutation" }),

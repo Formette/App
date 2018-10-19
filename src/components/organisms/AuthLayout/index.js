@@ -30,7 +30,7 @@ AuthLayout.propTypes = {
 };
 
 export default styled(AuthLayout)`
-  padding: 150px 0 150px 0;
+  padding: 150px 0;
   h2 {
     color: ${props => props.theme.text.primary};
   }
@@ -44,5 +44,8 @@ export default styled(AuthLayout)`
     max-width: 420px;
     padding: 15px;
     margin: 0 auto;
+  }
+  @media (max-width: 576px) {
+    padding: 86px 0;
   }
 `;

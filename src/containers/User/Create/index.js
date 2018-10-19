@@ -1,10 +1,13 @@
 // @flow
-import React from "react";
+import React, { Fragment } from "react";
 import { graphql, compose, withApollo } from "react-apollo";
 //Components
-import AuthLayout from "../../../components/organisms/AuthLayout/index";
-import { Input, Button, Link } from "../../../components/atoms/index";
+import AuthLayout from "../../../components/organisms/AuthLayout";
+import { Input, Button, Link } from "../../../components/atoms";
 import Error from "../../../components/molecules/Error";
+import { Footer } from "../../../components/organisms";
+//hocs
+import { withUser } from "../../../hocs";
 //API
 import { USERNAME_VALIDATION_QUERY } from "../../../api/Queries";
 import {
@@ -16,7 +19,10 @@ import { userSignIn } from "../../../api/Functions";
 import {
   generateToken,
   generateExpiration,
-  _formatUsername
+  _formatUsername,
+  _validateEmail,
+  _emailBlackList,
+  _isLoggedIn
 } from "../../../services/utilities";
 import LogRocket from "logrocket";
 
@@ -37,14 +43,37 @@ export class CreateUser extends React.PureComponent {
     timeoutUserName: 0,
     timeoutPassword: 0
   };
+  componentDidMount() {
+    if (_isLoggedIn()) {
+      this.props.history.push("/");
+    }
+  }
   _onCreateUser = () => {
     const { email, password, error } = this.state;
     let username = _formatUsername(this.state.username);
+
     //Verifies if the inputs are empty or not
     if (email && password && username) {
       if (error) {
         return;
       }
+
+      if (!_validateEmail(email)) {
+        this.setState({
+          error: true,
+          errorMsg: "Email entered is not valid."
+        });
+        return;
+      }
+
+      if (_emailBlackList(email)) {
+        this.setState({
+          error: true,
+          errorMsg: "Sorry, we do not support this email service."
+        });
+        return;
+      }
+
       if (this._checkPassword(password)) return;
       //Creates a new user
       this.props
@@ -81,13 +110,9 @@ export class CreateUser extends React.PureComponent {
     const response = await userSignIn(email, password, this.props.signinUser);
     if (response.status) {
       LogRocket.track("Sign in");
-      //checks if the user has the email confirmed
-      if (response.confirmed) {
-        //sends to the dashboard
-        this.props.history.push("/");
-      } else {
-        this.props.history.push("/confirm");
-      }
+      this.props.user.updateUser(response.rest);
+      //sends to the dashboard
+      this.props.history.push("/");
     } else {
       LogRocket.error({ SignIn: response });
       this.setState({
@@ -148,75 +173,93 @@ export class CreateUser extends React.PureComponent {
       }, 500)
     });
   }
+  _handleKeyEnter = event => {
+    if (event.key === "Enter") {
+      this._onCreateUser();
+    }
+  };
   render() {
     const { email, password, username, error, errorMsg } = this.state;
     const { history } = this.props;
     return (
-      <AuthLayout description="Seriously? Your forms do not have a home for the data? Do not worry, they will not be without shelter.">
-        <label htmlFor="signupUsername" className="sr-only">
-          Username
-        </label>
-        <Input
-          id="signupUsername"
-          value={username}
-          onChange={e => this.setState({ username: e.target.value })}
-          onKeyUp={e => this._onUsernameValidation(e.target.value)}
-          className="form-control"
-          placeholder="Username"
-          required
-          autoFocus
-        />
-        <label htmlFor="signupEmail" className="sr-only">
-          Email address
-        </label>
-        <Input
-          id="signupEmail"
-          type="email"
-          value={email}
-          onChange={e => this.setState({ email: e.target.value })}
-          className="form-control"
-          placeholder="Email address"
-          required
-          autoFocus
-        />
+      <Fragment>
+        <AuthLayout description="Seriously? Your forms do not have a home for the data? Do not worry, they will not be without shelter.">
+          <label htmlFor="signupUsername" className="sr-only">
+            Username
+          </label>
+          <Input
+            id="signupUsername"
+            value={username}
+            onChange={e =>
+              this.setState({ username: e.target.value, error: false })
+            }
+            onKeyPress={this._handleKeyEnter}
+            onKeyUp={e => this._onUsernameValidation(e.target.value)}
+            className={`form-control ${error && "is-invalid"}`}
+            placeholder="Username"
+            required
+            autoFocus
+          />
+          <label htmlFor="signupEmail" className="sr-only">
+            Email address
+          </label>
+          <Input
+            id="signupEmail"
+            type="email"
+            value={email}
+            onChange={e =>
+              this.setState({ email: e.target.value, error: false })
+            }
+            onKeyPress={this._handleKeyEnter}
+            className={`form-control ${error && "is-invalid"}`}
+            placeholder="Email address"
+            required
+            autoFocus
+          />
 
-        <label htmlFor="signupPassword" className="sr-only">
-          Password
-        </label>
-        <Input
-          id="signupPassword"
-          type="password"
-          value={password}
-          onChange={e => this.setState({ password: e.target.value })}
-          onKeyUp={e => this._onPasswordValidation(e.target.value)}
-          className="form-control"
-          placeholder="Password"
-          required
-          autoFocus
-        />
+          <label htmlFor="signupPassword" className="sr-only">
+            Password
+          </label>
+          <Input
+            id="signupPassword"
+            type="password"
+            value={password}
+            onChange={e =>
+              this.setState({ password: e.target.value, error: false })
+            }
+            onKeyPress={this._handleKeyEnter}
+            onKeyUp={e => this._onPasswordValidation(e.target.value)}
+            className={`form-control ${error && "is-invalid"}`}
+            placeholder="Password"
+            required
+            autoFocus
+          />
 
-        <Button
-          className="btn btn-lg btn-block"
-          onClick={this._onCreateUser}
-          style={{ marginTop: 10, marginBottom: 10 }}
-          primary
-        >
-          Create Account
-        </Button>
+          <Button
+            className="btn btn-lg btn-block"
+            onClick={this._onCreateUser}
+            style={{ marginTop: 10, marginBottom: 10 }}
+            primary
+          >
+            Create Account
+          </Button>
 
-        <Link onClick={() => history.push("/signin")}>
-          Already have an account? Your forms miss you.{" "}
-          <u>
-            <strong>Sign In</strong>
-          </u>
-        </Link>
-        <Error show={error}>{errorMsg}</Error>
-      </AuthLayout>
+          <Link onClick={() => history.push("/signin")}>
+            Already have an account? Your forms miss you.{" "}
+            <u>
+              <strong>Sign In</strong>
+            </u>
+          </Link>
+          <Error show={error}>{errorMsg}</Error>
+        </AuthLayout>
+        <Footer />
+      </Fragment>
     );
   }
 }
 
 const createUserWithData = compose(
+  withUser,
   graphql(CREATE_USER_MUTATION, { name: "createUser" }),
   graphql(SIGIN_USER_MUTATION, { name: "signinUser" })
 );

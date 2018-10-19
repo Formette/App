@@ -1,5 +1,12 @@
 {
-  "presets": ["env", "react"],
+  "presets": [
+    "env": {
+      "production": {
+        "plugins": ["transform-remove-console"]
+      }
+    },
+    "react"
+  ],
   "plugins": ["transform-object-rest-spread", "transform-runtime"],
   "env": {
     "development": {

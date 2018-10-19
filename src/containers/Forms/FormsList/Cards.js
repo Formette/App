@@ -6,21 +6,63 @@ import {
   CardBody,
   CardHeader,
   CardFooter,
-  Graphic
+  Graphic,
+  Confirmation
 } from "../../../components/molecules";
 import CopyToClipboard from "react-copy-to-clipboard";
+import Dropdown, {
+  DropdownItemGroup,
+  DropdownItem
+} from "@atlaskit/dropdown-menu";
+//hocs
+import { withUser } from "../../../hocs";
 //Utils
-import * as moment from "moment";
-import { random, _getUsername } from "../../../services/utilities";
+import moment from "moment";
+import { random } from "../../../services/utilities";
 import { withAlert } from "react-alert";
+import LogRocket from "logrocket";
+//API
+import { graphql, compose } from "react-apollo";
+import { DELETE_FORM_MUTATION } from "../../../api/Mutations";
+import { deleteForm } from "../../../api/Functions";
 
 const colors = ["#7568F0", "#8A75F3", "#A384F6", "#A384F6", "#CA9CFB"];
 class Cards extends PureComponent {
   state = {
-    url: `https://api.formette.com/${_getUsername()}/`
+    url: `${process.env.REACT_APP_ENDPOINT_URL}`,
+    onConfirmation: false,
+    formId: null
+  };
+  _onDeleteForm = async () => {
+    //deletes the form in the DB
+    const { formId: id } = this.state;
+    const userId = this.props.user.state.profile.id;
+    const response = deleteForm(id, userId, this.props.deleteFormMutation);
+    if (response) {
+      //Shows feedback and updates the store
+      this.props.alert.success("Form deleted successfully");
+      LogRocket.info("Form deleted successfully from form list");
+      LogRocket.track("Deleted Form");
+      this.setState({ onConfirmation: false, formId: null });
+    } else {
+      LogRocket.warn(
+        "What a disgrace but it was not possible to delete the form, try again."
+      );
+      this.props.alert.error(
+        "It was not possible to delete the form, try again."
+      );
+    }
+  };
+  _showConfirmation = formId => {
+    this.setState(prevState => ({
+      formId,
+      onConfirmation: !prevState.onConfirmation
+    }));
+    LogRocket.track("Opened delete modal on Form Details");
   };
   render() {
-    const { data, alert } = this.props;
+    const { data, alert, user } = this.props;
+    const { onConfirmation } = this.state;
     if (Object.keys(data).length === 0) {
       return (
         <Graphic
@@ -33,6 +75,14 @@ class Cards extends PureComponent {
     }
     return (
       <Fragment>
+        <Confirmation
+          title="Are you sure?"
+          description="Are you sure you want to delete this form?"
+          show={onConfirmation}
+          onCancel={this._showConfirmation}
+          onConfirmation={this._onDeleteForm}
+          actionProps={{ danger: true }}
+        />
         {data.map(item => {
           return (
             <div
@@ -40,8 +90,30 @@ class Cards extends PureComponent {
               className="col-12 col-sm-12 col-md-4 col-lg-3"
               style={{ marginBottom: "30px" }}
             >
-              <Card>
+              <Card className="animated fadeIn">
                 <CardHeader>
+                  <span style={{ float: "right" }}>
+                    <Dropdown
+                      trigger={
+                        <Link className="text-muted">
+                          <Icon name="fas fa-ellipsis-v" />
+                        </Link>
+                      }
+                      isMenuFixed={true}
+                      position="bottom right"
+                    >
+                      <DropdownItemGroup title="Actions">
+                        <DropdownItem href={`#/edit/${item.id}`}>
+                          <Icon name="fas fa-pen" /> Edit
+                        </DropdownItem>
+                        <DropdownItem
+                          onClick={() => this._showConfirmation(item.id)}
+                        >
+                          <Icon name="fas fa-trash" /> Delete
+                        </DropdownItem>
+                      </DropdownItemGroup>
+                    </Dropdown>
+                  </span>
                   <h5
                     className="card-title text-truncate"
                     style={{ color: colors[random(0, 4)] }}
@@ -63,7 +135,9 @@ class Cards extends PureComponent {
                 <CardFooter>
                   <div className="text-right">
                     <CopyToClipboard
-                      text={`${this.state.url}${item.endpoint.split("/")[1]}`}
+                      text={`${this.state.url}/${user.state.userName}/${
+                        item.endpoint.split("/")[1]
+                      }`}
                       style={{ cursor: "pointer" }}
                       onCopy={() =>
                         alert.success("Endpoint copied to clipboard")
@@ -84,4 +158,8 @@ class Cards extends PureComponent {
   }
 }
 
-export default withAlert(Cards);
+export default compose(
+  withUser,
+  withAlert,
+  graphql(DELETE_FORM_MUTATION, { name: "deleteFormMutation" })
+)(Cards);

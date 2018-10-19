@@ -28,6 +28,6 @@ export default styled(Loader)`
   width: 100%;
   div {
     margin: 0 auto;
-    margin-top: 100px;
+    margin-top: ${props => props.top || 0}px;
   }
 `;

@@ -13,10 +13,13 @@ const SIGIN_USER_MUTATION = gql`
       token
       user {
         ...essentialUserFields
+        _formsesMeta {
+          count
+        }
       }
     }
   }
-   ${ESSENTIAL_USER_FIELDS_FRAGMENT}
+  ${ESSENTIAL_USER_FIELDS_FRAGMENT}
 `;
 
 const CREATE_USER_MUTATION = gql`
@@ -87,7 +90,7 @@ const CREATE_FORM_MUTATION = gql`
       ...essentialFormFields
     }
   }
-   ${ESSENTIAL_FORM_FIELDS_FRAGMENT}
+  ${ESSENTIAL_FORM_FIELDS_FRAGMENT}
 `;
 
 //this updates the selected form and all of is data

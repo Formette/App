@@ -1,3 +1,4 @@
+import Toastify from "toastify-js";
 // In production, we register a service worker to serve assets from local cache.
 
 // This lets the app load faster on subsequent visits in production, and gives
@@ -7,6 +8,12 @@
 
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
+const toastOption = {
+  duration: 10000,
+  close: true,
+  gravity: "top", // `top` or `bottom`
+  positionLeft: false // `true` or `false`
+};
 
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
@@ -56,8 +63,11 @@ function registerValidSW(swUrl) {
               // the fresh content will have been added to the cache.
               // It's the perfect time to display a "New content is
               // available; please refresh." message in your web app.
-              console.log("New content is available; please refresh.");
-              alert("New content is available; please refresh.");
+              Toastify({
+                text: "New content is available, please refresh or sign out.",
+                backgroundColor: "#228ae6",
+                ...toastOption
+              }).showToast();
             } else {
               // At this point, everything has been precached.
               // It's the perfect time to display a
@@ -70,7 +80,11 @@ function registerValidSW(swUrl) {
     })
     .catch(error => {
       console.error("Error during service worker registration:", error);
-      alert("Error during service worker registration:");
+      Toastify({
+        text: "Error registering new content, please refresh or sign out.",
+        backgroundColor: "#fa5252",
+        ...toastOption
+      }).showToast();
     });
 }
 
@@ -95,10 +109,11 @@ function checkValidServiceWorker(swUrl) {
       }
     })
     .catch(() => {
-      console.log(
-        "No internet connection found. App is running in offline mode."
-      );
-      alert("No internet connection found. App is running in offline mode.");
+      Toastify({
+        text: "No internet connection found. App is running in offline mode.",
+        backgroundColor: "#228ae6",
+        ...toastOption
+      }).showToast();
     });
 }
 
