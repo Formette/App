@@ -133,7 +133,7 @@ export class NewForm extends PureComponent {
           LogRocket.log("Form created successfully");
           LogRocket.track("Created Form");
           //redirects the user to the main page
-          this.props.history.push("/");
+          this.props.history.goBack();
         }
       } catch (e) {
         LogRocket.error({ CreateForm: e });
@@ -190,7 +190,7 @@ export class NewForm extends PureComponent {
       LogRocket.log("Form updated successfully");
       LogRocket.track("Updated Form");
       //redirects the user to the main page
-      this.props.history.push("/");
+      this.props.history.goBack();
     } catch (e) {
       LogRocket.error({ UpdateForm: e });
       this.setState({

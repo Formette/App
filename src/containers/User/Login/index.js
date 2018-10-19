@@ -13,6 +13,7 @@ import { SIGIN_USER_MUTATION } from "../../../api/Mutations";
 import { userSignIn } from "../../../api/Functions";
 //Utils
 import LogRocket from "logrocket";
+import { _isLoggedIn } from "../../../services/utilities";
 
 class LoginUser extends React.PureComponent {
   props: {
@@ -22,6 +23,11 @@ class LoginUser extends React.PureComponent {
     history: any,
     router: any
   };
+  componentDidMount() {
+    if (_isLoggedIn()) {
+      this.props.history.push("/");
+    }
+  }
   state = {
     email: "",
     password: "",

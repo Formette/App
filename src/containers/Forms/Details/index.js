@@ -135,7 +135,8 @@ export class FormDetails extends PureComponent {
       name,
       description,
       endpoint,
-      contents
+      contents,
+      isDisabled
     } = this.props.formDataQuery.Forms;
     const point = endpoint.split("/");
     const { onConfirmation, url } = this.state;
@@ -154,6 +155,7 @@ export class FormDetails extends PureComponent {
           title={name}
           description={description || "This form has no description"}
           titleTruncate
+          isDisabled={isDisabled}
         >
           {/* <div className="col">
             <InputGroup

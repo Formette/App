@@ -21,7 +21,8 @@ import {
   generateExpiration,
   _formatUsername,
   _validateEmail,
-  _emailBlackList
+  _emailBlackList,
+  _isLoggedIn
 } from "../../../services/utilities";
 import LogRocket from "logrocket";
 
@@ -42,6 +43,11 @@ export class CreateUser extends React.PureComponent {
     timeoutUserName: 0,
     timeoutPassword: 0
   };
+  componentDidMount() {
+    if (_isLoggedIn()) {
+      this.props.history.push("/");
+    }
+  }
   _onCreateUser = () => {
     const { email, password, error } = this.state;
     let username = _formatUsername(this.state.username);
