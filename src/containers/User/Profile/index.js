@@ -159,7 +159,7 @@ export class Profile extends PureComponent {
                   onChange={e =>
                     this.setState({ username: e.target.value, error: false })
                   }
-                  className="form-control"
+                  className={`form-control ${error && "is-invalid"}`}
                 />
                 {error ? <Text color="red">{errorMsg}</Text> : ""}
               </div>
