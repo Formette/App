@@ -16,7 +16,9 @@ import {
 import { getUrlParam, _isLoggedIn } from "../../../services/utilities";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
-
+//locales
+import { FormattedMessage, injectIntl } from "react-intl";
+import { globals as messages } from "../../../locales/api";
 export class ConfirmUser extends React.PureComponent {
   props: {
     userQuery: any,
@@ -31,9 +33,7 @@ export class ConfirmUser extends React.PureComponent {
     errorMsg: ""
   };
   componentDidMount() {
-    console.log(this.props);
     const { user, history } = this.props;
-
     //Checks if the user clicked on link send
     if (getUrlParam("token")) {
       this.setState({
@@ -56,6 +56,7 @@ export class ConfirmUser extends React.PureComponent {
   }
   _onSendConfirmationCode = async () => {
     //verifies the user and saves in the DB
+    const { intl } = this.props;
     try {
       const { confirmToken } = this.state;
       await this.props.confirmEmail({
@@ -67,46 +68,54 @@ export class ConfirmUser extends React.PureComponent {
       this.props.history.push("/");
     } catch (e) {
       LogRocket.error({ SendConfirmationCode: e });
+
       this.setState({
         error: true,
-        errorMsg: "The verification code is invalid."
+        errorMsg: intl.formatMessage(messages.UserVerificationInvalid)
       });
     }
   };
   _onResendConfirmationCode = async () => {
     //If the code is invalid resend a new code
+    const { intl, user, alert, resendConfirmation } = this.props;
     try {
-      const email = this.props.user.state.profile.email;
-      await this.props.resendConfirmation({
+      const email = user.state.profile.email;
+      await resendConfirmation({
         variables: {
           email
         }
       });
-      this.props.alert.show("Your code has been sent, check your email.");
+      alert.show(intl.formatMessage(messages.UserVerificationSend));
     } catch (e) {
       LogRocket.error({ ResendConfirmationCode: e });
       this.setState({
         error: true,
-        errorMsg: "The verification code is invalid."
+        errorMsg: intl.formatMessage(messages.UserVerificationInvalid)
       });
     }
   };
   render() {
     const { confirmToken, error, errorMsg } = this.state;
+    const { intl } = this.props;
     return (
       <AuthLayout
-        title="Please confirm your email"
-        description="We like real people, we need to know if it's not a ghost of the internet."
+        title={intl.formatMessage(messages.UserVerificationTitle)}
+        description={intl.formatMessage(messages.UserVerificationDescription)}
       >
         <label htmlFor="confirmToken" className="sr-only">
-          Confirmation Code
+          <FormattedMessage
+            id="user.account.verification.text.confirm"
+            defaultMessage={"Confirmation Code"}
+          />
         </label>
         <Input
           id="confirmToken"
           value={confirmToken}
           onChange={e => this.setState({ confirmToken: e.target.value })}
           className="form-control"
-          placeholder="Confirmation Code"
+          placeholder={intl.formatMessage(
+            messages.UserVerificationConfirmPlaceholder
+          )}
           required
           autoFocus
         />
@@ -117,10 +126,16 @@ export class ConfirmUser extends React.PureComponent {
           onClick={this._onSendConfirmationCode}
           primary
         >
-          Confirm Account
+          <FormattedMessage
+            id="user.account.verification.action.confirm"
+            defaultMessage={"Confirm Account"}
+          />
         </Button>
         <Link onClick={this._onResendConfirmationCode}>
-          Resend confirmation code?
+          <FormattedMessage
+            id="user.account.verification.action.resend"
+            defaultMessage={" Resend confirmation code?"}
+          />
         </Link>
         <Error show={error}>{errorMsg}</Error>
       </AuthLayout>
@@ -130,6 +145,7 @@ export class ConfirmUser extends React.PureComponent {
 
 const confirmUserWithData = compose(
   withUser,
+  injectIntl,
   withAlert,
   graphql(USER_CONFIRM_TOKEN_MUTATION, { name: "confirmEmail" }),
   graphql(USER_RESEND_CONFIRMATION_MUTATION, { name: "resendConfirmation" })

@@ -16,7 +16,7 @@ const Confirmation = ({ className, show, title, description, actionProps, ...pro
         <Text>{description}</Text>
         <div className="text-right">
           <Link className="cancelAction" onClick={() => props.onCancel()}>
-            Cancel
+            {props.onCancelText}
           </Link>
           <Button
             className="btn"
@@ -36,6 +36,7 @@ Confirmation.defaultProps = {
   title: "Form Title",
   description: "Form Date",
   onConfirmationText: "Delete",
+  onCancelText: "Cancel",
   onConfirmationColor: "red",
   show: false
 };
@@ -46,6 +47,7 @@ Confirmation.propTypes = {
   description: PropTypes.string,
   onConfirmationText: PropTypes.string,
   onConfirmationColor: PropTypes.string,
+  onCancelText: PropTypes.string,
   show: PropTypes.bool.isRequired,
   onConfirmation: PropTypes.func,
   onCancel: PropTypes.func

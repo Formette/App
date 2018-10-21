@@ -25,6 +25,9 @@ import LogRocket from "logrocket";
 import { graphql, compose } from "react-apollo";
 import { DELETE_FORM_MUTATION } from "../../../api/Mutations";
 import { deleteForm } from "../../../api/Functions";
+//locales
+import { FormattedMessage, injectIntl } from "react-intl";
+import { globals as messages } from "../../../locales/api";
 
 const colors = ["#7568F0", "#8A75F3", "#A384F6", "#A384F6", "#CA9CFB"];
 class Cards extends PureComponent {
@@ -35,12 +38,13 @@ class Cards extends PureComponent {
   };
   _onDeleteForm = async () => {
     //deletes the form in the DB
+    const { alert, intl, user, deleteFormMutation } = this.props;
     const { formId: id } = this.state;
-    const userId = this.props.user.state.profile.id;
-    const response = deleteForm(id, userId, this.props.deleteFormMutation);
+    const userId = user.state.profile.id;
+    const response = deleteForm(id, userId, deleteFormMutation);
     if (response) {
       //Shows feedback and updates the store
-      this.props.alert.success("Form deleted successfully");
+      alert.success(intl.formatMessage(messages.AlertFormSuccessDeleted));
       LogRocket.info("Form deleted successfully from form list");
       LogRocket.track("Deleted Form");
       this.setState({ onConfirmation: false, formId: null });
@@ -48,9 +52,7 @@ class Cards extends PureComponent {
       LogRocket.warn(
         "What a disgrace but it was not possible to delete the form, try again."
       );
-      this.props.alert.error(
-        "It was not possible to delete the form, try again."
-      );
+      alert.error(intl.formatMessage(messages.AlertFormErrorDelete));
     }
   };
   _showConfirmation = formId => {
@@ -61,13 +63,13 @@ class Cards extends PureComponent {
     LogRocket.track("Opened delete modal on Form Details");
   };
   render() {
-    const { data, alert, user } = this.props;
+    const { data, alert, user, intl } = this.props;
     const { onConfirmation } = this.state;
     if (Object.keys(data).length === 0) {
       return (
         <Graphic
-          title="No search results"
-          description="No form was found with the words in the search box. Try searching in other words."
+          title={intl.formatMessage(messages.GraphicSearchTitle)}
+          description={intl.formatMessage(messages.GraphicSearchDescription)}
           imgType="notfound"
           top={55}
         />
@@ -76,9 +78,15 @@ class Cards extends PureComponent {
     return (
       <Fragment>
         <Confirmation
-          title="Are you sure?"
-          description="Are you sure you want to delete this form?"
+          title={intl.formatMessage(messages.ModalFormDeleteTitle)}
+          description={intl.formatMessage(messages.ModalFormDeleteDescription)}
           show={onConfirmation}
+          onConfirmationText={intl.formatMessage(
+            messages.ModalFormDeleteActionTextPrimary
+          )}
+          onCancelText={intl.formatMessage(
+            messages.ModalFormDeleteActionTextCancel
+          )}
           onCancel={this._showConfirmation}
           onConfirmation={this._onDeleteForm}
           actionProps={{ danger: true }}
@@ -104,12 +112,20 @@ class Cards extends PureComponent {
                     >
                       <DropdownItemGroup title="Actions">
                         <DropdownItem href={`#/edit/${item.id}`}>
-                          <Icon name="fas fa-pen" /> Edit
+                          <Icon name="fas fa-pen" />{" "}
+                          <FormattedMessage
+                            id="app.page.form.card.action.edit"
+                            defaultMessage={"Edit"}
+                          />
                         </DropdownItem>
                         <DropdownItem
                           onClick={() => this._showConfirmation(item.id)}
                         >
-                          <Icon name="fas fa-trash" /> Delete
+                          <Icon name="fas fa-trash" />{" "}
+                          <FormattedMessage
+                            id="app.page.form.card.action.delete"
+                            defaultMessage={"Delete"}
+                          />
                         </DropdownItem>
                       </DropdownItemGroup>
                     </Dropdown>
@@ -127,9 +143,16 @@ class Cards extends PureComponent {
                 </CardHeader>
                 <CardBody>
                   <Icon name="fas fa-database" />{" "}
-                  {`${item._contentsMeta.count}`} reponses{" "}
+                  {`${item._contentsMeta.count}`}{" "}
+                  <FormattedMessage
+                    id="app.page.form.card.text.responses"
+                    defaultMessage={"responses"}
+                  />{" "}
                   <Link decoration="underline" href={`#/form/${item.id}`}>
-                    View data
+                    <FormattedMessage
+                      id="app.page.form.card.action.view"
+                      defaultMessage={"View data"}
+                    />
                   </Link>
                 </CardBody>
                 <CardFooter>
@@ -140,11 +163,17 @@ class Cards extends PureComponent {
                       }`}
                       style={{ cursor: "pointer" }}
                       onCopy={() =>
-                        alert.success("Endpoint copied to clipboard")
+                        alert.success(
+                          intl.formatMessage(messages.AlertFormSuccessCopied)
+                        )
                       }
                     >
                       <Button className="btn btn-md btn-primary" primary>
-                        <Icon name="fas fa-link" color="#FFF" /> Endpoint
+                        <Icon name="fas fa-link" color="#FFF" />
+                        <FormattedMessage
+                          id="app.page.form.details.action.copy.endpoint"
+                          defaultMessage={"Endpoint"}
+                        />
                       </Button>
                     </CopyToClipboard>
                   </div>
@@ -160,6 +189,7 @@ class Cards extends PureComponent {
 
 export default compose(
   withUser,
+  injectIntl,
   withAlert,
   graphql(DELETE_FORM_MUTATION, { name: "deleteFormMutation" })
 )(Cards);

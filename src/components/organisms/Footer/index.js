@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { Link } from "../../atoms/index";
 //Styles
 import styled from "styled-components";
+//locales
+import { FormattedMessage } from "react-intl";
 
 const url = "formette.com";
 const protocol = "https://";
@@ -13,7 +15,10 @@ const Footer = props => {
       <ul>
         <li>
           <Link href={`${protocol}docs.${url}`} target="_blank">
-            Docs
+            <FormattedMessage
+              id="app.page.footer.link.docs"
+              defaultMessage={"Docs"}
+            />
           </Link>
         </li>
         <li>
@@ -21,7 +26,10 @@ const Footer = props => {
             href={`https://www.iubenda.com/privacy-policy/54274847/legal?ifr=true&height=690`}
             target="_blank"
           >
-            Terms & Privacy Policy
+            <FormattedMessage
+              id="app.page.footer.link.terms"
+              defaultMessage={"Terms & Privacy Policy"}
+            />
           </Link>
         </li>
         <li>
@@ -29,7 +37,10 @@ const Footer = props => {
             href={`https://statuspage.freshping.io/263-Formette`}
             target="_blank"
           >
-            Status
+            <FormattedMessage
+              id="app.page.footer.link.status"
+              defaultMessage={"Status"}
+            />
           </Link>
         </li>
         <li>
@@ -37,7 +48,10 @@ const Footer = props => {
             href={`https://formette.freshdesk.com/support/home`}
             target="_blank"
           >
-            Feedback
+            <FormattedMessage
+              id="app.page.footer.link.feedback"
+              defaultMessage={"Feedback"}
+            />
           </Link>
         </li>
       </ul>

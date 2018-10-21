@@ -39,6 +39,9 @@ import {
 } from "../../../api/Mutations";
 import { ALL_FORMS_QUERY, FORM_DATA_QUERY } from "../../../api/Queries";
 import { deleteForm } from "../../../api/Functions";
+//locales
+import { FormattedMessage, injectIntl } from "react-intl";
+import { globals as messages } from "../../../locales/api";
 
 const SyntaxHighlighter = Loadable({
   loader: () => import("react-syntax-highlighter"),
@@ -87,10 +90,11 @@ export class NewForm extends PureComponent {
       generateID,
       onModeEdit
     } = this.state;
+    const { intl, user, createFormMutation, alert } = this.props;
     //Verifies if the inputs are empty or not
     if (name) {
       if (error) return;
-      const userId = this.props.user.state.profile.id;
+      const userId = user.state.profile.id;
       let endpoint = customEndpoint
         ? `${userId}/${customEndpoint}`
         : `${userId}/${generateID}`;
@@ -100,7 +104,7 @@ export class NewForm extends PureComponent {
         if (onModeEdit) {
           this._updateForm(name, description, endpoint, isDisabled);
         } else {
-          await this.props.createFormMutation({
+          await createFormMutation({
             variables: {
               userId,
               name,
@@ -129,7 +133,7 @@ export class NewForm extends PureComponent {
             }
           });
           //Shows feedback and updates the store
-          this.props.alert.success("Form created successfully");
+          alert.success(intl.formatMessage(messages.AlertFormSuccessCreated));
           LogRocket.log("Form created successfully");
           LogRocket.track("Created Form");
           //redirects the user to the main page
@@ -139,14 +143,14 @@ export class NewForm extends PureComponent {
         LogRocket.error({ CreateForm: e });
         this.setState({
           error: true,
-          errorMsg: "This endpoint already exists, try another."
+          errorMsg: intl.formatMessage(messages.ErrorFormExists)
         });
       }
     } else {
       LogRocket.log("This form is feeling lonely, needs affection, needs data");
       this.setState({
         error: true,
-        errorMsg: "This form is feeling lonely, needs affection, needs data."
+        errorMsg: intl.formatMessage(messages.ErrorFormEmpty)
       });
     }
   };
@@ -156,8 +160,9 @@ export class NewForm extends PureComponent {
     endpoint: string,
     isDisabled: boolean
   ) => {
+    const { intl, match, updateFormMutation, alert } = this.props;
     try {
-      const id = this.props.match.params.id;
+      const id = match.params.id;
       const { oldData } = this.state;
       //checks if the new data is the same as the previous
       if (
@@ -171,12 +176,12 @@ export class NewForm extends PureComponent {
         );
         this.setState({
           error: true,
-          errorMsg: "If it's the same as before, what's the point of changing?"
+          errorMsg: intl.formatMessage(messages.ErrorFormSame)
         });
         return;
       }
       //updates the form in the DB
-      await this.props.updateFormMutation({
+      await updateFormMutation({
         variables: {
           id,
           name,
@@ -186,7 +191,7 @@ export class NewForm extends PureComponent {
         }
       });
       //Shows feedback and updates the store
-      this.props.alert.success("Form updated successfully");
+      alert.success(intl.formatMessage(messages.AlertFormSuccessUpdated));
       LogRocket.log("Form updated successfully");
       LogRocket.track("Updated Form");
       //redirects the user to the main page
@@ -195,7 +200,7 @@ export class NewForm extends PureComponent {
       LogRocket.error({ UpdateForm: e });
       this.setState({
         error: true,
-        errorMsg: "This endpoint already exists, try another."
+        errorMsg: intl.formatMessage(messages.ErrorFormExists)
       });
     }
   };
@@ -207,12 +212,13 @@ export class NewForm extends PureComponent {
   };
   _onDeleteForm = () => {
     //deletes the form in the DB
-    const { id } = this.props.match.params;
-    const userId = this.props.user.state.profile.id;
+    const { intl, match, user, alert } = this.props;
+    const { id } = match.params;
+    const userId = user.state.profile.id;
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
       //Shows feedback and updates the store
-      this.props.alert.success("Form deleted successfully");
+      alert.success(intl.formatMessage(messages.AlertFormSuccessDeleted));
       LogRocket.log("Form deleted successfully");
       LogRocket.track("Deleted Form");
       //redirects the user to the main page
@@ -221,9 +227,7 @@ export class NewForm extends PureComponent {
       LogRocket.error(
         "What a disgrace but it was not possible to delete the form, try again."
       );
-      this.props.alert.error(
-        "What a disgrace but it was not possible to delete the form, try again."
-      );
+      alert.error(intl.formatMessage(messages.AlertFormErrorDelete));
     }
   };
   _getFormData = (id: string) => {
@@ -280,12 +284,13 @@ export class NewForm extends PureComponent {
       onConfirmation
     } = this.state;
     const { userName } = this.props.user.state;
+    const { intl, alert } = this.props;
 
     if (nullFormToEdit) {
       return (
         <Graphic
-          title="Where is the form?"
-          description="Ups! No form was found to edit."
+          title={intl.formatMessage(messages.GraphicFormErrorTitle)}
+          description={intl.formatMessage(messages.GraphicFormErrorDescription)}
           imgType="empty"
         >
           <Button
@@ -293,7 +298,10 @@ export class NewForm extends PureComponent {
             onClick={() => this.props.history.push("/")}
             primary
           >
-            Go back
+            <FormattedMessage
+              id="app.graphic.form.edit.error.action"
+              defaultMessage={"Go back"}
+            />
           </Button>
         </Graphic>
       );
@@ -302,9 +310,15 @@ export class NewForm extends PureComponent {
     return (
       <div>
         <Confirmation
-          title="Are you sure?"
-          description="Are you sure you want to delete this form?"
+          title={intl.formatMessage(messages.ModalFormDeleteTitle)}
+          description={intl.formatMessage(messages.ModalFormDeleteDescription)}
           show={onConfirmation}
+          onConfirmationText={intl.formatMessage(
+            messages.ModalFormDeleteActionTextPrimary
+          )}
+          onCancelText={intl.formatMessage(
+            messages.ModalFormDeleteActionTextCancel
+          )}
           onCancel={this._showConfirmation}
           onConfirmation={this._onDeleteForm}
           actionProps={{ danger: true }}
@@ -312,7 +326,7 @@ export class NewForm extends PureComponent {
 
         <Tools
           title={name ? name : generateID}
-          description="Create a new form to collect various types of data"
+          description={intl.formatMessage(messages.PageFormCreateDescription)}
           titleTruncate
           textTruncate
         >
@@ -341,7 +355,9 @@ export class NewForm extends PureComponent {
                   }`}
                   style={{ cursor: "pointer" }}
                   onCopy={() =>
-                    this.props.alert.success("Endpoint copied to clipboard.")
+                    alert.success(
+                      intl.formatMessage(messages.AlertFormSuccessCopied)
+                    )
                   }
                 >
                   <Button className="btn btn-lg">
@@ -356,7 +372,21 @@ export class NewForm extends PureComponent {
                   primary
                 >
                   <Icon name="fas fa-save" color="#FFF" />{" "}
-                  {onModeEdit ? "Update" : "Save"} form
+                  {onModeEdit ? (
+                    <FormattedMessage
+                      id="app.page.form.create.action.update"
+                      defaultMessage={"Update"}
+                    />
+                  ) : (
+                    <FormattedMessage
+                      id="app.page.form.create.action.save"
+                      defaultMessage={"Save"}
+                    />
+                  )}
+                  <FormattedMessage
+                    id="app.page.form.create.action.title"
+                    defaultMessage={"form"}
+                  />
                 </Button>
               </li>
             </HorizontalList>
@@ -367,9 +397,16 @@ export class NewForm extends PureComponent {
           <div className="col-md-6" style={{ marginTop: 30 }}>
             <form>
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <Text highlight>Name:</Text>
+                <Text highlight>
+                  <FormattedMessage
+                    id="app.page.form.create.text.name"
+                    defaultMessage={"Name:"}
+                  />
+                </Text>
                 <Input
-                  placeholder="e.g: Newsletters"
+                  placeholder={intl.formatMessage(
+                    messages.PageFormCreateTextNamePlaceholder
+                  )}
                   value={name}
                   onChange={e =>
                     this.setState({ name: e.target.value, error: false })
@@ -380,10 +417,17 @@ export class NewForm extends PureComponent {
                 {error && <Text danger>{errorMsg}</Text>}
               </div>
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <Text highlight>Description:</Text>
+                <Text highlight>
+                  <FormattedMessage
+                    id="app.page.form.create.text.description"
+                    defaultMessage={"Description:"}
+                  />
+                </Text>
                 <Textarea
                   className="form-control"
-                  placeholder="e.g: This is a Newsletters form for my personal website."
+                  placeholder={intl.formatMessage(
+                    messages.PageFormCreateTextDescriptionPlaceholder
+                  )}
                   value={description}
                   onChange={e =>
                     this.setState({
@@ -395,13 +439,24 @@ export class NewForm extends PureComponent {
               </div>
 
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <Text highlight>Custom endpoint:</Text>
+                <Text highlight>
+                  <FormattedMessage
+                    id="app.page.form.create.text.custom.endpoint"
+                    defaultMessage={"Custom endpoint:"}
+                  />
+                </Text>
                 <Text>
-                  You can choose a custom endpoint but note that the name has to
-                  be unique compared to your previously created forms.
+                  <FormattedMessage
+                    id="app.page.form.create.text.custom.endpoint.description"
+                    defaultMessage={
+                      "You can choose a custom endpoint but note that the name has to be unique compared to your previously created forms."
+                    }
+                  />
                 </Text>
                 <Input
-                  placeholder="e.g: newsletters2017"
+                  placeholder={intl.formatMessage(
+                    messages.PageFormCreateTextEndpointPlaceholder
+                  )}
                   value={customEndpoint}
                   onChange={e =>
                     this.setState({
@@ -417,10 +472,19 @@ export class NewForm extends PureComponent {
             <Card>
               <div className="card-body">
                 <div>
-                  <Text highlight>Sample:</Text>
+                  <Text highlight>
+                    <FormattedMessage
+                      id="app.page.form.create.text.sample"
+                      defaultMessage={"Sample:"}
+                    />
+                  </Text>
                   <Text>
-                    Copy and paste the example of the form below into your
-                    project, change its content according to your needs.
+                    <FormattedMessage
+                      id="app.page.form.create.text.sample.description"
+                      defaultMessage={
+                        "Copy and paste the example of the form below into your project, change its content according to your needs."
+                      }
+                    />
                   </Text>
                   <SyntaxHighlighter language="javascript" style={docco}>
                     {'<form action="' +
@@ -438,7 +502,12 @@ export class NewForm extends PureComponent {
             </Card>
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <Text highlight>Disable form submissions:</Text>
+                <Text highlight>
+                  <FormattedMessage
+                    id="app.page.form.create.text.disable"
+                    defaultMessage={"Disable form submissions:"}
+                  />
+                </Text>
                 <Switch
                   onChange={value => {
                     this.setState({ disableForm: value });
@@ -448,11 +517,20 @@ export class NewForm extends PureComponent {
                 {onModeEdit ? (
                   <div>
                     <hr />
-                    <SubTitle>Settings:</SubTitle>
+                    <SubTitle>
+                      {" "}
+                      <FormattedMessage
+                        id="app.page.form.create.text.settings"
+                        defaultMessage={"Settings:"}
+                      />
+                    </SubTitle>
                     <ul className="list-inline">
                       <li>
                         <Link color="red" onClick={this._showConfirmation}>
-                          Delete form
+                          <FormattedMessage
+                            id="app.page.form.create.action.delete"
+                            defaultMessage={"Delete form"}
+                          />
                         </Link>
                       </li>
                     </ul>
@@ -469,6 +547,7 @@ export class NewForm extends PureComponent {
 
 const newFormWithData = compose(
   withUser,
+  injectIntl,
   withAlert,
   graphql(CREATE_FORM_MUTATION, { name: "createFormMutation" }),
   graphql(UPDATE_FORM_MUTATION, { name: "updateFormMutation" }),
