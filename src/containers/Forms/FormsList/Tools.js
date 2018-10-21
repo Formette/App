@@ -8,6 +8,7 @@ const Tools = ({
   titleTruncate,
   textTruncate,
   isDisabled,
+  isDisabledText,
   children
 }) => {
   return (
@@ -21,7 +22,7 @@ const Tools = ({
       {isDisabled && (
         <SubTitle>
           <span className="badge badge-secondary">
-            <Icon className="fas fa-ban" /> This form is disabled
+            <Icon className="fas fa-ban" /> {isDisabledText}
           </span>
         </SubTitle>
       )}

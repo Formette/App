@@ -20,7 +20,9 @@ import { withAlert } from "react-alert";
 //API
 import { USERNAME_VALIDATION_QUERY } from "../../../api/Queries";
 import { UPDATE_USER_MUTATION } from "../../../api/Mutations";
-
+//locales
+import { FormattedMessage, injectIntl } from "react-intl";
+import { globals as messages } from "../../../locales/api";
 export class Profile extends PureComponent {
   props: {
     updateUser: any,
@@ -41,6 +43,7 @@ export class Profile extends PureComponent {
     LogRocket.track("Opened  modal on change username");
   };
   _updateProfile = async () => {
+    const { intl, user, updateUser, alert } = this.props;
     const { error } = this.state;
     let username = _formatUsername(this.state.username);
     //hides the confirmation modal
@@ -54,10 +57,10 @@ export class Profile extends PureComponent {
       if (error) {
         return;
       }
-      const userId = this.props.user.state.profile.id;
+      const userId = user.state.profile.id;
       //updates the user username and some else info in the DB
       try {
-        await this.props.updateUser({
+        await updateUser({
           variables: {
             userId,
             username
@@ -65,13 +68,13 @@ export class Profile extends PureComponent {
         });
         //Shows feedback and updates the localStorage
         this.setState({ username });
-        this.props.user.changeUsername(username);
-        this.props.alert.success("Change made successfully");
+        user.changeUsername(username);
+        alert.success("Change made successfully");
         LogRocket.info("Change made successfully");
         LogRocket.track("Updated username");
       } catch (e) {
         LogRocket.error({ _updateProfile: e });
-        this.props.alert.error("Something went wrong, try again...");
+        alert.error(intl.formatMessage(messages.GraphicErrorDescription));
       }
     } else {
       LogRocket.warn(
@@ -79,12 +82,13 @@ export class Profile extends PureComponent {
       );
       this.setState({
         error: true,
-        errorMsg: "This form is feeling lonely, needs affection, needs data."
+        errorMsg: intl.formatMessage(messages.ErrorFormEmpty)
       });
     }
   };
   _onUsernameValidation(getUsername: string) {
     clearTimeout(this.state.timeoutUserName);
+    const { intl } = this.props;
     this.setState({
       timeoutUserName: setTimeout(() => {
         //checks is the username is the same as the previous one
@@ -102,8 +106,9 @@ export class Profile extends PureComponent {
               );
               this.setState({
                 error: true,
-                errorMsg:
-                  "With so much name in this world, you had to choose this one. Try another."
+                errorMsg: intl.formatMessage(
+                  messages.UserCreateFormUsernameError
+                )
               });
             } else {
               this.setState({ error: false });
@@ -116,30 +121,38 @@ export class Profile extends PureComponent {
     });
   }
   _isTheSameUsername(username: string) {
-    const { user } = this.props;
+    const { user, intl } = this.props;
     if (user.state.userName === username) {
       LogRocket.warn(
         "If it's the same as before, what's the point of changing?"
       );
       this.setState({
         error: true,
-        errorMsg: "If it's the same as before, what's the point of changing?"
+        errorMsg: intl.formatMessage(messages.ErrorFormSame)
       });
       return true;
     }
   }
   render() {
     const { error, errorMsg, onConfirmation } = this.state;
-    const { userName, formsesMeta } = this.props.user.state;
+    const { intl, user } = this.props;
+    const { userName, formsesMeta } = user.state;
     return (
       <div>
         <Confirmation
-          title="Are you sure?"
-          description="All your endpoints will be changed to the new username. Do not forget to change in your apps."
+          title={intl.formatMessage(messages.ModalProfileChangeTitle)}
+          description={intl.formatMessage(
+            messages.ModalProfileChangeDescription
+          )}
           show={onConfirmation}
+          onConfirmationText={intl.formatMessage(
+            messages.ModalProfileChangeActionTextPrimary
+          )}
+          onCancelText={intl.formatMessage(
+            messages.ModalProfileChangeActionTextCancel
+          )}
           onCancel={this._showConfirmation}
           onConfirmation={this._updateProfile}
-          onConfirmationText="Confirm"
           actionProps={{ primary: true }}
         />
         <div className="row">
@@ -151,9 +164,16 @@ export class Profile extends PureComponent {
           <div className="col-md-6">
             <form>
               <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <Text highlight>Username:</Text>
+                <Text highlight>
+                  <FormattedMessage
+                    id="user.account.create.text.username"
+                    defaultMessage={"Username"}
+                  />
+                </Text>
                 <Input
-                  placeholder="username"
+                  placeholder={intl.formatMessage(
+                    messages.UserCreateTextUsername
+                  )}
                   defaultValue={userName}
                   onKeyUp={e => this._onUsernameValidation(e.target.value)}
                   onChange={e =>
@@ -168,47 +188,96 @@ export class Profile extends PureComponent {
                 className="btn btn-lg btn-primary btn-block"
                 primary
               >
-                Update profile
+                <FormattedMessage
+                  id="app.page.profile.action.update"
+                  defaultMessage={"Update profile"}
+                />
               </Button>
             </form>
           </div>
           <div className="col-md-6">
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <Text highlight>Statistics:</Text>
-                <Text>
-                  We are great analysts, here you have your statistics of your
-                  forms.
+                <Text highlight>
+                  <FormattedMessage
+                    id="app.page.profile.text.statistics"
+                    defaultMessage={"Statistics"}
+                  />
                 </Text>
-                <SubTitle>{`${formsesMeta} forms created`}</SubTitle>
-              </div>
-            </Card>
-            <Card style={{ marginTop: 10 }}>
-              <div className="card-body">
-                <Text highlight>Current Plan:</Text>
                 <Text>
-                  More plans soon, as the platform is in beta you have access to
-                  all features.
+                  <FormattedMessage
+                    id="app.page.profile.text.statistics.description"
+                    defaultMessage={
+                      "We are great analysts, here you have your statistics of your forms."
+                    }
+                  />
                 </Text>
                 <SubTitle>
-                  <span className="badge badge-dark">All the features</span>
+                  {`${formsesMeta} `}
+                  <FormattedMessage
+                    id="app.page.profile.text.statistics.forms.count"
+                    defaultMessage={"forms created"}
+                  />
                 </SubTitle>
               </div>
             </Card>
             <Card style={{ marginTop: 10 }}>
               <div className="card-body">
-                <Text highlight>Settings:</Text>
+                <Text highlight>
+                  <FormattedMessage
+                    id="app.page.profile.text.plan"
+                    defaultMessage={"Current Plan"}
+                  />
+                </Text>
                 <Text>
-                  This is a dangerous zone, so be careful, here you will find
-                  your settings.
+                  <FormattedMessage
+                    id="app.page.profile.text.plan.description"
+                    defaultMessage={
+                      "More plans soon, as the platform is in beta you have access to all features."
+                    }
+                  />
+                </Text>
+                <SubTitle>
+                  <span className="badge badge-dark">
+                    <FormattedMessage
+                      id="app.page.profile.text.plan.type"
+                      defaultMessage={"All the features"}
+                    />
+                  </span>
+                </SubTitle>
+              </div>
+            </Card>
+            <Card style={{ marginTop: 10 }}>
+              <div className="card-body">
+                <Text highlight>
+                  <FormattedMessage
+                    id="app.page.profile.text.settings"
+                    defaultMessage={"Settings"}
+                  />
+                </Text>
+                <Text>
+                  <FormattedMessage
+                    id="app.page.profile.text.settings.description"
+                    defaultMessage={
+                      "This is a dangerous zone, so be careful, here you will find your settings."
+                    }
+                  />
                 </Text>
                 <ul className="list-inline">
                   <li>
-                    <Link onClick={_logout}>Log Out</Link>
+                    <Link onClick={_logout}>
+                      <FormattedMessage
+                        id="app.page.profile.text.settings.action.logout"
+                        defaultMessage={"Log Out"}
+                      />
+                    </Link>
                   </li>
                   <li>
                     <Link href="http://www.formette.com/docs" target="_blank">
-                      Help
+                      <FormattedMessage
+                        id="app.page.profile.text.settings.action.help"
+                        defaultMessage={"Help"}
+                      />
                     </Link>
                   </li>
                 </ul>
@@ -223,6 +292,7 @@ export class Profile extends PureComponent {
 
 const profileWithData = compose(
   withUser,
+  injectIntl,
   withAlert,
   graphql(UPDATE_USER_MUTATION, { name: "updateUser" })
 )(Profile);

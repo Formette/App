@@ -25,6 +25,9 @@ import { FORM_DATA_QUERY } from "../../../api/Queries";
 import { DELETE_FORM_MUTATION } from "../../../api/Mutations";
 import { FORM_DATA_SUBSCRIPTION } from "../../../api/Subscriptions";
 import { deleteForm } from "../../../api/Functions";
+//locales
+import { FormattedMessage, injectIntl } from "react-intl";
+import { globals as messages } from "../../../locales/api";
 
 export class FormDetails extends PureComponent {
   state = {
@@ -69,12 +72,13 @@ export class FormDetails extends PureComponent {
   };
   _onDeleteForm = async () => {
     //deletes the form in the DB
-    const { id } = this.props.match.params;
-    const userId = this.props.user.state.profile.id;
+    const { intl, match, alert, user } = this.props;
+    const { id } = match.params;
+    const userId = user.state.profile.id;
     const response = deleteForm(id, userId, this.props.deleteFormMutation);
     if (response) {
       //Shows feedback and updates the store
-      this.props.alert.success("Form deleted successfully");
+      alert.success(intl.formatMessage(messages.AlertFormSuccessDeleted));
       LogRocket.info("Form deleted successfully");
       LogRocket.track("Deleted Form");
       //redirects the user to the main page
@@ -83,9 +87,7 @@ export class FormDetails extends PureComponent {
       LogRocket.warn(
         "What a disgrace but it was not possible to delete the form, try again."
       );
-      this.props.alert.error(
-        "What a disgrace but it was not possible to delete the form, try again."
-      );
+      alert.error(intl.formatMessage(messages.AlertFormErrorDelete));
     }
   };
   _editForm = () => {
@@ -98,16 +100,22 @@ export class FormDetails extends PureComponent {
     if (this.props.formDataQuery && this.props.formDataQuery.error) {
       return (
         <Graphic
-          title="Error..."
-          description="Ups! Something went wrong try again."
-          icon="error"
+          title={this.props.intl.formatMessage(messages.GraphicErrorTitle)}
+          description={this.props.intl.formatMessage(
+            messages.GraphicErrorDescription
+          )}
+          imgType="error"
+          top={200}
         >
           <Button
             className="btn btn-lg btn-primary"
             onClick={_refreshPage}
             primary
           >
-            Try Again
+            <FormattedMessage
+              id="app.graphic.error.action"
+              defaultMessage={"Try Again"}
+            />
           </Button>
         </Graphic>
       );
@@ -115,9 +123,10 @@ export class FormDetails extends PureComponent {
     if (this.props.formDataQuery.Forms === null) {
       return (
         <Graphic
-          title="No data to show"
-          description="Hello Indiana Jones, are you in unfamiliar lands? You are a great explorer but this form does
-                              not exist and may contain mysterious dangers. Come back home."
+          title={this.props.intl.formatMessage(messages.GraphicEmptyTitle)}
+          description={this.props.intl.formatMessage(
+            messages.GraphicEmptyDescription
+          )}
           imgType="empty"
           top={200}
         >
@@ -126,7 +135,10 @@ export class FormDetails extends PureComponent {
             onClick={() => this.props.history.push("/")}
             primary
           >
-            Go back home
+            <FormattedMessage
+              id="app.graphic.form.edit.error.action"
+              defaultMessage={"Try Again"}
+            />
           </Button>
         </Graphic>
       );
@@ -140,22 +152,35 @@ export class FormDetails extends PureComponent {
     } = this.props.formDataQuery.Forms;
     const point = endpoint.split("/");
     const { onConfirmation, url } = this.state;
-    const { userName } = this.props.user.state;
+    const { intl, user, alert } = this.props;
+    const { userName } = user.state;
     return (
       <div>
         <Confirmation
-          title="Are you sure?"
-          description="Are you sure you want to delete this form?"
+          title={intl.formatMessage(messages.ModalFormDeleteTitle)}
+          description={intl.formatMessage(messages.ModalFormDeleteDescription)}
           show={onConfirmation}
+          onConfirmationText={intl.formatMessage(
+            messages.ModalFormDeleteActionTextPrimary
+          )}
+          onCancelText={intl.formatMessage(
+            messages.ModalFormDeleteActionTextCancel
+          )}
           onCancel={this._showConfirmation}
           onConfirmation={this._onDeleteForm}
           actionProps={{ danger: true }}
         />
         <Tools
-          title={name}
-          description={description || "This form has no description"}
+          title={name || intl.formatMessage(messages.PageFormDetailsTitle)}
+          description={
+            description ||
+            intl.formatMessage(messages.PageFormDetailsDescription)
+          }
           titleTruncate
           isDisabled={isDisabled}
+          isDisabledText={intl.formatMessage(
+            messages.PageFormDetailsDisableText
+          )}
         >
           {/* <div className="col">
             <InputGroup
@@ -185,12 +210,19 @@ export class FormDetails extends PureComponent {
                   text={`${url}/${userName}/${point[1]}`}
                   style={{ cursor: "pointer" }}
                   onCopy={() =>
-                    this.props.alert.success("Endpoint copied to clipboard.")
+                    alert.success(
+                      intl.formatMessage(messages.AlertFormSuccessCopied)
+                    )
                   }
                 >
                   <Button className="btn btn-lg" primary>
                     <Icon name="fas fa-link" />
-                    <span>Endpoint</span>
+                    <span>
+                      <FormattedMessage
+                        id="app.page.form.details.action.copy.endpoint"
+                        defaultMessage={"Endpoint"}
+                      />
+                    </span>
                   </Button>
                 </CopyToClipboard>
               </li>
@@ -201,7 +233,15 @@ export class FormDetails extends PureComponent {
           <div className="col-md-12">
             <Card>
               <div className="card-body">
-                <Table data={contents} />
+                <Table
+                  data={contents}
+                  emptyText={intl.formatMessage(
+                    messages.FormEmptyTitle
+                  )}
+                  emptyDescription={intl.formatMessage(
+                    messages.FormEmptyDescription
+                  )}
+                />
               </div>
             </Card>
           </div>
@@ -213,6 +253,7 @@ export class FormDetails extends PureComponent {
 
 export default compose(
   withUser,
+  injectIntl,
   withAlert,
   graphql(FORM_DATA_QUERY, {
     name: "formDataQuery",

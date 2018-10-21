@@ -7,6 +7,8 @@ import styled, { withTheme } from "styled-components";
 import { darken } from "polished";
 //Utilities
 import { _logout } from "../../services/utilities";
+//locales
+import { FormattedMessage } from "react-intl";
 
 const Navbar = ({ className, username }) => {
   return (
@@ -19,7 +21,10 @@ const Navbar = ({ className, username }) => {
           <li className="nav-item">
             <NavLink className="nav-link" activeClassName="active" to="/">
               <i className="fas fa-archive" />
-              Forms
+              <FormattedMessage
+                id="app.navigation.forms"
+                defaultMessage={"Forms"}
+              />
             </NavLink>
           </li>
         </ul>
@@ -27,7 +32,10 @@ const Navbar = ({ className, username }) => {
           <li className="nav-item">
             <NavLink className="nav-link" to="/signin" onClick={_logout}>
               <i className="fas fa-sign-out-alt" />
-              Log Out
+              <FormattedMessage
+                id="app.navigation.logout"
+                defaultMessage={"Log Out"}
+              />
             </NavLink>
           </li>
 
@@ -38,7 +46,11 @@ const Navbar = ({ className, username }) => {
               to="/profile"
             >
               <i className="fas fa-user-circle" />
-              Hello, <span>{username}</span>
+              <FormattedMessage
+                id="app.navigation.greetings"
+                defaultMessage={"Hello,"}
+              />{" "}
+              <span>{username}</span>
             </NavLink>
           </li>
         </ul>

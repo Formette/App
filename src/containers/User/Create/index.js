@@ -25,7 +25,9 @@ import {
   _isLoggedIn
 } from "../../../services/utilities";
 import LogRocket from "logrocket";
-
+//locales
+import { FormattedMessage, injectIntl } from "react-intl";
+import { globals as messages } from "../../../locales/api";
 export class CreateUser extends React.PureComponent {
   props: {
     createUser: any,
@@ -49,6 +51,7 @@ export class CreateUser extends React.PureComponent {
     }
   }
   _onCreateUser = () => {
+    const { intl } = this.props;
     const { email, password, error } = this.state;
     let username = _formatUsername(this.state.username);
 
@@ -61,7 +64,9 @@ export class CreateUser extends React.PureComponent {
       if (!_validateEmail(email)) {
         this.setState({
           error: true,
-          errorMsg: "Email entered is not valid."
+          errorMsg: intl.formatMessage(
+            messages.UserCreateEmailVerificationInvalid
+          )
         });
         return;
       }
@@ -69,7 +74,7 @@ export class CreateUser extends React.PureComponent {
       if (_emailBlackList(email)) {
         this.setState({
           error: true,
-          errorMsg: "Sorry, we do not support this email service."
+          errorMsg: intl.formatMessage(messages.UserCreateEmailNotSupported)
         });
         return;
       }
@@ -94,30 +99,30 @@ export class CreateUser extends React.PureComponent {
           LogRocket.error({ CreateUser: e });
           this.setState({
             error: true,
-            errorMsg:
-              "Ops! User already exists with that information, try again."
+            errorMsg: intl.formatMessage(messages.UserCreateEmailExists)
           });
         });
     } else {
       this.setState({
         error: true,
-        errorMsg: "This form is feeling lonely, needs affection, needs data."
+        errorMsg: intl.formatMessage(messages.UserCreateFormEmpty)
       });
     }
   };
   _onSignIn = async (email: string, password: string) => {
     //logs in the user
+    const { intl, user, history } = this.props;
     const response = await userSignIn(email, password, this.props.signinUser);
     if (response.status) {
       LogRocket.track("Sign in");
-      this.props.user.updateUser(response.rest);
+      user.updateUser(response.rest);
       //sends to the dashboard
-      this.props.history.push("/");
+      history.push("/");
     } else {
       LogRocket.error({ SignIn: response });
       this.setState({
         error: true,
-        errorMsg: "Ops! Something went wrong, try again."
+        errorMsg: intl.formatMessage(messages.GraphicErrorDescription)
       });
     }
   };
@@ -130,14 +135,14 @@ export class CreateUser extends React.PureComponent {
     });
   }
   _checkPassword(password: string) {
+    const { intl } = this.props;
     if (password.length <= 8) {
       LogRocket.warn(
         "With so much room in the box, you chose this tiny thing. We need more than 8 characters, go we know you can."
       );
       this.setState({
         error: true,
-        errorMsg:
-          "With so much room in the box, you chose this tiny thing. We need more than 8 characters, go we know you can."
+        errorMsg: intl.formatMessage(messages.UserCreateFormPasswordError)
       });
       return true;
     }
@@ -145,6 +150,7 @@ export class CreateUser extends React.PureComponent {
   }
   _onUsernameValidation(getUsername: string) {
     clearTimeout(this.state.timeoutUserName);
+    const { intl } = this.props;
     this.setState({
       timeoutUserName: setTimeout(() => {
         let username = _formatUsername(getUsername);
@@ -160,8 +166,9 @@ export class CreateUser extends React.PureComponent {
               );
               this.setState({
                 error: true,
-                errorMsg:
-                  "With so much name in this world, you had to choose this one. Try another."
+                errorMsg: intl.formatMessage(
+                  messages.UserCreateFormUsernameError
+                )
               });
             } else {
               this.setState({ error: false });
@@ -180,12 +187,17 @@ export class CreateUser extends React.PureComponent {
   };
   render() {
     const { email, password, username, error, errorMsg } = this.state;
-    const { history } = this.props;
+    const { history, intl } = this.props;
     return (
       <Fragment>
-        <AuthLayout description="Seriously? Your forms do not have a home for the data? Do not worry, they will not be without shelter.">
+        <AuthLayout
+          description={intl.formatMessage(messages.UserCreateDescription)}
+        >
           <label htmlFor="signupUsername" className="sr-only">
-            Username
+            <FormattedMessage
+              id="user.account.create.text.username"
+              defaultMessage={"Username"}
+            />
           </label>
           <Input
             id="signupUsername"
@@ -196,12 +208,15 @@ export class CreateUser extends React.PureComponent {
             onKeyPress={this._handleKeyEnter}
             onKeyUp={e => this._onUsernameValidation(e.target.value)}
             className={`form-control ${error && "is-invalid"}`}
-            placeholder="Username"
+            placeholder={intl.formatMessage(messages.UserCreateTextUsername)}
             required
             autoFocus
           />
           <label htmlFor="signupEmail" className="sr-only">
-            Email address
+            <FormattedMessage
+              id="user.account.create.text.email"
+              defaultMessage={"Email address"}
+            />
           </label>
           <Input
             id="signupEmail"
@@ -212,13 +227,16 @@ export class CreateUser extends React.PureComponent {
             }
             onKeyPress={this._handleKeyEnter}
             className={`form-control ${error && "is-invalid"}`}
-            placeholder="Email address"
+            placeholder={intl.formatMessage(messages.UserCreateTextEmail)}
             required
             autoFocus
           />
 
           <label htmlFor="signupPassword" className="sr-only">
-            Password
+            <FormattedMessage
+              id="user.account.create.text.password"
+              defaultMessage={"Password"}
+            />
           </label>
           <Input
             id="signupPassword"
@@ -230,7 +248,7 @@ export class CreateUser extends React.PureComponent {
             onKeyPress={this._handleKeyEnter}
             onKeyUp={e => this._onPasswordValidation(e.target.value)}
             className={`form-control ${error && "is-invalid"}`}
-            placeholder="Password"
+            placeholder={intl.formatMessage(messages.UserCreateTextPassword)}
             required
             autoFocus
           />
@@ -241,13 +259,24 @@ export class CreateUser extends React.PureComponent {
             style={{ marginTop: 10, marginBottom: 10 }}
             primary
           >
-            Create Account
+            <FormattedMessage
+              id="user.account.create.action.create"
+              defaultMessage={"Create Account"}
+            />
           </Button>
 
           <Link onClick={() => history.push("/signin")}>
-            Already have an account? Your forms miss you.{" "}
+            <FormattedMessage
+              id="user.account.create.text.has.account"
+              defaultMessage={"Already have an account? Your forms miss you."}
+            />{" "}
             <u>
-              <strong>Sign In</strong>
+              <strong>
+                <FormattedMessage
+                  id="user.account.create.action.signin"
+                  defaultMessage={"Sign In"}
+                />
+              </strong>
             </u>
           </Link>
           <Error show={error}>{errorMsg}</Error>
@@ -260,6 +289,7 @@ export class CreateUser extends React.PureComponent {
 
 const createUserWithData = compose(
   withUser,
+  injectIntl,
   graphql(CREATE_USER_MUTATION, { name: "createUser" }),
   graphql(SIGIN_USER_MUTATION, { name: "signinUser" })
 );

@@ -21,6 +21,8 @@ import CreateUser from "./containers/User/Create";
 import ConfirmUser from "./containers/User/Confirm/index";
 //User Context
 import { UserProvider } from "./context/UserContext";
+//Locales
+import { IntlProvider, messages, language } from "./locales";
 //Styles
 import { injectGlobal, ThemeProvider } from "styled-components";
 import theme from "./styles/Theme";
@@ -79,22 +81,24 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <UserProvider>
-      <ThemeProvider theme={theme}>
-        <AlertProvider template={AlertTemplate} {...ALERT_OPTIONS}>
-          <Router>
-            <div>
-              <Switch>
-                <Route path="/signin" component={LoginUser} />
-                <Route path="/signup" component={CreateUser} />
-                <Route exact path="/confirm" component={ConfirmUser} />
-                <App />
-              </Switch>
-            </div>
-          </Router>
-        </AlertProvider>
-      </ThemeProvider>
-    </UserProvider>
+    <IntlProvider locale={language} messages={messages}>
+      <UserProvider>
+        <ThemeProvider theme={theme}>
+          <AlertProvider template={AlertTemplate} {...ALERT_OPTIONS}>
+            <Router>
+              <div>
+                <Switch>
+                  <Route path="/signin" component={LoginUser} />
+                  <Route path="/signup" component={CreateUser} />
+                  <Route exact path="/confirm" component={ConfirmUser} />
+                  <App />
+                </Switch>
+              </div>
+            </Router>
+          </AlertProvider>
+        </ThemeProvider>
+      </UserProvider>
+    </IntlProvider>
   </ApolloProvider>,
   document.getElementById("root")
 );
