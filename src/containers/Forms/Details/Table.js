@@ -60,11 +60,12 @@ class Table extends Component {
     return rows;
   };
   render() {
-    if (Object.keys(this.props.data).length === 0) {
+    const { data, emptyText, emptyDescription } = this.props;
+    if (Object.keys(data).length === 0) {
       return (
         <Graphic
-          title="Form without data"
-          description="This form has not received any data yet, paste the endpoint into the form of your site to start collecting data."
+          title={emptyText}
+          description={emptyDescription}
           imgType="data"
         />
       );

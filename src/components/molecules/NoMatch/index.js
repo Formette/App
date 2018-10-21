@@ -2,12 +2,14 @@ import React from "react";
 //Components
 import { Button } from "../../atoms/index";
 import { Graphic } from "../../molecules/index";
+import { injectIntl } from "react-intl";
+import { globals as messages } from "../../../locales/api";
 
 const NoMatch = props => {
   return (
     <Graphic
-      title="Page not found"
-      description="The page you are trying to find is not available."
+      title={props.intl.formatMessage(messages.PageNoMatchTitle)}
+      description={props.intl.formatMessage(messages.PageNoMatchDescription)}
       imgType="lost"
       top={200}
     >
@@ -17,10 +19,10 @@ const NoMatch = props => {
         onClick={() => props.history.push("/")}
         primary
       >
-        Go back home
+        {props.intl.formatMessage(messages.PageNoMatchActionText)}
       </Button>
     </Graphic>
   );
 };
 
-export default NoMatch;
+export default injectIntl(NoMatch);

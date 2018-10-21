@@ -1,7 +1,7 @@
 // @flow
 import React, { Component, Fragment } from "react";
 import { graphql, compose } from "react-apollo";
-import {withRouter} from "react-router";
+import { withRouter } from "react-router";
 //Container
 import Tools from "./Tools";
 import Cards from "./Cards";
@@ -12,6 +12,9 @@ import { Graphic, Loader } from "../../../components/molecules/index";
 import { _refreshPage, _onHandleExpression } from "../../../services/utilities";
 //API
 import { ALL_FORMS_QUERY } from "../../../api/Queries";
+//locales
+import { FormattedMessage, injectIntl } from "react-intl";
+import { globals as messages } from "../../../locales/api";
 
 export class MyForms extends Component {
   props: {
@@ -79,17 +82,26 @@ export class MyForms extends Component {
     });
   }
   render() {
-    const { allFormses } = this.props.allFormsQuery;
+    const { allFormsQuery, intl } = this.props;
+    const { allFormses } = allFormsQuery;
     const { isLoading, isSearching, data } = this.state;
     if (this.props.allFormsQuery && this.props.allFormsQuery.error) {
       return (
         <Graphic
-          title="Error..."
-          description="Ups! Something went wrong try again."
+          title={intl.formatMessage(messages.GraphicErrorTitle)}
+          description={intl.formatMessage(messages.GraphicErrorDescription)}
           imgType="error"
+          top={200}
         >
-          <Button className="btn btn-lg" onClick={_refreshPage} primary>
-            Try Again
+          <Button
+            className="btn btn-lg btn-primary"
+            onClick={_refreshPage}
+            primary
+          >
+            <FormattedMessage
+              id="app.graphic.error.action"
+              defaultMessage={"Try Again"}
+            />
           </Button>
         </Graphic>
       );
@@ -97,8 +109,8 @@ export class MyForms extends Component {
     return (
       <Fragment>
         <Tools
-          title="My forms"
-          description="Create, view and collect data for your applications"
+          title={intl.formatMessage(messages.PageFormTitle)}
+          description={intl.formatMessage(messages.PageFormDescription)}
           titleTruncate
           textTruncate
         >
@@ -107,7 +119,9 @@ export class MyForms extends Component {
               InputProps={{
                 type: "text",
                 className: "form-control",
-                placeholder: "Search forms",
+                placeholder: intl.formatMessage(
+                  messages.PageFormSearchPlaceholder
+                ),
                 defaultValue: this.state.searchQuery
               }}
               IconProps={{ name: "fas fa-search" }}
@@ -117,7 +131,11 @@ export class MyForms extends Component {
           </div>
           <div className="col">
             <Button className="btn btn-lg" onClick={this._goToNew} primary>
-              <Icon name="fas fa-plus" color="#FFF" /> New form
+              <Icon name="fas fa-plus" color="#FFF" />{" "}
+              <FormattedMessage
+                id="app.page.form.action.new.form"
+                defaultMessage={"New form"}
+              />
             </Button>
           </div>
         </Tools>
@@ -126,8 +144,10 @@ export class MyForms extends Component {
             <Loader top={100} />
           ) : Object.keys(allFormses).length === 0 ? (
             <Graphic
-              title="No forms created"
-              description="No form has been created yet, start by creating a new one and then added to your site to collect data"
+              title={intl.formatMessage(messages.GraphicFormEmptyTitle)}
+              description={intl.formatMessage(
+                messages.GraphicFormEmptyDescription
+              )}
               imgType="empty"
               top={55}
             />
@@ -141,6 +161,7 @@ export class MyForms extends Component {
 }
 
 export default compose(
+  injectIntl,
   withRouter,
   graphql(ALL_FORMS_QUERY, {
     name: "allFormsQuery",

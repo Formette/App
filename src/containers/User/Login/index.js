@@ -14,7 +14,9 @@ import { userSignIn } from "../../../api/Functions";
 //Utils
 import LogRocket from "logrocket";
 import { _isLoggedIn } from "../../../services/utilities";
-
+//locales
+import { FormattedMessage, injectIntl } from "react-intl";
+import { globals as messages } from "../../../locales/api";
 class LoginUser extends React.PureComponent {
   props: {
     client: any,
@@ -36,20 +38,21 @@ class LoginUser extends React.PureComponent {
   };
   _onSignIn = async () => {
     const { email, password } = this.state;
+    const { intl, user, history } = this.props;
     //Verifies if the inputs are empty or not
     if (email && password) {
       //logs in the user
       const response = await userSignIn(email, password, this.props.signinUser);
       if (response.status) {
         LogRocket.track("Signed In");
-        this.props.user.updateUser(response.rest);
+        user.updateUser(response.rest);
         //sends to the dashboard
-        this.props.history.push("/");
+        history.push("/");
       } else {
         LogRocket.log("Ops! Invalid Email or password.");
         this.setState({
           error: true,
-          errorMsg: "Ops! Invalid Email or password."
+          errorMsg: intl.formatMessage(messages.UserLoginInvalid)
         });
       }
     } else {
@@ -58,7 +61,7 @@ class LoginUser extends React.PureComponent {
       );
       this.setState({
         error: true,
-        errorMsg: "This form is feeling lonely, needs affection, needs data."
+        errorMsg: intl.formatMessage(messages.UserCreateFormEmpty)
       });
     }
   };
@@ -69,12 +72,17 @@ class LoginUser extends React.PureComponent {
   };
   render() {
     const { email, password, error, errorMsg } = this.state;
-    const { history } = this.props;
+    const { history, intl } = this.props;
     return (
       <Fragment>
-        <AuthLayout description="Welcome back, Come quick! Your forms are waiting for you">
+        <AuthLayout
+          description={intl.formatMessage(messages.UserLoginDescription)}
+        >
           <label htmlFor="signinEmail" className="sr-only">
-            Email address
+            <FormattedMessage
+              id="user.account.create.text.email"
+              defaultMessage={"Email address"}
+            />
           </label>
           <Input
             id="signinEmail"
@@ -85,13 +93,16 @@ class LoginUser extends React.PureComponent {
             }
             onKeyPress={this._handleKeyEnter}
             className={`form-control ${error && "is-invalid"}`}
-            placeholder="Email address"
+            placeholder={intl.formatMessage(messages.UserCreateTextEmail)}
             required
             autoFocus
           />
 
           <label htmlFor="signinPassword" className="sr-only">
-            Password
+            <FormattedMessage
+              id="user.account.create.text.password"
+              defaultMessage={"Password"}
+            />
           </label>
           <Input
             id="signinPassword"
@@ -102,7 +113,7 @@ class LoginUser extends React.PureComponent {
             }
             onKeyPress={this._handleKeyEnter}
             className={`form-control ${error && "is-invalid"}`}
-            placeholder="Password"
+            placeholder={intl.formatMessage(messages.UserCreateTextPassword)}
             required
             autoFocus
           />
@@ -113,13 +124,24 @@ class LoginUser extends React.PureComponent {
             style={{ marginTop: 10, marginBottom: 10 }}
             primary
           >
-            Sign In
+            <FormattedMessage
+              id="user.account.create.action.signin"
+              defaultMessage={"Sign In"}
+            />
           </Button>
 
           <Link onClick={() => history.push("/signup")}>
-            Do not have an account yet? Omg is free.{" "}
+            <FormattedMessage
+              id="user.account.login.placeholder.create"
+              defaultMessage={"Do not have an account yet? Omg is free."}
+            />{" "}
             <u>
-              <strong>Create here!</strong>
+              <strong>
+                <FormattedMessage
+                  id="user.account.login.action.create"
+                  defaultMessage={"Create here!"}
+                />
+              </strong>
             </u>
           </Link>
           <Error show={error}>{errorMsg}</Error>
@@ -132,6 +154,7 @@ class LoginUser extends React.PureComponent {
 
 const loginUserWithData = compose(
   withUser,
+  injectIntl,
   graphql(SIGIN_USER_MUTATION, { name: "signinUser" })
 );
 

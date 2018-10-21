@@ -15,6 +15,8 @@ import { withUser } from "../../hocs";
 import styled, { withTheme } from "styled-components";
 //Pages Navigation
 import Router from "../../Router";
+//locales
+import { FormattedMessage } from "react-intl";
 
 class App extends PureComponent {
   state = {
@@ -34,9 +36,15 @@ class App extends PureComponent {
         </UserContext.Consumer>
         {!this.state.accountConfirmed && (
           <Alert className="alert-warning" role="alert">
-            You have not activated your account yet.{" "}
+            <FormattedMessage
+              id="user.account.activate.warning"
+              defaultMessage={" You have not activated your account yet."}
+            />{" "}
             <a href="#/confirm" className="alert-link">
-              Click here to activate.
+              <FormattedMessage
+                id="user.account.activate.warning.action"
+                defaultMessage={"Click here to activate."}
+              />
             </a>
           </Alert>
         )}
