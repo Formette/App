@@ -3,17 +3,15 @@
     "app.navigation.forms": "Forms",
     "app.navigation.logout": "Log out",
     "app.navigation.greetings": "Hello,",
-
     "app.page.form.title": "My forms",
     "app.page.form.description": "Create, view and collect data for your applications",
     "app.page.form.action.new.form": "New form",
     "app.page.form.search.placeholder": "Search forms",
-
     "app.page.form.card.text.responses": "responses",
     "app.page.form.card.action.view": "View data",
     "app.page.form.card.action.edit": "Edit",
     "app.page.form.card.action.delete": "Delete",
-
+    "app.page.form.card.action.view.content": "View",
     "app.page.form.create.description": "Create a new form to collect various types of data",
     "app.page.form.create.text.name": "Name:",
     "app.page.form.create.text.description": "Description:",
@@ -30,12 +28,10 @@
     "app.page.form.create.action.save": "Save",
     "app.page.form.create.action.update": "Update",
     "app.page.form.create.action.delete": "Delete form",
-
     "app.page.form.details.title": "This form has no title",
     "app.page.form.details.description": "This form has no description",
     "app.page.form.details.action.copy.endpoint": "Endpoint",
     "app.page.form.details.text.disable": "This form is disabled",
-
     "app.page.profile.action.update": "Update profile",
     "app.page.profile.text.statistics": "Statistics",
     "app.page.profile.text.statistics.forms.count": "forms created",
@@ -47,60 +43,47 @@
     "app.page.profile.text.settings.description": "This is a dangerous zone, so be careful, here you will find your settings.",
     "app.page.profile.text.settings.action.logout": "Log out",
     "app.page.profile.text.settings.action.help": "Help",
-
     "app.page.nomatch.title": "Page not found",
     "app.page.nomatch.description": "The page you are trying to find is not available.",
     "app.page.nomatch.action.text": "Go back home",
-
     "app.page.footer.link.docs": "Docs",
     "app.page.footer.link.terms": "Terms & Privacy Policy",
     "app.page.footer.link.status": "Status",
     "app.page.footer.link.feedback": "Feedback",
-
     "app.alerts.form.success.created": "Form created successfully",
     "app.alerts.form.success.updated": "Form updated successfully",
     "app.alerts.form.success.deleted": "Form deleted successfully",
     "app.alerts.form.success.copied": "Endpoint copied to clipboard.",
     "app.alerts.form.error.delete": "What a disgrace but it was not possible to delete the form, try again.",
-
     "app.errors.form.exists": "This endpoint already exists, try another.",
     "app.errors.form.empty": "This form is feeling lonely, needs affection, needs data.",
     "app.errors.form.same": "If it's the same as before, what's the point of changing?",
     "app.errors.form.empty.title": "Form without data",
     "app.errors.form.empty.description": "This form has not received any data yet, paste the endpoint into the form of your site to start collecting data.",
-
     "app.graphic.form.edit.error.title": "Where is the form?",
     "app.graphic.form.edit.error.description": "Ups! No form was found to edit.",
     "app.graphic.form.edit.error.action": "Go back",
-
     "app.graphic.error.title": "Error...",
     "app.graphic.error.description": "Ups! Something went wrong try again.",
     "app.graphic.error.action": "Try Again",
     "app.graphic.empty.title": "No data to show",
     "app.graphic.empty.description": "Hello Indiana Jones, are you in unfamiliar lands? You are a great explorer but this form does not exist and may contain mysterious dangers. Come back home.",
-
     "app.graphic.form.empty.title": "No forms created",
     "app.graphic.form.empty.description": "No form has been created yet, start by creating a new one and then added to your site to collect data",
-
     "app.graphic.search.title": "No search results",
     "app.graphic.search.description": "No form was found with the words in the search box. Try searching in other words.",
-
     "app.modal.confirmation.form.delete.title": "Are you sure?",
     "app.modal.confirmation.form.delete.description": "Are you sure you want to delete this form?",
     "app.modal.confirmation.form.delete.action.text.primary": "Delete",
     "app.modal.confirmation.form.delete.action.text.cancel": "Cancel",
-
     "app.modal.confirmation.profile.change.title": "Are you sure?",
     "app.modal.confirmation.profile.change.description": "All your endpoints will be changed to the new username. Do not forget to change in your apps.",
     "app.modal.confirmation.profile.change.action.text.primary": "Confirm",
     "app.modal.confirmation.profile.change.action.text.cancel": "Cancel",
-
-
     "user.account.login.description": "Welcome back, Come quick! Your forms are waiting for you",
     "user.account.login.action.create": "Create here!",
     "user.account.login.placeholder.create": "Do not have an account yet? Omg is free.",
     "user.account.login.invalid": "Ops! Invalid Email or password.",
-
     "user.account.create.description": "Seriously? Your forms do not have a home for the data? Do not worry, they will not be without shelter.",
     "user.account.create.text.username": "Username",
     "user.account.create.text.email": "Email address",
@@ -113,35 +96,30 @@
     "user.account.create.email.exists": "Ops! User already exists with that information, try again.",
     "user.account.create.form.empty": "This form is feeling lonely, needs affection, needs data.",
     "user.account.create.form.password.error": "With so much room in the box, you chose this tiny thing. We need more than 8 characters, go we know you can.",
-    "user.account.create.form.username.error":  "With so much name in this world, you had to choose this one. Try another.",
-
+    "user.account.create.form.username.error": "With so much name in this world, you had to choose this one. Try another.",
     "user.account.activate.warning": "You have not activated your account yet.",
     "user.account.activate.warning.action": "Click here to activate.",
-
     "user.account.verification.title": "Please confirm your email",
     "user.account.verification.description": "We like real people, we need to know if it's not a ghost of the internet.",
     "user.account.verification.text.confirm": "Confirmation Code",
     "user.account.verification.action.confirm": "Confirm Account",
-    "user.account.verification.action.resend":  "Resend confirmation code?",
+    "user.account.verification.action.resend": "Resend confirmation code?",
     "user.account.verification.code.send": "Your code has been sent, check your email.",
     "user.account.verification.invalid": "The verification code is invalid."
-
   },
   "pt": {
     "app.navigation.forms": "Formulários",
     "app.navigation.logout": "Sair",
     "app.navigation.greetings": "Olá,",
-
     "app.page.form.title": "Meus formulários",
     "app.page.form.description": "Crie, visualize e recolha dados para seus aplicativos",
     "app.page.form.action.new.form": "Novo formulário",
     "app.page.form.search.placeholder": "Pesquisar formulários",
-
     "app.page.form.card.text.responses": "respostas",
     "app.page.form.card.action.view": "Ver dados",
     "app.page.form.card.action.edit": "Editar",
     "app.page.form.card.action.delete": "Eliminar",
-
+    "app.page.form.card.action.view.content": "Ver",
     "app.page.form.create.description": "Crie um novo formulário para recolher vários tipos de dados",
     "app.page.form.create.text.name": "Nome:",
     "app.page.form.create.text.description": "Descrição:",
@@ -158,12 +136,10 @@
     "app.page.form.create.action.save": "Guardar",
     "app.page.form.create.action.update": "Atualizar",
     "app.page.form.create.action.delete": "Eliminar formulário",
-
     "app.page.form.details.title": "Este formulário não tem título",
     "app.page.form.details.description": "Este formulário não tem descrição",
     "app.page.form.details.action.copy.endpoint": "Endpoint",
     "app.page.form.details.text.disable": "Este formulário está desativado",
-
     "app.page.profile.action.update": "Atualizar perfil",
     "app.page.profile.text.statistics": "Estatisticas",
     "app.page.profile.text.statistics.forms.count": "formulários criados",
@@ -175,60 +151,47 @@
     "app.page.profile.text.settings.description": "Esta é uma zona perigosa, portanto, tenha cuidado, aqui você encontrará suas configurações.",
     "app.page.profile.text.settings.action.logout": "Sair da conta",
     "app.page.profile.text.settings.action.help": "Ajuda e documentação",
-
     "app.page.nomatch.title": "Página não encontrada",
     "app.page.nomatch.description": "A página que você está tentando encontrar não está disponível.",
     "app.page.nomatch.action.text": "Voltar",
-
     "app.page.footer.link.docs": "Docs",
     "app.page.footer.link.terms": "Termos e Política de Privacidade",
     "app.page.footer.link.status": "Estado",
     "app.page.footer.link.feedback": "Feedback",
-
     "app.alerts.form.success.created": "Formulário criado com sucesso",
     "app.alerts.form.success.updated": "Formulário atualizado com sucesso",
     "app.alerts.form.success.deleted": "Formulário eliminado com sucesso",
     "app.alerts.form.success.copied": "Endpoint copiado para a área de transferência.",
     "app.alerts.form.error.delete": "Que desgraça, não foi possível eliminar o formulário, tente novamente.",
-
     "app.errors.form.exists": "Este endpoint já existe, tente outro.",
     "app.errors.form.empty": "Este formulário está se sentindo sozinho, precisa de atenção, precisa de dados.",
     "app.errors.form.same": "Se é o mesmo de antes, qual é o sentido de mudar?",
     "app.errors.form.empty.title": "Formulário sem dados",
     "app.errors.form.empty.description": "Este formulário ainda não recebeu dados, cole o endpoint no formulário do seu site para começar a recolher dados.",
-
     "app.graphic.form.edit.error.title": "Onde está o formulário?",
     "app.graphic.form.edit.error.description": "Ups! Nenhum formulário foi encontrado para edição.",
     "app.graphic.form.edit.error.action": "Voltar",
-
     "app.graphic.error.title": "Erro...",
     "app.graphic.error.description": "Ups! Algo deu errado, tente novamente.",
     "app.graphic.error.action": "Tente novamente",
     "app.graphic.empty.title": "Nenhum dado para mostrar",
     "app.graphic.empty.description": "Olá Indiana Jones, está em terras desconhecidas? És um grande explorador, mas este formulário não existe e pode conter perigos misteriosos. Volte para casa.",
-
     "app.graphic.form.empty.title": "Nenhum formulário criado",
     "app.graphic.form.empty.description": "Nenhum formulário foi criado, comece criando um novo e, em seguida, adicione ao seu site para recolher dados",
-
     "app.graphic.search.title": "Nenhum resultado de pesquisa",
     "app.graphic.search.description": "Nenhum formulário foi encontrado com as palavras na caixa de pesquisa. Tente pesquisar em outras palavras.",
-
     "app.modal.confirmation.form.delete.title": "Você tem certeza?",
     "app.modal.confirmation.form.delete.description": "Tem certeza de que deseja eliminar este formulário?",
     "app.modal.confirmation.form.delete.action.text.primary": "Eliminar",
     "app.modal.confirmation.form.delete.action.text.cancel": "Cancelar",
-
     "app.modal.confirmation.profile.change.title": "Você tem certeza?",
     "app.modal.confirmation.profile.change.description": "Todos os seus endpoints serão alterados para o novo nome de utilizador. Não se esqueça de alterar as suas aplicações.",
     "app.modal.confirmation.profile.change.action.text.primary": "Confirmar",
     "app.modal.confirmation.profile.change.action.text.cancel": "Cancelar",
-
-
     "user.account.login.description": "Bem-vindo de volta, venha rápido! Seus formulários estão esperando.",
     "user.account.login.action.create": "Crie aqui!",
     "user.account.login.placeholder.create": "Não tem uma conta ainda? Omg é grátis.",
     "user.account.login.invalid": "Ops! E-mail ou senha inválidos.",
-
     "user.account.create.description": "A sério? Seus formulários não têm uma casa para os dados? Não se preocupe, eles não estarão sem abrigo.",
     "user.account.create.text.username": "Nome de utilizador",
     "user.account.create.text.email": "Endereço de e-mail",
@@ -241,19 +204,15 @@
     "user.account.create.email.exists": "Ops! Já existe um utilizador com essa informação, tente novamente.",
     "user.account.create.form.empty": "Este formulário está se sentindo sozinho, precisa de atenção, precisa de dados.",
     "user.account.create.form.password.error": "Com tanto espaço na caixa, você escolheu essa coisa minúscula. Precisamos de mais de 8 caracteres.",
-    "user.account.create.form.username.error":  "Com tanto nome neste mundo, você tinha que escolher este. Tente outro.",
-
-
+    "user.account.create.form.username.error": "Com tanto nome neste mundo, você tinha que escolher este. Tente outro.",
     "user.account.activate.warning": "Ainda não ativou sua conta ainda.",
     "user.account.activate.warning.action": "Clique aqui para ativar.",
-
     "user.account.verification.title": "Por favor confirme seu email",
     "user.account.verification.description": "Nós gostamos de pessoas reais, precisamos saber se não é um fantasma da internet.",
     "user.account.verification.text.confirm": "Código de confirmação",
     "user.account.verification.action.confirm": "Confirmar conta",
-    "user.account.verification.action.resend":  "Reenviar o código de confirmação?",
+    "user.account.verification.action.resend": "Reenviar o código de confirmação?",
     "user.account.verification.code.send": "Seu código foi enviado, verifique seu e-mail.",
     "user.account.verification.invalid": "O código de verificação é inválido."
-
   }
 }

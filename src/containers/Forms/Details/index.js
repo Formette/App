@@ -152,7 +152,7 @@ export class FormDetails extends PureComponent {
     } = this.props.formDataQuery.Forms;
     const point = endpoint.split("/");
     const { onConfirmation, url } = this.state;
-    const { intl, user, alert } = this.props;
+    const { intl, user, alert, match } = this.props;
     const { userName } = user.state;
     return (
       <div>
@@ -234,10 +234,9 @@ export class FormDetails extends PureComponent {
             <Card>
               <div className="card-body">
                 <Table
+                  formId={match.params.id}
                   data={contents}
-                  emptyText={intl.formatMessage(
-                    messages.FormEmptyTitle
-                  )}
+                  emptyText={intl.formatMessage(messages.FormEmptyTitle)}
                   emptyDescription={intl.formatMessage(
                     messages.FormEmptyDescription
                   )}
