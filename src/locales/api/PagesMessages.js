@@ -23,6 +23,18 @@ const PagesMessages = {
     id: "app.page.form.details.description",
     defaultMessage: "This form has no description"
   },
+  PageFormCardActions: {
+    id: "app.page.form.card.action.actions",
+    defaultMessage: "My forms"
+  },
+  PageContentViewTitle: {
+    id: "app.page.form.content.view.title",
+    defaultMessage: "Content for"
+  },
+  PageContentViewDescription: {
+    id: "app.page.form.content.view.description",
+    defaultMessage: "Created in"
+  },
   PageFormTitle: {
     id: "app.page.form.title",
     defaultMessage: "My forms"

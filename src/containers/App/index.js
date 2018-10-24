@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from "react";
+import React, { PureComponent, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { compose } from "react-apollo";
 //Components
@@ -19,35 +19,30 @@ import Router from "../../Router";
 import { FormattedMessage } from "react-intl";
 
 class App extends PureComponent {
-  state = {
-    accountConfirmed: true
-  };
-  componentWillReceiveProps(nextProps) {
-    const { confirmed } = nextProps.user.state.profile;
-    this.setState({ accountConfirmed: confirmed });
-  }
   render() {
     return (
       <div className={this.props.className}>
         <UserContext.Consumer>
           {context => (
-            <Navbar brand="Formette β" username={context.state.userName} />
+            <Fragment>
+              <Navbar brand="Formette β" username={context.state.userName} />
+              {!context.state.accountConfirmed && (
+                <Alert className="alert-warning" role="alert">
+                  <FormattedMessage
+                    id="user.account.activate.warning"
+                    defaultMessage={" You have not activated your account yet."}
+                  />{" "}
+                  <a href="#/confirm" className="alert-link">
+                    <FormattedMessage
+                      id="user.account.activate.warning.action"
+                      defaultMessage={"Click here to activate."}
+                    />
+                  </a>
+                </Alert>
+              )}
+            </Fragment>
           )}
         </UserContext.Consumer>
-        {!this.state.accountConfirmed && (
-          <Alert className="alert-warning" role="alert">
-            <FormattedMessage
-              id="user.account.activate.warning"
-              defaultMessage={" You have not activated your account yet."}
-            />{" "}
-            <a href="#/confirm" className="alert-link">
-              <FormattedMessage
-                id="user.account.activate.warning.action"
-                defaultMessage={"Click here to activate."}
-              />
-            </a>
-          </Alert>
-        )}
         <div className="container-fluid content">
           <Router />
         </div>

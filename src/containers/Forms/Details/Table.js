@@ -10,12 +10,14 @@ import Dropdown, {
 } from "@atlaskit/dropdown-menu";
 //Utils
 import * as moment from "moment";
+import { withAlert } from "react-alert";
 import { _capitalizeFirstLetter } from "../../../services/utilities";
-//locales
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, injectIntl } from "react-intl";
+import { globals as messages } from "../../../locales/api";
+import LogRocket from "logrocket";
 //API
-import { FORM_DATA_QUERY } from "../../../api/Queries";
 import { DELETE_FORM_CONTENT_MUTATION } from "../../../api/Mutations";
+import { deleteFormContent } from "../../../api/Functions";
 
 class Table extends Component {
   state = {
@@ -52,10 +54,12 @@ class Table extends Component {
           content: "Actions"
         }
       );
-
       return { cells: [...cells] };
     } catch (error) {
-      console.log("_onCreateHead = ", error);
+      LogRocket.error({ _onCreateHead: error });
+      this.props.alert.error(
+        this.props.intl.formatMessage(messages.GraphicErrorDescription)
+      );
     }
   };
   _onGenerate = data => {
@@ -79,7 +83,9 @@ class Table extends Component {
         isMenuFixed={true}
         position="bottom right"
       >
-        <DropdownItemGroup title="Actions">
+        <DropdownItemGroup
+          title={this.props.intl.formatMessage(messages.PageFormCardActions)}
+        >
           <DropdownItem href={`#/form/content/${id}`}>
             <Icon name="fas fa-eye" />{" "}
             <FormattedMessage
@@ -98,40 +104,19 @@ class Table extends Component {
       </Dropdown>
     );
   };
-  _onDeleteContent = async id => {
-    const { deleteFormContentMutation, formId } = this.props;
-    //console.log("match.params.id = ", match.params.id);
-    try {
-      await deleteFormContentMutation({
-        variables: {
-          id
-        },
-        update: (store, { data: { deleteContent } }) => {
-          try {
-            //reads the query from the cache
-            const data = store.readQuery({
-              query: FORM_DATA_QUERY,
-              variables: { id: formId }
-            });
-            //finds and removes the form from the object
-            data.Forms.contents.forEach((value, index) => {
-              if (value.id === deleteContent.id) {
-                data.Forms.contents.splice(index, 1);
-              }
-            });
-            //updates the new data to the store
-            store.writeQuery({
-              query: FORM_DATA_QUERY,
-              variables: { id: formId },
-              data
-            });
-          } catch (e) {
-            return e;
-          }
-        }
-      });
-    } catch (error) {
-      // console.log("_onDeleteContent  = ", error);
+  _onDeleteContent = id => {
+    const { deleteFormContentMutation, formId, intl, alert } = this.props;
+    const response = deleteFormContent(id, formId, deleteFormContentMutation);
+    if (response) {
+      //Shows feedback and updates the store
+      alert.success(
+        intl.formatMessage(messages.AlertFormContentSuccessDeleted)
+      );
+      LogRocket.info("Content deleted successfully");
+      LogRocket.track("Deleted Form Content");
+    } else {
+      LogRocket.error("Error on deleting form content");
+      alert.error(intl.formatMessage(messages.GraphicErrorDescription));
     }
   };
   _onCreateRows = () => {
@@ -149,7 +134,10 @@ class Table extends Component {
       });
       return rows;
     } catch (error) {
-      // console.log("_onCreateRows = ", error);
+      LogRocket.error({ _onCreateRows: error });
+      this.props.alert.error(
+        this.props.intl.formatMessage(messages.GraphicErrorDescription)
+      );
     }
   };
   render() {
@@ -178,5 +166,7 @@ class Table extends Component {
 }
 
 export default compose(
+  withAlert,
+  injectIntl,
   graphql(DELETE_FORM_CONTENT_MUTATION, { name: "deleteFormContentMutation" })
 )(Table);

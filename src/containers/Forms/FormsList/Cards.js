@@ -110,7 +110,9 @@ class Cards extends PureComponent {
                       isMenuFixed={true}
                       position="bottom right"
                     >
-                      <DropdownItemGroup title="Actions">
+                      <DropdownItemGroup
+                        title={intl.formatMessage(messages.PageFormCardActions)}
+                      >
                         <DropdownItem href={`#/edit/${item.id}`}>
                           <Icon name="fas fa-pen" />{" "}
                           <FormattedMessage
