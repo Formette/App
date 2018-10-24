@@ -19,6 +19,7 @@ import * as moment from "moment";
 import { withAlert } from "react-alert";
 import LogRocket from "logrocket";
 import { downloadCSV } from "../../../services/utilities";
+import * as jsPDF from "jspdf";
 //Locales
 import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
@@ -78,6 +79,33 @@ class ContentView extends PureComponent {
     const data = contentQuery.Content.data;
     downloadCSV(args, data);
   };
+  _onGeneratePDF = () => {
+    const { match, intl } = this.props;
+    let doc = new jsPDF();
+    const source = document.getElementById("renderToExport");
+    let specialElementHandlers = {
+      "#editor": (element, renderer) => {
+        return true;
+      }
+    };
+    doc.text(
+      `${intl.formatMessage(messages.PageContentViewTitle)} ${match.params.id}`,
+      15,
+      15
+    );
+    doc.text(
+      `${intl.formatMessage(messages.PageContentViewDescription)} ${
+        this.state.createdAt
+      }`,
+      15,
+      24
+    );
+    doc.fromHTML(source, 15, 30, {
+      width: 170,
+      elementHandlers: specialElementHandlers
+    });
+    doc.save(`${match.params.id}.pdf`);
+  };
   render() {
     const { intl, contentQuery, history, match } = this.props;
     if (contentQuery.Content === null) {
@@ -132,6 +160,13 @@ class ContentView extends PureComponent {
                       messages.PageFormCardActionsExport
                     )}
                   >
+                    <DropdownItem onClick={this._onGeneratePDF}>
+                      <Icon name="fas fa-file-pdf" />{" "}
+                      <FormattedMessage
+                        id="app.page.form.card.action.export.pdf"
+                        defaultMessage={"PDF"}
+                      />
+                    </DropdownItem>
                     <DropdownItem onClick={this._onGenerateCSV}>
                       <Icon name="fas fa-file" />{" "}
                       <FormattedMessage
@@ -157,7 +192,7 @@ class ContentView extends PureComponent {
         <div className="row">
           <div className="col-md-12">
             <Card>
-              <div className="card-body">
+              <div id="renderToExport" className="card-body">
                 {contentQuery && contentQuery.loading ? (
                   <Loader top={5} />
                 ) : (
