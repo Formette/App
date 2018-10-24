@@ -14,10 +14,14 @@ import {
   Confirmation,
   Loader
 } from "../../../components/molecules";
+import Dropdown, {
+  DropdownItemGroup,
+  DropdownItem
+} from "@atlaskit/dropdown-menu";
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
-import { _refreshPage } from "../../../services/utilities";
+import { _refreshPage, downloadCSV } from "../../../services/utilities";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 //API
@@ -92,6 +96,21 @@ export class FormDetails extends PureComponent {
   };
   _editForm = () => {
     this.props.history.push(`/edit/${this.props.match.params.id}`);
+  };
+  _onGenerateCSV = () => {
+    const { match, formDataQuery } = this.props;
+    const { contents, name } = formDataQuery.Forms;
+    const args = { filename: `${name || match.params.id}.csv` };
+    const result = [];
+    contents.map(item => {
+      let { id, data, createdAt } = item;
+      result.push({
+        id,
+        ...data[0],
+        createdAt
+      });
+    });
+    downloadCSV(args, result);
   };
   render() {
     if (this.props.formDataQuery && this.props.formDataQuery.loading) {
@@ -195,6 +214,31 @@ export class FormDetails extends PureComponent {
           */}
           <div className="col">
             <HorizontalList className="float-right">
+              <li>
+                <Dropdown
+                  trigger={
+                    <Button className="btn btn-lg">
+                      <Icon name="fas fa-download" />
+                    </Button>
+                  }
+                  isMenuFixed={true}
+                  position="bottom right"
+                >
+                  <DropdownItemGroup
+                    title={this.props.intl.formatMessage(
+                      messages.PageFormCardActionsExport
+                    )}
+                  >
+                    <DropdownItem onClick={this._onGenerateCSV}>
+                      <Icon name="fas fa-file" />{" "}
+                      <FormattedMessage
+                        id="app.page.form.card.action.export.csv"
+                        defaultMessage={"CSV"}
+                      />
+                    </DropdownItem>
+                  </DropdownItemGroup>
+                </Dropdown>
+              </li>
               <li>
                 <Button className="btn btn-lg" onClick={this._editForm}>
                   <Icon name="fas fa-pen" />

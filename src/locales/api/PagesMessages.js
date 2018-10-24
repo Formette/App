@@ -25,7 +25,11 @@ const PagesMessages = {
   },
   PageFormCardActions: {
     id: "app.page.form.card.action.actions",
-    defaultMessage: "My forms"
+    defaultMessage: "Actions"
+  },
+  PageFormCardActionsExport: {
+    id: "app.page.form.card.action.export",
+    defaultMessage: "Export to"
   },
   PageContentViewTitle: {
     id: "app.page.form.content.view.title",

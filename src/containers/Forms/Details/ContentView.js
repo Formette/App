@@ -10,10 +10,15 @@ import {
   Graphic,
   Loader
 } from "../../../components/molecules";
+import Dropdown, {
+  DropdownItemGroup,
+  DropdownItem
+} from "@atlaskit/dropdown-menu";
 //Utils
 import * as moment from "moment";
 import { withAlert } from "react-alert";
 import LogRocket from "logrocket";
+import { downloadCSV } from "../../../services/utilities";
 //Locales
 import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
@@ -67,6 +72,12 @@ class ContentView extends PureComponent {
       alert.error(intl.formatMessage(messages.GraphicErrorDescription));
     }
   };
+  _onGenerateCSV = () => {
+    const { match, contentQuery } = this.props;
+    const args = { filename: `${match.params.id}.csv` };
+    const data = contentQuery.Content.data;
+    downloadCSV(args, data);
+  };
   render() {
     const { intl, contentQuery, history, match } = this.props;
     if (contentQuery.Content === null) {
@@ -107,7 +118,36 @@ class ContentView extends PureComponent {
           <div className="col">
             <HorizontalList className="float-right">
               <li>
-                <Button className="btn btn-lg" onClick={this._onDeleteContent}>
+                <Dropdown
+                  trigger={
+                    <Button className="btn btn-lg">
+                      <Icon name="fas fa-download" />
+                    </Button>
+                  }
+                  isMenuFixed={true}
+                  position="bottom right"
+                >
+                  <DropdownItemGroup
+                    title={this.props.intl.formatMessage(
+                      messages.PageFormCardActionsExport
+                    )}
+                  >
+                    <DropdownItem onClick={this._onGenerateCSV}>
+                      <Icon name="fas fa-file" />{" "}
+                      <FormattedMessage
+                        id="app.page.form.card.action.export.csv"
+                        defaultMessage={"CSV"}
+                      />
+                    </DropdownItem>
+                  </DropdownItemGroup>
+                </Dropdown>
+              </li>
+              <li>
+                <Button
+                  className="btn btn-lg"
+                  onClick={this._onDeleteContent}
+                  primary
+                >
                   <Icon name="fas fa-trash" />
                 </Button>
               </li>
