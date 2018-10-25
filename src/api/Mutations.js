@@ -127,6 +127,15 @@ const DELETE_FORM_MUTATION = gql`
   }
 `;
 
+//this deletes the selected content from a form
+const DELETE_FORM_CONTENT_MUTATION = gql`
+  mutation($id: ID!) {
+    deleteContent(id: $id) {
+      id
+    }
+  }
+`;
+
 export {
   SIGIN_USER_MUTATION,
   CREATE_USER_MUTATION,
@@ -135,5 +144,6 @@ export {
   UPDATE_USER_MUTATION,
   CREATE_FORM_MUTATION,
   UPDATE_FORM_MUTATION,
-  DELETE_FORM_MUTATION
+  DELETE_FORM_MUTATION,
+  DELETE_FORM_CONTENT_MUTATION
 };

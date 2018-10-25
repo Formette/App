@@ -14,12 +14,19 @@ import {
   Confirmation,
   Loader
 } from "../../../components/molecules";
+import Dropdown, {
+  DropdownItemGroup,
+  DropdownItem
+} from "@atlaskit/dropdown-menu";
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
-import { _refreshPage } from "../../../services/utilities";
+import { _refreshPage, downloadCSV } from "../../../services/utilities";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
+import * as jsPDF from "jspdf";
+// eslint-disable-next-line
+import * as jsPDFAutoTable from "jspdf-autotable";
 //API
 import { FORM_DATA_QUERY } from "../../../api/Queries";
 import { DELETE_FORM_MUTATION } from "../../../api/Mutations";
@@ -93,6 +100,56 @@ export class FormDetails extends PureComponent {
   _editForm = () => {
     this.props.history.push(`/edit/${this.props.match.params.id}`);
   };
+  _onGenerateCSV = () => {
+    const { match, formDataQuery, alert, intl } = this.props;
+    const { contents, name } = formDataQuery.Forms;
+    if (Object.keys(contents).length === 0) {
+      alert.show(intl.formatMessage(messages.AlertFormExportEmpty));
+      return;
+    }
+    const args = { filename: `${name || match.params.id}.csv` };
+    const result = [];
+    contents.map(item => {
+      let { id, data, createdAt } = item;
+      result.push({
+        id,
+        ...data[0],
+        createdAt
+      });
+      return true;
+    });
+    downloadCSV(args, result);
+  };
+  _onGeneratePDF = () => {
+    const { match, formDataQuery, intl, alert } = this.props;
+    const { name, contents } = formDataQuery.Forms;
+    //validates if has content to export
+    if (Object.keys(contents).length === 0) {
+      alert.show(intl.formatMessage(messages.AlertFormExportEmpty));
+      return;
+    }
+    const columns = [];
+    const rows = [];
+    const keys = Object.keys(contents[0].data[0]);
+    const dateKey = Object.keys(contents[0]);
+    keys.map(item => {
+      if (item !== "__typename") {
+        columns.push(item);
+      }
+      return true;
+    });
+    columns.push(dateKey[2]);
+    contents.map(item => {
+      let data = Object.values(item.data[0]);
+      rows.push(data.concat(item.createdAt));
+      return true;
+    });
+    // Only pt supported (not mm or in)
+    let doc = new jsPDF("p", "pt");
+    doc.text(`${name || match.params.id}`, 38, 25);
+    doc.autoTable(columns, rows);
+    doc.save(`${name || match.params.id}.pdf`);
+  };
   render() {
     if (this.props.formDataQuery && this.props.formDataQuery.loading) {
       return <Loader top={100} />;
@@ -152,7 +209,7 @@ export class FormDetails extends PureComponent {
     } = this.props.formDataQuery.Forms;
     const point = endpoint.split("/");
     const { onConfirmation, url } = this.state;
-    const { intl, user, alert } = this.props;
+    const { intl, user, alert, match } = this.props;
     const { userName } = user.state;
     return (
       <div>
@@ -196,6 +253,38 @@ export class FormDetails extends PureComponent {
           <div className="col">
             <HorizontalList className="float-right">
               <li>
+                <Dropdown
+                  trigger={
+                    <Button className="btn btn-lg">
+                      <Icon name="fas fa-download" />
+                    </Button>
+                  }
+                  isMenuFixed={true}
+                  position="bottom right"
+                >
+                  <DropdownItemGroup
+                    title={this.props.intl.formatMessage(
+                      messages.PageFormCardActionsExport
+                    )}
+                  >
+                    <DropdownItem onClick={this._onGeneratePDF}>
+                      <Icon name="fas fa-file-pdf" />{" "}
+                      <FormattedMessage
+                        id="app.page.form.card.action.export.pdf"
+                        defaultMessage={"PDF"}
+                      />
+                    </DropdownItem>
+                    <DropdownItem onClick={this._onGenerateCSV}>
+                      <Icon name="fas fa-file" />{" "}
+                      <FormattedMessage
+                        id="app.page.form.card.action.export.csv"
+                        defaultMessage={"CSV"}
+                      />
+                    </DropdownItem>
+                  </DropdownItemGroup>
+                </Dropdown>
+              </li>
+              <li>
                 <Button className="btn btn-lg" onClick={this._editForm}>
                   <Icon name="fas fa-pen" />
                 </Button>
@@ -234,10 +323,9 @@ export class FormDetails extends PureComponent {
             <Card>
               <div className="card-body">
                 <Table
+                  formId={match.params.id}
                   data={contents}
-                  emptyText={intl.formatMessage(
-                    messages.FormEmptyTitle
-                  )}
+                  emptyText={intl.formatMessage(messages.FormEmptyTitle)}
                   emptyDescription={intl.formatMessage(
                     messages.FormEmptyDescription
                   )}

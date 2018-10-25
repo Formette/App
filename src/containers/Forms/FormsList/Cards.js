@@ -17,6 +17,7 @@ import Dropdown, {
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
+// eslint-disable-next-line
 import moment from "moment";
 import { random } from "../../../services/utilities";
 import { withAlert } from "react-alert";
@@ -110,7 +111,9 @@ class Cards extends PureComponent {
                       isMenuFixed={true}
                       position="bottom right"
                     >
-                      <DropdownItemGroup title="Actions">
+                      <DropdownItemGroup
+                        title={intl.formatMessage(messages.PageFormCardActions)}
+                      >
                         <DropdownItem href={`#/edit/${item.id}`}>
                           <Icon name="fas fa-pen" />{" "}
                           <FormattedMessage

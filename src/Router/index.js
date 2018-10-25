@@ -34,6 +34,11 @@ const FormDetails = Loadable({
   delay: 1000
 });
 
+const ContentView = Loadable({
+  loader: () => import("../containers/Forms/Details/ContentView"),
+  loading: Loading
+});
+
 const Profile = Loadable({
   loader: () => import("../containers/User/Profile"),
   loading: Loading
@@ -51,6 +56,12 @@ const Main = props => (
       <PrivateRoute exact path="/new" component={NewForm} {...props} />
       <PrivateRoute exact path="/edit/:id" component={EditForm} {...props} />
       <PrivateRoute exact path="/form/:id" component={FormDetails} {...props} />
+      <PrivateRoute
+        exact
+        path="/form/content/:id"
+        component={ContentView}
+        {...props}
+      />
       <PrivateRoute exact path="/profile" component={Profile} {...props} />
       <PrivateRoute component={NoMatch} />
     </Switch>

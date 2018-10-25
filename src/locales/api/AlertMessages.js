@@ -19,6 +19,14 @@ const AlertMessages = {
     id: "app.alerts.form.error.delete",
     defaultMessage:
       "What a disgrace but it was not possible to delete the form, try again."
+  },
+  AlertFormContentSuccessDeleted: {
+    id: "app.alerts.form.content.success.deleted",
+    defaultMessage: "Content deleted successfully"
+  },
+  AlertFormExportEmpty: {
+    id: "app.alerts.form.content.export.empty",
+    defaultMessage: "No content to export"
   }
 };
 
