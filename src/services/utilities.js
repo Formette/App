@@ -112,10 +112,10 @@ module.exports = {
 
     return result;
   },
-  downloadCSV(args, data) {
+  downloadCSV(args, content) {
     var filename, link, data;
     var csv = module.exports.convertArrayOfObjectsToCSV({
-      data
+      data: content
     });
     if (csv == null) return;
 

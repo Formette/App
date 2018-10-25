@@ -21,11 +21,7 @@ import Dropdown, {
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
-import {
-  _refreshPage,
-  downloadCSV,
-  convertArrayOfObjectsToCSV
-} from "../../../services/utilities";
+import { _refreshPage, downloadCSV } from "../../../services/utilities";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 import * as jsPDF from "jspdf";
@@ -104,8 +100,12 @@ export class FormDetails extends PureComponent {
     this.props.history.push(`/edit/${this.props.match.params.id}`);
   };
   _onGenerateCSV = () => {
-    const { match, formDataQuery } = this.props;
+    const { match, formDataQuery, alert, intl } = this.props;
     const { contents, name } = formDataQuery.Forms;
+    if (Object.keys(contents).length === 0) {
+      alert.show(intl.formatMessage(messages.AlertFormExportEmpty));
+      return;
+    }
     const args = { filename: `${name || match.params.id}.csv` };
     const result = [];
     contents.map(item => {
@@ -115,12 +115,18 @@ export class FormDetails extends PureComponent {
         ...data[0],
         createdAt
       });
+      return true;
     });
     downloadCSV(args, result);
   };
   _onGeneratePDF = () => {
-    const { match, formDataQuery } = this.props;
+    const { match, formDataQuery, intl, alert } = this.props;
     const { name, contents } = formDataQuery.Forms;
+    //validates if has content to export
+    if (Object.keys(contents).length === 0) {
+      alert.show(intl.formatMessage(messages.AlertFormExportEmpty));
+      return;
+    }
     const columns = [];
     const rows = [];
     const keys = Object.keys(contents[0].data[0]);
@@ -135,6 +141,7 @@ export class FormDetails extends PureComponent {
     contents.map(item => {
       let data = Object.values(item.data[0]);
       rows.push(data.concat(item.createdAt));
+      return true;
     });
     // Only pt supported (not mm or in)
     let doc = new jsPDF("p", "pt");

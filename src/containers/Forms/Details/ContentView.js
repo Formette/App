@@ -74,9 +74,14 @@ class ContentView extends PureComponent {
     }
   };
   _onGenerateCSV = () => {
-    const { match, contentQuery } = this.props;
+    const { match, contentQuery, intl } = this.props;
     const args = { filename: `${match.params.id}.csv` };
     const data = contentQuery.Content.data;
+    //validates if has content to export
+    if (Object.keys(data).length === 0) {
+      alert.show(intl.formatMessage(messages.AlertFormExportEmpty));
+      return;
+    }
     downloadCSV(args, data);
   };
   _onGeneratePDF = () => {
