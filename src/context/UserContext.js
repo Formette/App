@@ -8,6 +8,7 @@ const UserContext = React.createContext();
 class Provider extends Component {
   state = {
     userName: "username",
+    accountConfirmed: true,
     formsesMeta: 0,
     profile: []
   };
@@ -21,9 +22,10 @@ class Provider extends Component {
       });
       if (!res.loading) {
         const { user } = res.data;
-        const { userName, _formsesMeta } = user;
+        const { userName, _formsesMeta, confirmed } = user;
         this.setState({
           userName,
+          accountConfirmed: confirmed,
           formsesMeta: _formsesMeta.count,
           profile: user
         });
@@ -43,13 +45,19 @@ class Provider extends Component {
       profile
     });
   };
+  _updateAccountConfirmation = () => {
+    this.setState(prevState => ({
+      accountConfirmed: !prevState.accountConfirmed
+    }));
+  };
   render() {
     return (
       <UserContext.Provider
         value={{
           state: this.state,
           changeUsername: this._changeUsername,
-          updateUser: this._updateUser
+          updateUser: this._updateUser,
+          updateAccountConfirmation: this._updateAccountConfirmation
         }}
       >
         {this.props.children}

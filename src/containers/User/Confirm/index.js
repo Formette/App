@@ -56,7 +56,7 @@ export class ConfirmUser extends React.PureComponent {
   }
   _onSendConfirmationCode = async () => {
     //verifies the user and saves in the DB
-    const { intl } = this.props;
+    const { intl, user } = this.props;
     try {
       const { confirmToken } = this.state;
       await this.props.confirmEmail({
@@ -64,11 +64,12 @@ export class ConfirmUser extends React.PureComponent {
           confirmToken
         }
       });
+      //updates user account confirmation state
+      user.updateAccountConfirmation();
       //redirects the user to the main page
       this.props.history.push("/");
     } catch (e) {
       LogRocket.error({ SendConfirmationCode: e });
-
       this.setState({
         error: true,
         errorMsg: intl.formatMessage(messages.UserVerificationInvalid)

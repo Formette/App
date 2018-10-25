@@ -35,7 +35,7 @@ const FORM_DATA_SUBSCRIPTION = gql`
   subscription Content($id: ID!) {
     Content(
       filter: {
-        mutation_in: [UPDATED, CREATED, DELETED]
+        mutation_in: [UPDATED, CREATED]
         node: { forms: { id: $id } }
       }
     ) {

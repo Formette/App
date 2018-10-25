@@ -1,6 +1,6 @@
 // @flow
 //API
-import { ALL_FORMS_QUERY } from "./Queries";
+import { ALL_FORMS_QUERY, FORM_DATA_QUERY } from "./Queries";
 //Utilities
 import LogRocket from "logrocket";
 
@@ -86,4 +86,46 @@ const deleteForm = async (
   }
 };
 
-export { deleteForm, userSignIn };
+//this functions deletes the selected content from a form
+const deleteFormContent = async (
+  id: string,
+  formId: string,
+  deleteFormContentMutation: any
+) => {
+  //deletes the form in the DB
+  try {
+    await deleteFormContentMutation({
+      variables: {
+        id
+      },
+      update: (store, { data: { deleteContent } }) => {
+        try {
+          //reads the query from the cache
+          const data = store.readQuery({
+            query: FORM_DATA_QUERY,
+            variables: { id: formId }
+          });
+          //finds and removes the form from the object
+          data.Forms.contents.forEach((value, index) => {
+            if (value.id === deleteContent.id) {
+              data.Forms.contents.splice(index, 1);
+            }
+          });
+          //updates the new data to the store
+          store.writeQuery({
+            query: FORM_DATA_QUERY,
+            variables: { id: formId },
+            data
+          });
+        } catch (e) {
+          return e;
+        }
+      }
+    });
+    return true;
+  } catch (e) {
+    return e;
+  }
+};
+
+export { deleteForm, deleteFormContent, userSignIn };
