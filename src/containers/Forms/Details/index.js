@@ -25,6 +25,7 @@ import { _refreshPage, downloadCSV } from "../../../services/utilities";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 import * as jsPDF from "jspdf";
+// eslint-disable-next-line
 import * as jsPDFAutoTable from "jspdf-autotable";
 //API
 import { FORM_DATA_QUERY } from "../../../api/Queries";

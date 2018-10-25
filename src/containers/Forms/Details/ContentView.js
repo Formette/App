@@ -15,6 +15,7 @@ import Dropdown, {
   DropdownItem
 } from "@atlaskit/dropdown-menu";
 //Utils
+// eslint-disable-next-line
 import * as moment from "moment";
 import { withAlert } from "react-alert";
 import LogRocket from "logrocket";

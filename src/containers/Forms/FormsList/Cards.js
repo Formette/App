@@ -17,6 +17,7 @@ import Dropdown, {
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
+// eslint-disable-next-line
 import moment from "moment";
 import { random } from "../../../services/utilities";
 import { withAlert } from "react-alert";
