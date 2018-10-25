@@ -21,9 +21,15 @@ import Dropdown, {
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
-import { _refreshPage, downloadCSV } from "../../../services/utilities";
+import {
+  _refreshPage,
+  downloadCSV,
+  convertArrayOfObjectsToCSV
+} from "../../../services/utilities";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
+import * as jsPDF from "jspdf";
+import * as jsPDFAutoTable from "jspdf-autotable";
 //API
 import { FORM_DATA_QUERY } from "../../../api/Queries";
 import { DELETE_FORM_MUTATION } from "../../../api/Mutations";
@@ -111,6 +117,30 @@ export class FormDetails extends PureComponent {
       });
     });
     downloadCSV(args, result);
+  };
+  _onGeneratePDF = () => {
+    const { match, formDataQuery } = this.props;
+    const { name, contents } = formDataQuery.Forms;
+    const columns = [];
+    const rows = [];
+    const keys = Object.keys(contents[0].data[0]);
+    const dateKey = Object.keys(contents[0]);
+    keys.map(item => {
+      if (item !== "__typename") {
+        columns.push(item);
+      }
+      return true;
+    });
+    columns.push(dateKey[2]);
+    contents.map(item => {
+      let data = Object.values(item.data[0]);
+      rows.push(data.concat(item.createdAt));
+    });
+    // Only pt supported (not mm or in)
+    let doc = new jsPDF("p", "pt");
+    doc.text(`${name || match.params.id}`, 38, 25);
+    doc.autoTable(columns, rows);
+    doc.save(`${name || match.params.id}.pdf`);
   };
   render() {
     if (this.props.formDataQuery && this.props.formDataQuery.loading) {
@@ -229,6 +259,13 @@ export class FormDetails extends PureComponent {
                       messages.PageFormCardActionsExport
                     )}
                   >
+                    <DropdownItem onClick={this._onGeneratePDF}>
+                      <Icon name="fas fa-file-pdf" />{" "}
+                      <FormattedMessage
+                        id="app.page.form.card.action.export.pdf"
+                        defaultMessage={"PDF"}
+                      />
+                    </DropdownItem>
                     <DropdownItem onClick={this._onGenerateCSV}>
                       <Icon name="fas fa-file" />{" "}
                       <FormattedMessage
