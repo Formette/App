@@ -23,7 +23,7 @@ const Footer = props => {
         </li>
         <li>
           <Link
-            href={`https://www.iubenda.com/privacy-policy/54274847/legal?ifr=true&height=690`}
+            href="https://www.iubenda.com/privacy-policy/54274847/legal?ifr=true&height=690"
             target="_blank"
           >
             <FormattedMessage
@@ -34,7 +34,7 @@ const Footer = props => {
         </li>
         <li>
           <Link
-            href={`https://statuspage.freshping.io/263-Formette`}
+            href="https://statuspage.freshping.io/263-Formette"
             target="_blank"
           >
             <FormattedMessage
@@ -45,7 +45,7 @@ const Footer = props => {
         </li>
         <li>
           <Link
-            href={`https://formette.freshdesk.com/support/home`}
+            href="https://formette.freshdesk.com/support/home"
             target="_blank"
           >
             <FormattedMessage

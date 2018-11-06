@@ -15,6 +15,10 @@ const PagesMessages = {
     id: "app.page.form.create.text.custom.endpoint.placeholder",
     defaultMessage: "e.g: newsletters2017"
   },
+  PageFormCreateTextRedirectlaceholder: {
+    id: "app.page.form.create.text.custom.redirect.placeholder",
+    defaultMessage: "e.g: http://www.site.com/thankyou"
+  },
   PageFormDetailsTitle: {
     id: "app.page.form.details.title",
     defaultMessage: "This form has no title"

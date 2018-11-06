@@ -41,6 +41,11 @@ const UserMessages = {
     id: "user.account.create.email.verification.invalid",
     defaultMessage: "Email entered is not valid."
   },
+  UserCreatePolicyVerificationInvalid: {
+    id: "user.account.create.policy.verification.check",
+    defaultMessage:
+      "To continue you must read and accept the Terms and Privacy Policy."
+  },
   UserCreateEmailNotSupported: {
     id: "user.account.create.email.not.supported",
     defaultMessage: "Sorry, we do not support this email service."
