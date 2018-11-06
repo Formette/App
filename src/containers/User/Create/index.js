@@ -40,6 +40,7 @@ export class CreateUser extends React.PureComponent {
     email: "",
     password: "",
     username: "",
+    approvedPrivacy: false,
     error: false,
     errorMsg: "",
     timeoutUserName: 0,
@@ -52,12 +53,24 @@ export class CreateUser extends React.PureComponent {
   }
   _onCreateUser = () => {
     const { intl } = this.props;
-    const { email, password, error } = this.state;
+    const { email, password, approvedPrivacy, error } = this.state;
     let username = _formatUsername(this.state.username);
+
+    console.log("terms = ", approvedPrivacy);
 
     //Verifies if the inputs are empty or not
     if (email && password && username) {
       if (error) {
+        return;
+      }
+      //Verifies if the user accepted the policy
+      if (!approvedPrivacy) {
+        this.setState({
+          error: true,
+          errorMsg: intl.formatMessage(
+            messages.UserCreatePolicyVerificationInvalid
+          )
+        });
         return;
       }
 
@@ -88,7 +101,8 @@ export class CreateUser extends React.PureComponent {
             password,
             username,
             confirmToken: generateToken(),
-            confirmExpires: generateExpiration()
+            confirmExpires: generateExpiration(),
+            approvedPrivacy
           }
         })
         .then(() => {
@@ -186,7 +200,14 @@ export class CreateUser extends React.PureComponent {
     }
   };
   render() {
-    const { email, password, username, error, errorMsg } = this.state;
+    const {
+      email,
+      password,
+      username,
+      approvedPrivacy,
+      error,
+      errorMsg
+    } = this.state;
     const { history, intl } = this.props;
     return (
       <Fragment>
@@ -252,6 +273,40 @@ export class CreateUser extends React.PureComponent {
             required
             autoFocus
           />
+
+          <span>
+            <label htmlFor="signupApprovedPrivacy" className="sr-only">
+              <FormattedMessage
+                id="user.account.create.text.approvedPrivacy"
+                defaultMessage={"Accept the Terms and Privacy Policy"}
+              />
+            </label>
+            <input
+              id="signupApprovedPrivacy"
+              type="checkbox"
+              value={approvedPrivacy}
+              onChange={e =>
+                this.setState({
+                  approvedPrivacy: e.target.checked,
+                  error: false
+                })
+              }
+              onKeyPress={this._handleKeyEnter}
+              className={`${error && "is-invalid"}`}
+              required
+              autoFocus
+            />
+            <Link
+              href="https://www.iubenda.com/privacy-policy/54274847/legal?ifr=true&height=690"
+              target="_blank"
+            >
+              {"  "}
+              <FormattedMessage
+                id="user.account.create.text.approvedPrivacy"
+                defaultMessage={"Accept the Terms and Privacy Policy"}
+              />
+            </Link>
+          </span>
 
           <Button
             className="btn btn-lg btn-block"

@@ -23,6 +23,7 @@ const ALL_FORM_FIELDS_FRAGMENT = gql`
     description
     isDisabled
     endpoint
+    redirect
     contents(orderBy: createdAt_DESC) {
       id
       data
@@ -39,6 +40,7 @@ const ESSENTIAL_FORM_FIELDS_FRAGMENT = gql`
     name
     createdAt
     endpoint
+    redirect
     _contentsMeta {
       count
     }
