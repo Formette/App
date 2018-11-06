@@ -537,7 +537,7 @@ export class NewForm extends PureComponent {
                 </div>
               </div>
             </Card>
-            <Card style={{ marginTop: 10 }}>
+            <Card style={{ marginTop: 10, marginBottom: 10 }}>
               <div className="card-body">
                 <Text highlight>
                   <FormattedMessage
