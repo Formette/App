@@ -64,6 +64,7 @@ export class NewForm extends PureComponent {
     name: "",
     description: "",
     customEndpoint: "",
+    customRedirect: "",
     generateEndpoint: `${process.env.REACT_APP_ENDPOINT_URL}`,
     generateID: guid(),
     disableForm: false,
@@ -85,6 +86,7 @@ export class NewForm extends PureComponent {
       name,
       description,
       customEndpoint,
+      customRedirect,
       disableForm: isDisabled,
       error,
       generateID,
@@ -95,6 +97,7 @@ export class NewForm extends PureComponent {
     if (name) {
       if (error) return;
       const userId = user.state.profile.id;
+      const redirect = customRedirect || "https://formette.com/thanks";
       let endpoint = customEndpoint
         ? `${userId}/${customEndpoint}`
         : `${userId}/${generateID}`;
@@ -102,7 +105,7 @@ export class NewForm extends PureComponent {
       try {
         //if is on mode edit only updates the form, does not create a new one
         if (onModeEdit) {
-          this._updateForm(name, description, endpoint, isDisabled);
+          this._updateForm(name, description, endpoint, isDisabled, redirect);
         } else {
           await createFormMutation({
             variables: {
@@ -158,7 +161,8 @@ export class NewForm extends PureComponent {
     name: string,
     description: string,
     endpoint: string,
-    isDisabled: boolean
+    isDisabled: boolean,
+    redirect: string
   ) => {
     const { intl, match, updateFormMutation, alert } = this.props;
     try {
@@ -169,7 +173,8 @@ export class NewForm extends PureComponent {
         name === oldData.name &&
         description === oldData.description &&
         endpoint === oldData.endpoint &&
-        isDisabled === oldData.isDisabled
+        isDisabled === oldData.isDisabled &&
+        redirect === oldData.redirect
       ) {
         LogRocket.log(
           "If it's the same as before, what's the point of changing?"
@@ -187,7 +192,8 @@ export class NewForm extends PureComponent {
           name,
           description,
           endpoint,
-          isDisabled
+          isDisabled,
+          redirect
         }
       });
       //Shows feedback and updates the store
@@ -247,7 +253,8 @@ export class NewForm extends PureComponent {
             name,
             endpoint,
             description,
-            isDisabled: disableForm
+            isDisabled: disableForm,
+            redirect: customRedirect
           } = res.data.Forms;
           const point = endpoint.split("/");
           this.setState(prevState => ({
@@ -255,6 +262,7 @@ export class NewForm extends PureComponent {
             description,
             disableForm,
             customEndpoint: point[1],
+            customRedirect,
             onModeEdit: !prevState.onModeEdit,
             oldData: res.data.Forms
           }));
@@ -274,6 +282,7 @@ export class NewForm extends PureComponent {
       name,
       description,
       customEndpoint,
+      customRedirect,
       generateEndpoint,
       disableForm,
       onModeEdit,
@@ -400,7 +409,7 @@ export class NewForm extends PureComponent {
                 <Text highlight>
                   <FormattedMessage
                     id="app.page.form.create.text.name"
-                    defaultMessage={"Name:"}
+                    defaultMessage={"Name"}
                   />
                 </Text>
                 <Input
@@ -420,7 +429,7 @@ export class NewForm extends PureComponent {
                 <Text highlight>
                   <FormattedMessage
                     id="app.page.form.create.text.description"
-                    defaultMessage={"Description:"}
+                    defaultMessage={"Description"}
                   />
                 </Text>
                 <Textarea
@@ -442,7 +451,7 @@ export class NewForm extends PureComponent {
                 <Text highlight>
                   <FormattedMessage
                     id="app.page.form.create.text.custom.endpoint"
-                    defaultMessage={"Custom endpoint:"}
+                    defaultMessage={"Custom endpoint"}
                   />
                 </Text>
                 <Text>
@@ -461,6 +470,34 @@ export class NewForm extends PureComponent {
                   onChange={e =>
                     this.setState({
                       customEndpoint: e.target.value
+                    })
+                  }
+                  className="form-control"
+                />
+              </div>
+              <div className={`form-group ${error ? "has-danger" : ""}`}>
+                <Text highlight>
+                  <FormattedMessage
+                    id="app.page.form.create.text.custom.redirect"
+                    defaultMessage={"Custom redirect"}
+                  />
+                </Text>
+                <Text>
+                  <FormattedMessage
+                    id="app.page.form.create.text.custom.redirect.description"
+                    defaultMessage={
+                      "You can choose a custom redirect when your form is submitted, this url can be a page to thank the user or even to take the users to a page of your site."
+                    }
+                  />
+                </Text>
+                <Input
+                  placeholder={intl.formatMessage(
+                    messages.PageFormCreateTextRedirectlaceholder
+                  )}
+                  value={customRedirect}
+                  onChange={e =>
+                    this.setState({
+                      customRedirect: e.target.value
                     })
                   }
                   className="form-control"

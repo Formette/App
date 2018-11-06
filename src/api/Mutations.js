@@ -29,12 +29,14 @@ const CREATE_USER_MUTATION = gql`
     $username: String!
     $confirmToken: String!
     $confirmExpires: DateTime!
+    $approvedPrivacy: Boolean!
   ) {
     createUser(
       authProvider: { email: { email: $email, password: $password } }
       userName: $username
       confirmToken: $confirmToken
       confirmExpires: $confirmExpires
+      approvedPrivacy: $approvedPrivacy
     ) {
       id
     }
@@ -79,6 +81,7 @@ const CREATE_FORM_MUTATION = gql`
     $description: String
     $endpoint: String!
     $isDisabled: Boolean
+    $redirect: String
   ) {
     createForms(
       userId: $userId
@@ -86,6 +89,7 @@ const CREATE_FORM_MUTATION = gql`
       description: $description
       endpoint: $endpoint
       isDisabled: $isDisabled
+      redirect: $redirect
     ) {
       ...essentialFormFields
     }
@@ -101,6 +105,7 @@ const UPDATE_FORM_MUTATION = gql`
     $description: String
     $endpoint: String!
     $isDisabled: Boolean
+    $redirect: String
   ) {
     updateForms(
       id: $id
@@ -108,12 +113,14 @@ const UPDATE_FORM_MUTATION = gql`
       description: $description
       endpoint: $endpoint
       isDisabled: $isDisabled
+      redirect: $redirect
     ) {
       id
       name
       description
       endpoint
       isDisabled
+      redirect
     }
   }
 `;
