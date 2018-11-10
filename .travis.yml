@@ -8,6 +8,7 @@ branches:
   only:
   - master
   - develop
+  - /^greenkeeper/.*$/
 script:
   - npm test
   - npm run build
