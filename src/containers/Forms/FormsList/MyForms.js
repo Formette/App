@@ -87,7 +87,7 @@ export class MyForms extends Component {
     const { allFormsQuery, intl } = this.props;
     const { allFormses } = allFormsQuery;
     const { isLoading, isSearching, data } = this.state;
-    if (this.props.allFormsQuery.error) {
+    if (isLoading && data && this.props.allFormsQuery.error) {
       return (
         <Graphic
           title={intl.formatMessage(messages.GraphicErrorTitle)}
