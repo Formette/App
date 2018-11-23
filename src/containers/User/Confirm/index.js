@@ -1,5 +1,5 @@
-// @flow
 import React from "react";
+import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 //Components
 import AuthLayout from "../../../components/organisms/AuthLayout/index";
@@ -20,12 +20,15 @@ import { withAlert } from "react-alert";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 export class ConfirmUser extends React.PureComponent {
-  props: {
-    userQuery: any,
-    confirmEmail: any,
-    resendConfirmation: any,
-    history: any,
-    router: any
+  static propTypes = {
+    userQuery: PropTypes.object.isRequired,
+    confirmEmail: PropTypes.func.isRequired,
+    resendConfirmation: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
+    alert: PropTypes.object,
+    intl: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired
   };
   state = {
     confirmToken: "",

@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 //Containers
 import Tools from "../FormsList/Tools";
@@ -30,6 +31,14 @@ import { DELETE_FORM_CONTENT_MUTATION } from "../../../api/Mutations";
 import { deleteFormContent } from "../../../api/Functions";
 
 class ContentView extends PureComponent {
+  static propTypes = {
+    deleteFormContentMutation: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    contentQuery: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired,
+    alert: PropTypes.object.isRequired
+  };
   state = {
     createdAt: ""
   };
@@ -90,7 +99,7 @@ class ContentView extends PureComponent {
     let doc = new jsPDF();
     const source = document.getElementById("renderToExport");
     let specialElementHandlers = {
-      "#editor": (element, renderer) => {
+      "#editor": () => {
         return true;
       }
     };

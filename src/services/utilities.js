@@ -1,6 +1,5 @@
-// @flow
 module.exports = {
-  random(min: number, max: number) {
+  random(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   },
   _isLoggedIn() {
@@ -43,7 +42,7 @@ module.exports = {
     let results = regex.exec(url);
     return results == null ? null : results[1];
   },
-  _removeAccents(str: string) {
+  _removeAccents(str) {
     let accents =
       "ÀÁÂÃÄÅàáâãäåßÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž";
     let accentsOut =
@@ -57,12 +56,12 @@ module.exports = {
     });
     return str.join("");
   },
-  _formatUsername(str: string) {
+  _formatUsername(str) {
     str = str.replace(/\s+/g, ""); //removes the spaces
     str = str.toLowerCase(); //all the letter to lowercase
     return module.exports._removeAccents(str); //removes all the string accents
   },
-  _onHandleExpression(str: string) {
+  _onHandleExpression(str) {
     return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
   },
   _capitalizeFirstLetter(string) {

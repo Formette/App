@@ -22,7 +22,10 @@ Link.defaultProps = {
 };
 
 Link.propTypes = {
-  children: PropTypes.any.isRequired
+  children: PropTypes.any.isRequired,
+  color: PropTypes.string,
+  decoration: PropTypes.string,
+  theme: PropTypes.object
 };
 
 export default Link;

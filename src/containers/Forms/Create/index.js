@@ -1,5 +1,5 @@
-// @flow
 import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import { graphql, compose, withApollo } from "react-apollo";
 import Loadable from "react-loadable";
 //Containers
@@ -51,14 +51,16 @@ const SyntaxHighlighter = Loadable({
 });
 
 export class NewForm extends PureComponent {
-  props: {
-    createFormMutation: any,
-    updateFormMutation: any,
-    deleteFormMutation: any,
-    router: any,
-    history: any,
-    match: any,
-    client: any
+  static propTypes = {
+    createFormMutation: PropTypes.func.isRequired,
+    updateFormMutation: PropTypes.func.isRequired,
+    deleteFormMutation: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    client: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
+    alert: PropTypes.object.isRequired
   };
   state = {
     name: "",
@@ -157,13 +159,7 @@ export class NewForm extends PureComponent {
       });
     }
   };
-  _updateForm = async (
-    name: string,
-    description: string,
-    endpoint: string,
-    isDisabled: boolean,
-    redirect: string
-  ) => {
+  _updateForm = async (name, description, endpoint, isDisabled, redirect) => {
     const { intl, match, updateFormMutation, alert } = this.props;
     try {
       const id = match.params.id;
@@ -236,7 +232,7 @@ export class NewForm extends PureComponent {
       alert.error(intl.formatMessage(messages.AlertFormErrorDelete));
     }
   };
-  _getFormData = (id: string) => {
+  _getFormData = id => {
     this.props.client
       .query({
         query: FORM_DATA_QUERY,

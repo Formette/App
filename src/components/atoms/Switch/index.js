@@ -23,7 +23,9 @@ Switch.defaultProps = {
 Switch.propTypes = {
   square: PropTypes.bool,
   color: PropTypes.string,
-  className: PropTypes.string
+  className: PropTypes.string,
+  value: PropTypes.bool,
+  onChange: PropTypes.func.isRequired
 };
 
 export default styled(Switch)`

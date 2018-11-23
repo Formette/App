@@ -1,5 +1,5 @@
-// @flow
 import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import { graphql, compose, withApollo } from "react-apollo";
 //Components
 import {
@@ -24,10 +24,11 @@ import { UPDATE_USER_MUTATION } from "../../../api/Mutations";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 export class Profile extends PureComponent {
-  props: {
-    updateUser: any,
-    client: any,
-    router: any
+  static propTypes = {
+    updateUser: PropTypes.func.isRequired,
+    client: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired
   };
   state = {
     username: "",
@@ -86,7 +87,7 @@ export class Profile extends PureComponent {
       });
     }
   };
-  _onUsernameValidation(getUsername: string) {
+  _onUsernameValidation(getUsername) {
     clearTimeout(this.state.timeoutUserName);
     const { intl } = this.props;
     this.setState({
@@ -120,7 +121,7 @@ export class Profile extends PureComponent {
       }, 500)
     });
   }
-  _isTheSameUsername(username: string) {
+  _isTheSameUsername(username) {
     const { user, intl } = this.props;
     if (user.state.userName === username) {
       LogRocket.warn(

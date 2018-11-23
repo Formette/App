@@ -1,5 +1,5 @@
-// @flow
 import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 import { withRouter } from "react-router";
 //Container
@@ -17,9 +17,11 @@ import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 
 export class MyForms extends Component {
-  props: {
-    allFormsQuery: any,
-    history: any
+  static propTypes = {
+    allFormsQuery: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    alert: PropTypes.object,
+    intl: PropTypes.object.isRequired
   };
   state = {
     isLoading: true,
@@ -85,7 +87,7 @@ export class MyForms extends Component {
     const { allFormsQuery, intl } = this.props;
     const { allFormses } = allFormsQuery;
     const { isLoading, isSearching, data } = this.state;
-    if (this.props.allFormsQuery && this.props.allFormsQuery.error) {
+    if (this.props.allFormsQuery.error) {
       return (
         <Graphic
           title={intl.formatMessage(messages.GraphicErrorTitle)}

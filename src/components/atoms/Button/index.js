@@ -59,7 +59,9 @@ Button.propTypes = {
   type: PropTypes.string.isRequired,
   children: PropTypes.any.isRequired,
   color: PropTypes.string,
-  textColor: PropTypes.string
+  textColor: PropTypes.string,
+  theme: PropTypes.object,
+  primary: PropTypes.bool
 };
 
 export default Button;

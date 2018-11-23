@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 //Components
 import DynamicTable from "@atlaskit/dynamic-table";
@@ -19,8 +20,16 @@ import LogRocket from "logrocket";
 //API
 import { DELETE_FORM_CONTENT_MUTATION } from "../../../api/Mutations";
 import { deleteFormContent } from "../../../api/Functions";
-
 class Table extends Component {
+  static propTypes = {
+    deleteFormContentMutation: PropTypes.func.isRequired,
+    formId: PropTypes.string.isRequired,
+    data: PropTypes.array.isRequired,
+    emptyText: PropTypes.string.isRequired,
+    emptyDescription: PropTypes.string.isRequired,
+    alert: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired
+  };
   state = {
     isLoading: true
   };

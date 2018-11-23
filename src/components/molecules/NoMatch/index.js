@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 //Components
 import { Button } from "../../atoms/index";
 import { Graphic } from "../../molecules/index";
@@ -23,6 +24,11 @@ const NoMatch = props => {
       </Button>
     </Graphic>
   );
+};
+
+NoMatch.propTypes = {
+  intl: PropTypes.object,
+  history: PropTypes.object
 };
 
 export default injectIntl(NoMatch);

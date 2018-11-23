@@ -13,8 +13,7 @@ SubTitle.defaultProps = {
 
 SubTitle.propTypes = {
   text: PropTypes.string.isRequired,
-  color: PropTypes.string,
-  className: PropTypes.string
+  color: PropTypes.string
 };
 
 export default SubTitle;

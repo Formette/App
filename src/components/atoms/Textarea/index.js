@@ -15,7 +15,8 @@ Textarea.defaultProps = {
 };
 
 Textarea.propTypes = {
-  placeholder: PropTypes.string.isRequired
+  placeholder: PropTypes.string.isRequired,
+  theme: PropTypes.object
 };
 
 export default Textarea;

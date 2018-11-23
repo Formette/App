@@ -17,6 +17,7 @@ Input.defaultProps = {
 
 Input.propTypes = {
   type: PropTypes.string.isRequired,
+  theme: PropTypes.object,
   placeholder: PropTypes.string.isRequired
 };
 

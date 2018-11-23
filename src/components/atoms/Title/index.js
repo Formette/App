@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 //Styles
 import styled from "styled-components";
 
@@ -7,6 +8,11 @@ const Title = styled.h3`
 
 Title.defaultProps = {
   text: "Text"
+};
+
+Title.propTypes = {
+  color: PropTypes.string,
+  theme: PropTypes.object
 };
 
 export default Title;
