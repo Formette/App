@@ -13,6 +13,9 @@ import { default as Badge } from "./Badge/index";
 import { default as Icon } from "./Icon/index";
 import { default as Content } from "./Content/index";
 import { default as Alert } from "./Alert/index";
+import { default as Accordion } from "./Accordion/index";
+import { default as AccordionItem } from "./Accordion/AccordionItem";
+import { default as AccordionContent } from "./Accordion/AccordionContent";
 
 export {
   Button,
@@ -28,5 +31,8 @@ export {
   Switch,
   Badge,
   Content,
-  Alert
+  Alert,
+  Accordion,
+  AccordionItem,
+  AccordionContent
 };

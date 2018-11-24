@@ -20,7 +20,7 @@ import { withUser } from "../../../hocs";
 //Utils
 // eslint-disable-next-line
 import moment from "moment";
-import { random } from "../../../services/utilities";
+import { random } from "@vacom/vantage";
 import { withAlert } from "react-alert";
 import LogRocket from "logrocket";
 //API

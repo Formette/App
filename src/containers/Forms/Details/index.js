@@ -21,7 +21,7 @@ import Dropdown, {
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
-import { _refreshPage, downloadCSV } from "../../../services/utilities";
+import { downloadCSV, refreshPage } from "@vacom/vantage";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 import * as jsPDF from "jspdf";
@@ -170,7 +170,7 @@ export class FormDetails extends PureComponent {
         >
           <Button
             className="btn btn-lg btn-primary"
-            onClick={_refreshPage}
+            onClick={refreshPage}
             primary
           >
             <FormattedMessage

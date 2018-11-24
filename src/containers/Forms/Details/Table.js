@@ -13,7 +13,7 @@ import Dropdown, {
 // eslint-disable-next-line
 import * as moment from "moment";
 import { withAlert } from "react-alert";
-import { _capitalizeFirstLetter } from "../../../services/utilities";
+import { capitalizeFirstLetter } from "@vacom/vantage";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 import LogRocket from "logrocket";
@@ -45,7 +45,7 @@ class Table extends Component {
         if (item !== "__typename") {
           cells.push({
             key: item,
-            content: _capitalizeFirstLetter(item),
+            content: capitalizeFirstLetter(item),
             isSortable: false,
             shouldTruncate: true,
             width: undefined
@@ -57,7 +57,8 @@ class Table extends Component {
       cells.push(
         {
           key: dateKey[2],
-          content: _capitalizeFirstLetter(dateKey[2])
+          content: capitalizeFirstLetter(dateKey[2]),
+          shouldTruncate: true
         },
         {
           key: "actions",

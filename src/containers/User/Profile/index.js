@@ -14,7 +14,8 @@ import { Confirmation, Card } from "../../../components/molecules";
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
-import { _logout, _formatUsername } from "../../../services/utilities";
+import { _logout } from "../../../services/utilities";
+import { formatUsername } from "@vacom/vantage";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 //API
@@ -46,7 +47,7 @@ export class Profile extends PureComponent {
   _updateProfile = async () => {
     const { intl, user, updateUser, alert } = this.props;
     const { error } = this.state;
-    let username = _formatUsername(this.state.username);
+    let username = formatUsername(this.state.username);
     //hides the confirmation modal
     this.setState(prevState => ({
       onConfirmation: !prevState.onConfirmation
@@ -93,7 +94,7 @@ export class Profile extends PureComponent {
     this.setState({
       timeoutUserName: setTimeout(() => {
         //checks is the username is the same as the previous one
-        let username = _formatUsername(getUsername);
+        let username = formatUsername(getUsername);
         if (this._isTheSameUsername(username)) return;
         this.props.client
           .query({

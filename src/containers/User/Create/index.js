@@ -16,14 +16,15 @@ import {
 } from "../../../api/Mutations";
 import { userSignIn } from "../../../api/Functions";
 //Utils
+import { _isLoggedIn } from "../../../services/utilities";
 import {
   generateToken,
   generateExpiration,
-  _formatUsername,
-  _validateEmail,
-  _emailBlackList,
-  _isLoggedIn
-} from "../../../services/utilities";
+  validateEmail,
+  emailBlackList,
+  formatUsername
+} from "@vacom/vantage";
+
 import LogRocket from "logrocket";
 //locales
 import { FormattedMessage, injectIntl } from "react-intl";
@@ -54,7 +55,7 @@ export class CreateUser extends React.PureComponent {
   _onCreateUser = () => {
     const { intl } = this.props;
     const { email, password, approvedPrivacy, error } = this.state;
-    let username = _formatUsername(this.state.username);
+    let username = formatUsername(this.state.username);
     //Verifies if the inputs are empty or not
     if (email && password && username) {
       if (error) {
@@ -71,7 +72,7 @@ export class CreateUser extends React.PureComponent {
         return;
       }
 
-      if (!_validateEmail(email)) {
+      if (!validateEmail(email)) {
         this.setState({
           error: true,
           errorMsg: intl.formatMessage(
@@ -81,7 +82,7 @@ export class CreateUser extends React.PureComponent {
         return;
       }
 
-      if (_emailBlackList(email)) {
+      if (emailBlackList(email)) {
         this.setState({
           error: true,
           errorMsg: intl.formatMessage(messages.UserCreateEmailNotSupported)
@@ -164,7 +165,7 @@ export class CreateUser extends React.PureComponent {
     const { intl } = this.props;
     this.setState({
       timeoutUserName: setTimeout(() => {
-        let username = _formatUsername(getUsername);
+        let username = formatUsername(getUsername);
         this.props.client
           .query({
             query: USERNAME_VALIDATION_QUERY,

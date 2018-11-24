@@ -13,7 +13,8 @@ import {
   USER_RESEND_CONFIRMATION_MUTATION
 } from "../../../api/Mutations";
 //Utils
-import { getUrlParam, _isLoggedIn } from "../../../services/utilities";
+import { _isLoggedIn } from "../../../services/utilities";
+import { getUrlParam } from "@vacom/vantage";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 //locales
@@ -21,11 +22,9 @@ import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 export class ConfirmUser extends React.PureComponent {
   static propTypes = {
-    userQuery: PropTypes.object.isRequired,
     confirmEmail: PropTypes.func.isRequired,
     resendConfirmation: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-    router: PropTypes.object.isRequired,
     alert: PropTypes.object,
     intl: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired

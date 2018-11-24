@@ -9,7 +9,7 @@ import Cards from "./Cards";
 import { Button, Icon, InputGroup } from "../../../components/atoms/index";
 import { Graphic, Loader } from "../../../components/molecules/index";
 //Utils
-import { _refreshPage, _onHandleExpression } from "../../../services/utilities";
+import { refreshPage, handleExpression } from "@vacom/vantage";
 //API
 import { ALL_FORMS_QUERY } from "../../../api/Queries";
 //locales
@@ -56,7 +56,7 @@ export class MyForms extends Component {
         const { allFormses } = this.props.allFormsQuery;
         try {
           let search = new RegExp(
-            _onHandleExpression(searchQuery.toLowerCase().trim())
+            handleExpression(searchQuery.toLowerCase().trim())
           );
           //if the textbox is empty show all the dashboards again
           if (!searchQuery) {
@@ -97,7 +97,7 @@ export class MyForms extends Component {
         >
           <Button
             className="btn btn-lg btn-primary"
-            onClick={_refreshPage}
+            onClick={refreshPage}
             primary
           >
             <FormattedMessage

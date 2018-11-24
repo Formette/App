@@ -20,7 +20,7 @@ import Dropdown, {
 import * as moment from "moment";
 import { withAlert } from "react-alert";
 import LogRocket from "logrocket";
-import { downloadCSV } from "../../../services/utilities";
+import { downloadCSV } from "@vacom/vantage";
 import * as jsPDF from "jspdf";
 //Locales
 import { FormattedMessage, injectIntl } from "react-intl";
@@ -87,6 +87,7 @@ class ContentView extends PureComponent {
     const { match, contentQuery, intl } = this.props;
     const args = { filename: `${match.params.id}.csv` };
     const data = contentQuery.Content.data;
+    console.log(contentQuery.Content.data);
     //validates if has content to export
     if (Object.keys(data).length === 0) {
       alert.show(intl.formatMessage(messages.AlertFormExportEmpty));
