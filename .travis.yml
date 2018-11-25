@@ -10,6 +10,7 @@ branches:
   - develop
   - /^greenkeeper/.*$/
 script:
+  - npm install
   - npm test
   - npm run build
 deploy:
