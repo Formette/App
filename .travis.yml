@@ -9,6 +9,7 @@ branches:
   - master
   - develop
 script:
+  - npm install
   - npm test
   - npm run build
 deploy:
