@@ -21,7 +21,9 @@ Loader.defaultProps = {
 
 Loader.propTypes = {
   children: PropTypes.any,
-  className: PropTypes.string
+  className: PropTypes.string,
+  top: PropTypes.number,
+  theme: PropTypes.object
 };
 
 export default styled(Loader)`

@@ -1,5 +1,5 @@
-// @flow
 import React, { PureComponent, Fragment } from "react";
+import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { compose } from "react-apollo";
 //Components
@@ -19,6 +19,9 @@ import Router from "../../Router";
 import { FormattedMessage } from "react-intl";
 
 class App extends PureComponent {
+  static propTypes = {
+    className: PropTypes.string
+  };
   render() {
     return (
       <div className={this.props.className}>
@@ -54,7 +57,6 @@ class App extends PureComponent {
 }
 
 const AppWithStyles = styled(App)`
-  margin-top: 100px;
   .content {
     min-height: calc(88vh - 70px);
   }

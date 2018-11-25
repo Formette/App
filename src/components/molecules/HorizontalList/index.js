@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 //Styles
 import styled from "styled-components";
 
@@ -11,20 +10,12 @@ const HorizontalList = styled.ul`
       margin-right: 0;
     }
   }
- 
+
   @media (max-width: 375px) {
     li button span {
       display: none;
     }
   }
 `;
-
-HorizontalList.defaultProps = {
-  children: "Text"
-};
-
-HorizontalList.propTypes = {
-  children: PropTypes.any.isRequired
-};
 
 export default HorizontalList;

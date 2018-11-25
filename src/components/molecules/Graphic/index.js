@@ -18,12 +18,16 @@ const Graphic = ({ title, description, imgType, className, children }) => {
 
 Graphic.defaultProps = {
   icon: "fa-map-signs",
-  text: "Text",
+  title: "Text",
+  description: "Text",
   imgType: "data"
 };
 
 Graphic.propTypes = {
-  text: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  imgType: PropTypes.string.isRequired,
+  top: PropTypes.number,
   children: PropTypes.any,
   className: PropTypes.string
 };

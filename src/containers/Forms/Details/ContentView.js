@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 //Containers
 import Tools from "../FormsList/Tools";
@@ -10,6 +11,7 @@ import {
   Graphic,
   Loader
 } from "../../../components/molecules";
+import { Layout } from "../../../components/organisms";
 import Dropdown, {
   DropdownItemGroup,
   DropdownItem
@@ -19,7 +21,7 @@ import Dropdown, {
 import * as moment from "moment";
 import { withAlert } from "react-alert";
 import LogRocket from "logrocket";
-import { downloadCSV } from "../../../services/utilities";
+import { downloadCSV } from "@vacom/vantage";
 import * as jsPDF from "jspdf";
 //Locales
 import { FormattedMessage, injectIntl } from "react-intl";
@@ -30,6 +32,14 @@ import { DELETE_FORM_CONTENT_MUTATION } from "../../../api/Mutations";
 import { deleteFormContent } from "../../../api/Functions";
 
 class ContentView extends PureComponent {
+  static propTypes = {
+    deleteFormContentMutation: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    contentQuery: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired,
+    alert: PropTypes.object.isRequired
+  };
   state = {
     createdAt: ""
   };
@@ -90,7 +100,7 @@ class ContentView extends PureComponent {
     let doc = new jsPDF();
     const source = document.getElementById("renderToExport");
     let specialElementHandlers = {
-      "#editor": (element, renderer) => {
+      "#editor": () => {
         return true;
       }
     };
@@ -139,7 +149,7 @@ class ContentView extends PureComponent {
     }
     const { createdAt } = this.state;
     return (
-      <div>
+      <Layout>
         <Tools
           title={`${intl.formatMessage(messages.PageContentViewTitle)} ${
             match.params.id
@@ -208,7 +218,7 @@ class ContentView extends PureComponent {
             </Card>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 }

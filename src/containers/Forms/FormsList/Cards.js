@@ -1,4 +1,5 @@
 import React, { PureComponent, Fragment } from "react";
+import PropTypes from "prop-types";
 //Components
 import { Button, Icon, Link } from "../../../components/atoms";
 import {
@@ -19,7 +20,7 @@ import { withUser } from "../../../hocs";
 //Utils
 // eslint-disable-next-line
 import moment from "moment";
-import { random } from "../../../services/utilities";
+import { random } from "@vacom/vantage";
 import { withAlert } from "react-alert";
 import LogRocket from "logrocket";
 //API
@@ -32,6 +33,12 @@ import { globals as messages } from "../../../locales/api";
 
 const colors = ["#7568F0", "#8A75F3", "#A384F6", "#A384F6", "#CA9CFB"];
 class Cards extends PureComponent {
+  static propTypes = {
+    user: PropTypes.object.isRequired,
+    data: PropTypes.array.isRequired,
+    alert: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired
+  };
   state = {
     url: `${process.env.REACT_APP_ENDPOINT_URL}`,
     onConfirmation: false,

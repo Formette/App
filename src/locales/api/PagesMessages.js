@@ -19,6 +19,10 @@ const PagesMessages = {
     id: "app.page.form.create.text.custom.redirect.placeholder",
     defaultMessage: "e.g: http://www.site.com/thankyou"
   },
+  PageFormCreateAccordionTitle: {
+    id: "app.page.form.create.accordion.title",
+    defaultMessage: "Advanced Settings"
+  },
   PageFormDetailsTitle: {
     id: "app.page.form.details.title",
     defaultMessage: "This form has no title"
