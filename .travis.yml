@@ -4,12 +4,12 @@ node_js:
 cache:
   directories:
   - node_modules
+install: npm install
 branches:
   only:
   - master
   - develop
 script:
-  - npm install
   - npm test
   - npm run build
 deploy:
