@@ -14,6 +14,7 @@ import {
   Confirmation,
   Loader
 } from "../../../components/molecules";
+import { Layout } from "../../../components/organisms";
 import Dropdown, {
   DropdownItemGroup,
   DropdownItem
@@ -216,7 +217,7 @@ export class FormDetails extends PureComponent {
     const { intl, user, alert, match } = this.props;
     const { userName } = user.state;
     return (
-      <div>
+      <Layout>
         <Confirmation
           title={intl.formatMessage(messages.ModalFormDeleteTitle)}
           description={intl.formatMessage(messages.ModalFormDeleteDescription)}
@@ -338,7 +339,7 @@ export class FormDetails extends PureComponent {
             </Card>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 }

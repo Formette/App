@@ -11,6 +11,7 @@ import {
   Graphic,
   Loader
 } from "../../../components/molecules";
+import { Layout } from "../../../components/organisms";
 import Dropdown, {
   DropdownItemGroup,
   DropdownItem
@@ -87,7 +88,6 @@ class ContentView extends PureComponent {
     const { match, contentQuery, intl } = this.props;
     const args = { filename: `${match.params.id}.csv` };
     const data = contentQuery.Content.data;
-    console.log(contentQuery.Content.data);
     //validates if has content to export
     if (Object.keys(data).length === 0) {
       alert.show(intl.formatMessage(messages.AlertFormExportEmpty));
@@ -149,7 +149,7 @@ class ContentView extends PureComponent {
     }
     const { createdAt } = this.state;
     return (
-      <div>
+      <Layout>
         <Tools
           title={`${intl.formatMessage(messages.PageContentViewTitle)} ${
             match.params.id
@@ -218,7 +218,7 @@ class ContentView extends PureComponent {
             </Card>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 }

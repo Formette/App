@@ -28,6 +28,7 @@ import {
   HorizontalList,
   Loader
 } from "../../../components/molecules";
+import { Layout } from "../../../components/organisms";
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
@@ -102,7 +103,14 @@ export class NewForm extends PureComponent {
     if (name) {
       if (error) return;
       const userId = user.state.profile.id;
-      const redirect = customRedirect || "https://formette.com/thanks";
+      const hasHttp =
+        customRedirect.includes("http://") ||
+        customRedirect.includes("https://");
+      const redirect = !customRedirect
+        ? "https://formette.com/thanks"
+        : hasHttp
+        ? customRedirect
+        : `http://${customRedirect}`;
       let endpoint = customEndpoint
         ? `${userId}/${customEndpoint}`
         : `${userId}/${generateID}`;
@@ -118,7 +126,8 @@ export class NewForm extends PureComponent {
               name,
               description,
               endpoint,
-              isDisabled
+              isDisabled,
+              redirect
             },
             update: (store, { data: { createForms } }) => {
               try {
@@ -316,7 +325,7 @@ export class NewForm extends PureComponent {
     }
 
     return (
-      <div>
+      <Layout>
         <Confirmation
           title={intl.formatMessage(messages.ModalFormDeleteTitle)}
           description={intl.formatMessage(messages.ModalFormDeleteDescription)}
@@ -587,7 +596,7 @@ export class NewForm extends PureComponent {
             </Card>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 }

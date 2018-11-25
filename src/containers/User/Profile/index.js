@@ -11,6 +11,7 @@ import {
   Header
 } from "../../../components/atoms";
 import { Confirmation, Card } from "../../../components/molecules";
+import { Layout } from "../../../components/organisms";
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
@@ -140,7 +141,7 @@ export class Profile extends PureComponent {
     const { intl, user } = this.props;
     const { userName, formsesMeta } = user.state;
     return (
-      <div>
+      <Layout>
         <Confirmation
           title={intl.formatMessage(messages.ModalProfileChangeTitle)}
           description={intl.formatMessage(
@@ -287,7 +288,7 @@ export class Profile extends PureComponent {
             </Card>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 }
