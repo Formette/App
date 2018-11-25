@@ -6,6 +6,7 @@ import Loadable from "react-loadable";
 import Tools from "../FormsList/Tools";
 //Components
 import CopyToClipboard from "react-copy-to-clipboard";
+// eslint-disable-next-line
 import { docco } from "react-syntax-highlighter/dist/styles";
 import {
   SubTitle,
