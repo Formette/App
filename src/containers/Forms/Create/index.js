@@ -1,5 +1,5 @@
-// @flow
 import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import { graphql, compose, withApollo } from "react-apollo";
 import Loadable from "react-loadable";
 //Containers
@@ -16,7 +16,10 @@ import {
   Textarea,
   Icon,
   Switch,
-  Link
+  Link,
+  Accordion,
+  AccordionItem,
+  AccordionContent
 } from "../../../components/atoms";
 import {
   Graphic,
@@ -25,10 +28,11 @@ import {
   HorizontalList,
   Loader
 } from "../../../components/molecules";
+import { Layout } from "../../../components/organisms";
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
-import { guid } from "../../../services/utilities";
+import { guid } from "@vacom/vantage";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 //API
@@ -51,14 +55,16 @@ const SyntaxHighlighter = Loadable({
 });
 
 export class NewForm extends PureComponent {
-  props: {
-    createFormMutation: any,
-    updateFormMutation: any,
-    deleteFormMutation: any,
-    router: any,
-    history: any,
-    match: any,
-    client: any
+  static propTypes = {
+    createFormMutation: PropTypes.func.isRequired,
+    updateFormMutation: PropTypes.func.isRequired,
+    deleteFormMutation: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    client: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
+    alert: PropTypes.object.isRequired
   };
   state = {
     name: "",
@@ -97,7 +103,14 @@ export class NewForm extends PureComponent {
     if (name) {
       if (error) return;
       const userId = user.state.profile.id;
-      const redirect = customRedirect || "https://formette.com/thanks";
+      const hasHttp =
+        customRedirect.includes("http://") ||
+        customRedirect.includes("https://");
+      const redirect = !customRedirect
+        ? "https://formette.com/thanks"
+        : hasHttp
+        ? customRedirect
+        : `http://${customRedirect}`;
       let endpoint = customEndpoint
         ? `${userId}/${customEndpoint}`
         : `${userId}/${generateID}`;
@@ -113,7 +126,8 @@ export class NewForm extends PureComponent {
               name,
               description,
               endpoint,
-              isDisabled
+              isDisabled,
+              redirect
             },
             update: (store, { data: { createForms } }) => {
               try {
@@ -157,13 +171,7 @@ export class NewForm extends PureComponent {
       });
     }
   };
-  _updateForm = async (
-    name: string,
-    description: string,
-    endpoint: string,
-    isDisabled: boolean,
-    redirect: string
-  ) => {
+  _updateForm = async (name, description, endpoint, isDisabled, redirect) => {
     const { intl, match, updateFormMutation, alert } = this.props;
     try {
       const id = match.params.id;
@@ -236,7 +244,7 @@ export class NewForm extends PureComponent {
       alert.error(intl.formatMessage(messages.AlertFormErrorDelete));
     }
   };
-  _getFormData = (id: string) => {
+  _getFormData = id => {
     this.props.client
       .query({
         query: FORM_DATA_QUERY,
@@ -317,7 +325,7 @@ export class NewForm extends PureComponent {
     }
 
     return (
-      <div>
+      <Layout>
         <Confirmation
           title={intl.formatMessage(messages.ModalFormDeleteTitle)}
           description={intl.formatMessage(messages.ModalFormDeleteDescription)}
@@ -447,62 +455,73 @@ export class NewForm extends PureComponent {
                 />
               </div>
 
-              <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <Text highlight>
-                  <FormattedMessage
-                    id="app.page.form.create.text.custom.endpoint"
-                    defaultMessage={"Custom endpoint"}
-                  />
-                </Text>
-                <Text>
-                  <FormattedMessage
-                    id="app.page.form.create.text.custom.endpoint.description"
-                    defaultMessage={
-                      "You can choose a custom endpoint but note that the name has to be unique compared to your previously created forms."
-                    }
-                  />
-                </Text>
-                <Input
-                  placeholder={intl.formatMessage(
-                    messages.PageFormCreateTextEndpointPlaceholder
+              <Accordion>
+                <AccordionItem
+                  id="tab-advanced"
+                  title={intl.formatMessage(
+                    messages.PageFormCreateAccordionTitle
                   )}
-                  value={customEndpoint}
-                  onChange={e =>
-                    this.setState({
-                      customEndpoint: e.target.value
-                    })
-                  }
-                  className="form-control"
-                />
-              </div>
-              <div className={`form-group ${error ? "has-danger" : ""}`}>
-                <Text highlight>
-                  <FormattedMessage
-                    id="app.page.form.create.text.custom.redirect"
-                    defaultMessage={"Custom redirect"}
-                  />
-                </Text>
-                <Text>
-                  <FormattedMessage
-                    id="app.page.form.create.text.custom.redirect.description"
-                    defaultMessage={
-                      "You can choose a custom redirect when your form is submitted, this url can be a page to thank the user or even to take the users to a page of your site."
-                    }
-                  />
-                </Text>
-                <Input
-                  placeholder={intl.formatMessage(
-                    messages.PageFormCreateTextRedirectlaceholder
-                  )}
-                  value={customRedirect}
-                  onChange={e =>
-                    this.setState({
-                      customRedirect: e.target.value
-                    })
-                  }
-                  className="form-control"
-                />
-              </div>
+                >
+                  <AccordionContent>
+                    <div className={`form-group ${error ? "has-danger" : ""}`}>
+                      <Text highlight>
+                        <FormattedMessage
+                          id="app.page.form.create.text.custom.endpoint"
+                          defaultMessage={"Custom endpoint"}
+                        />
+                      </Text>
+                      <Text>
+                        <FormattedMessage
+                          id="app.page.form.create.text.custom.endpoint.description"
+                          defaultMessage={
+                            "You can choose a custom endpoint but note that the name has to be unique compared to your previously created forms."
+                          }
+                        />
+                      </Text>
+                      <Input
+                        placeholder={intl.formatMessage(
+                          messages.PageFormCreateTextEndpointPlaceholder
+                        )}
+                        value={customEndpoint}
+                        onChange={e =>
+                          this.setState({
+                            customEndpoint: e.target.value
+                          })
+                        }
+                        className="form-control"
+                      />
+                    </div>
+                    <div className={`form-group ${error ? "has-danger" : ""}`}>
+                      <Text highlight>
+                        <FormattedMessage
+                          id="app.page.form.create.text.custom.redirect"
+                          defaultMessage={"Custom redirect"}
+                        />
+                      </Text>
+                      <Text>
+                        <FormattedMessage
+                          id="app.page.form.create.text.custom.redirect.description"
+                          defaultMessage={
+                            "You can choose a custom redirect when your form is submitted, this url can be a page to thank the user or even to take the users to a page of your site."
+                          }
+                        />
+                      </Text>
+                      <Input
+                        placeholder={intl.formatMessage(
+                          messages.PageFormCreateTextRedirectlaceholder
+                        )}
+                        value={customRedirect}
+                        onChange={e =>
+                          this.setState({
+                            customRedirect: e.target.value
+                          })
+                        }
+                        className="form-control"
+                      />
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </form>
           </div>
           <div className="col-md-6" style={{ marginTop: 30 }}>
@@ -577,7 +596,7 @@ export class NewForm extends PureComponent {
             </Card>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 }

@@ -1,5 +1,5 @@
-// @flow
 import React from "react";
+import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 //Components
 import AuthLayout from "../../../components/organisms/AuthLayout/index";
@@ -13,19 +13,21 @@ import {
   USER_RESEND_CONFIRMATION_MUTATION
 } from "../../../api/Mutations";
 //Utils
-import { getUrlParam, _isLoggedIn } from "../../../services/utilities";
+import { _isLoggedIn } from "../../../services/utilities";
+import { getUrlParam } from "@vacom/vantage";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 //locales
 import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 export class ConfirmUser extends React.PureComponent {
-  props: {
-    userQuery: any,
-    confirmEmail: any,
-    resendConfirmation: any,
-    history: any,
-    router: any
+  static propTypes = {
+    confirmEmail: PropTypes.func.isRequired,
+    resendConfirmation: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    alert: PropTypes.object,
+    intl: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired
   };
   state = {
     confirmToken: "",

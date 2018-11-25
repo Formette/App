@@ -1,5 +1,5 @@
-// @flow
 import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 import { withRouter } from "react-router";
 //Container
@@ -9,7 +9,7 @@ import Cards from "./Cards";
 import { Button, Icon, InputGroup } from "../../../components/atoms/index";
 import { Graphic, Loader } from "../../../components/molecules/index";
 //Utils
-import { _refreshPage, _onHandleExpression } from "../../../services/utilities";
+import { refreshPage, handleExpression } from "@vacom/vantage";
 //API
 import { ALL_FORMS_QUERY } from "../../../api/Queries";
 //locales
@@ -17,9 +17,11 @@ import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 
 export class MyForms extends Component {
-  props: {
-    allFormsQuery: any,
-    history: any
+  static propTypes = {
+    allFormsQuery: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    alert: PropTypes.object,
+    intl: PropTypes.object.isRequired
   };
   state = {
     isLoading: true,
@@ -54,7 +56,7 @@ export class MyForms extends Component {
         const { allFormses } = this.props.allFormsQuery;
         try {
           let search = new RegExp(
-            _onHandleExpression(searchQuery.toLowerCase().trim())
+            handleExpression(searchQuery.toLowerCase().trim())
           );
           //if the textbox is empty show all the dashboards again
           if (!searchQuery) {
@@ -85,7 +87,7 @@ export class MyForms extends Component {
     const { allFormsQuery, intl } = this.props;
     const { allFormses } = allFormsQuery;
     const { isLoading, isSearching, data } = this.state;
-    if (this.props.allFormsQuery && this.props.allFormsQuery.error) {
+    if (isLoading && data && this.props.allFormsQuery.error) {
       return (
         <Graphic
           title={intl.formatMessage(messages.GraphicErrorTitle)}
@@ -95,7 +97,7 @@ export class MyForms extends Component {
         >
           <Button
             className="btn btn-lg btn-primary"
-            onClick={_refreshPage}
+            onClick={refreshPage}
             primary
           >
             <FormattedMessage

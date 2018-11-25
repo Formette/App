@@ -1,5 +1,5 @@
-// @flow
 import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 //Containers
 import Tools from "../FormsList/Tools";
@@ -14,6 +14,7 @@ import {
   Confirmation,
   Loader
 } from "../../../components/molecules";
+import { Layout } from "../../../components/organisms";
 import Dropdown, {
   DropdownItemGroup,
   DropdownItem
@@ -21,7 +22,7 @@ import Dropdown, {
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
-import { _refreshPage, downloadCSV } from "../../../services/utilities";
+import { downloadCSV, refreshPage } from "@vacom/vantage";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 import * as jsPDF from "jspdf";
@@ -37,16 +38,20 @@ import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 
 export class FormDetails extends PureComponent {
+  static propTypes = {
+    formDataQuery: PropTypes.object.isRequired,
+    deleteFormMutation: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    alert: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired
+  };
   state = {
     onConfirmation: false,
     url: `${process.env.REACT_APP_ENDPOINT_URL}`
   };
-  props: {
-    formDataQuery: any,
-    deleteFormMutation: any,
-    history: any,
-    match: any
-  };
+
   componentWillMount() {
     this._subscribeToNewData();
   }
@@ -154,7 +159,7 @@ export class FormDetails extends PureComponent {
     if (this.props.formDataQuery && this.props.formDataQuery.loading) {
       return <Loader top={100} />;
     }
-    if (this.props.formDataQuery && this.props.formDataQuery.error) {
+    if (this.props.formDataQuery.error) {
       return (
         <Graphic
           title={this.props.intl.formatMessage(messages.GraphicErrorTitle)}
@@ -166,7 +171,7 @@ export class FormDetails extends PureComponent {
         >
           <Button
             className="btn btn-lg btn-primary"
-            onClick={_refreshPage}
+            onClick={refreshPage}
             primary
           >
             <FormattedMessage
@@ -212,7 +217,7 @@ export class FormDetails extends PureComponent {
     const { intl, user, alert, match } = this.props;
     const { userName } = user.state;
     return (
-      <div>
+      <Layout>
         <Confirmation
           title={intl.formatMessage(messages.ModalFormDeleteTitle)}
           description={intl.formatMessage(messages.ModalFormDeleteDescription)}
@@ -334,7 +339,7 @@ export class FormDetails extends PureComponent {
             </Card>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 }

@@ -1,5 +1,5 @@
-// @flow
 import React, { Fragment } from "react";
+import PropTypes from "prop-types";
 import { graphql, compose, withApollo } from "react-apollo";
 //Components
 import AuthLayout from "../../../components/organisms/AuthLayout";
@@ -16,25 +16,26 @@ import {
 } from "../../../api/Mutations";
 import { userSignIn } from "../../../api/Functions";
 //Utils
+import { _isLoggedIn } from "../../../services/utilities";
 import {
   generateToken,
   generateExpiration,
-  _formatUsername,
-  _validateEmail,
-  _emailBlackList,
-  _isLoggedIn
-} from "../../../services/utilities";
+  validateEmail,
+  emailBlackList,
+  formatUsername
+} from "@vacom/vantage";
+
 import LogRocket from "logrocket";
 //locales
 import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 export class CreateUser extends React.PureComponent {
-  props: {
-    createUser: any,
-    signinUser: any,
-    history: any,
-    client: any,
-    router: any
+  static propTypes = {
+    createUser: PropTypes.func.isRequired,
+    signinUser: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    client: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired
   };
   state = {
     email: "",
@@ -54,10 +55,7 @@ export class CreateUser extends React.PureComponent {
   _onCreateUser = () => {
     const { intl } = this.props;
     const { email, password, approvedPrivacy, error } = this.state;
-    let username = _formatUsername(this.state.username);
-
-    console.log("terms = ", approvedPrivacy);
-
+    let username = formatUsername(this.state.username);
     //Verifies if the inputs are empty or not
     if (email && password && username) {
       if (error) {
@@ -74,7 +72,7 @@ export class CreateUser extends React.PureComponent {
         return;
       }
 
-      if (!_validateEmail(email)) {
+      if (!validateEmail(email)) {
         this.setState({
           error: true,
           errorMsg: intl.formatMessage(
@@ -84,7 +82,7 @@ export class CreateUser extends React.PureComponent {
         return;
       }
 
-      if (_emailBlackList(email)) {
+      if (emailBlackList(email)) {
         this.setState({
           error: true,
           errorMsg: intl.formatMessage(messages.UserCreateEmailNotSupported)
@@ -123,7 +121,7 @@ export class CreateUser extends React.PureComponent {
       });
     }
   };
-  _onSignIn = async (email: string, password: string) => {
+  _onSignIn = async (email, password) => {
     //logs in the user
     const { intl, user, history } = this.props;
     const response = await userSignIn(email, password, this.props.signinUser);
@@ -140,7 +138,7 @@ export class CreateUser extends React.PureComponent {
       });
     }
   };
-  _onPasswordValidation(password: string) {
+  _onPasswordValidation(password) {
     clearTimeout(this.state.timeoutPassword);
     this.setState({
       timeoutPassword: setTimeout(() => {
@@ -148,7 +146,7 @@ export class CreateUser extends React.PureComponent {
       }, 500)
     });
   }
-  _checkPassword(password: string) {
+  _checkPassword(password) {
     const { intl } = this.props;
     if (password.length <= 8) {
       LogRocket.warn(
@@ -162,12 +160,12 @@ export class CreateUser extends React.PureComponent {
     }
     this.setState({ error: false });
   }
-  _onUsernameValidation(getUsername: string) {
+  _onUsernameValidation(getUsername) {
     clearTimeout(this.state.timeoutUserName);
     const { intl } = this.props;
     this.setState({
       timeoutUserName: setTimeout(() => {
-        let username = _formatUsername(getUsername);
+        let username = formatUsername(getUsername);
         this.props.client
           .query({
             query: USERNAME_VALIDATION_QUERY,

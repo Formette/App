@@ -1,5 +1,5 @@
-// @flow
 import React, { Fragment } from "react";
+import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 //Components
 import AuthLayout from "../../../components/organisms/AuthLayout";
@@ -18,12 +18,11 @@ import { _isLoggedIn } from "../../../services/utilities";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 class LoginUser extends React.PureComponent {
-  props: {
-    client: any,
-    confirmed: boolean,
-    signinUser: any,
-    history: any,
-    router: any
+  static propTypes = {
+    confirmed: PropTypes.bool,
+    intl: PropTypes.object.isRequired,
+    signinUser: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired
   };
   componentDidMount() {
     if (_isLoggedIn()) {

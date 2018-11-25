@@ -1,5 +1,5 @@
-// @flow
 import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import { graphql, compose, withApollo } from "react-apollo";
 //Components
 import {
@@ -11,10 +11,12 @@ import {
   Header
 } from "../../../components/atoms";
 import { Confirmation, Card } from "../../../components/molecules";
+import { Layout } from "../../../components/organisms";
 //hocs
 import { withUser } from "../../../hocs";
 //Utils
-import { _logout, _formatUsername } from "../../../services/utilities";
+import { _logout } from "../../../services/utilities";
+import { formatUsername } from "@vacom/vantage";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 //API
@@ -24,10 +26,11 @@ import { UPDATE_USER_MUTATION } from "../../../api/Mutations";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 export class Profile extends PureComponent {
-  props: {
-    updateUser: any,
-    client: any,
-    router: any
+  static propTypes = {
+    updateUser: PropTypes.func.isRequired,
+    client: PropTypes.object.isRequired,
+    intl: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired
   };
   state = {
     username: "",
@@ -45,7 +48,7 @@ export class Profile extends PureComponent {
   _updateProfile = async () => {
     const { intl, user, updateUser, alert } = this.props;
     const { error } = this.state;
-    let username = _formatUsername(this.state.username);
+    let username = formatUsername(this.state.username);
     //hides the confirmation modal
     this.setState(prevState => ({
       onConfirmation: !prevState.onConfirmation
@@ -86,13 +89,13 @@ export class Profile extends PureComponent {
       });
     }
   };
-  _onUsernameValidation(getUsername: string) {
+  _onUsernameValidation(getUsername) {
     clearTimeout(this.state.timeoutUserName);
     const { intl } = this.props;
     this.setState({
       timeoutUserName: setTimeout(() => {
         //checks is the username is the same as the previous one
-        let username = _formatUsername(getUsername);
+        let username = formatUsername(getUsername);
         if (this._isTheSameUsername(username)) return;
         this.props.client
           .query({
@@ -120,7 +123,7 @@ export class Profile extends PureComponent {
       }, 500)
     });
   }
-  _isTheSameUsername(username: string) {
+  _isTheSameUsername(username) {
     const { user, intl } = this.props;
     if (user.state.userName === username) {
       LogRocket.warn(
@@ -138,7 +141,7 @@ export class Profile extends PureComponent {
     const { intl, user } = this.props;
     const { userName, formsesMeta } = user.state;
     return (
-      <div>
+      <Layout>
         <Confirmation
           title={intl.formatMessage(messages.ModalProfileChangeTitle)}
           description={intl.formatMessage(
@@ -285,7 +288,7 @@ export class Profile extends PureComponent {
             </Card>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 }

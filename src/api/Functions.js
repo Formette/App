@@ -1,4 +1,3 @@
-// @flow
 //API
 import { ALL_FORMS_QUERY, FORM_DATA_QUERY } from "./Queries";
 //Utilities
@@ -11,7 +10,7 @@ import LogRocket from "logrocket";
 //USER
 
 //this functions login in the user
-const userSignIn = async (email: string, password: string, signinUser: any) => {
+const userSignIn = async (email, password, signinUser) => {
   try {
     let confirmed = "";
     let rest = null;
@@ -44,11 +43,7 @@ const userSignIn = async (email: string, password: string, signinUser: any) => {
 //FORMS
 
 //this functions deletes the selected form by the user
-const deleteForm = async (
-  id: string,
-  userId: string,
-  deleteFormMutation: any
-) => {
+const deleteForm = async (id, userId, deleteFormMutation) => {
   //deletes the form in the DB
   try {
     await deleteFormMutation({
@@ -87,11 +82,7 @@ const deleteForm = async (
 };
 
 //this functions deletes the selected content from a form
-const deleteFormContent = async (
-  id: string,
-  formId: string,
-  deleteFormContentMutation: any
-) => {
+const deleteFormContent = async (id, formId, deleteFormContentMutation) => {
   //deletes the form in the DB
   try {
     await deleteFormContentMutation({

@@ -1,11 +1,10 @@
 {
   "name": "Formette",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "private": false,
   "devDependencies": {
     "babel-plugin-react-intl": "^3.0.1",
-    "enzyme": "^3.7.0",
-    "flow-bin": "^0.86.0",
+    "enzyme": "^2.9.1",
     "husky": "^1.1.3",
     "lint-staged": "^8.0.4",
     "prettier": "^1.14.3",
@@ -16,7 +15,8 @@
   "dependencies": {
     "@atlaskit/dropdown-menu": "^6.1.18",
     "@atlaskit/dynamic-table": "^10.0.13",
-    "apollo-client": "^2.4.5",
+    "@vacom/vantage": "0.0.4",
+    "apollo-client": "^1.7.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "graphql-tag": "^2.4.2",
     "jspdf": "^1.4.1",

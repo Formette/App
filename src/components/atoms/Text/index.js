@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 //Styles
 import styled from "styled-components";
 
-const TextWithStyles = styled.p`
+const Text = styled.p`
   color: ${props =>
     props.highlight
       ? props.theme.color.primary
@@ -12,15 +12,11 @@ const TextWithStyles = styled.p`
   font-weight: ${props => props.highlight && "bold"};
 `;
 
-Text.defaultProps = {
-  text: "Description Text",
-  color: "#000000"
-};
-
 Text.propTypes = {
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   color: PropTypes.string,
-  className: PropTypes.string
+  theme: PropTypes.object,
+  highlight: PropTypes.bool
 };
 
-export default TextWithStyles;
+export default Text;

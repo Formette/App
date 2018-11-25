@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { withApollo } from "react-apollo";
 //API
 import { USER_QUERY } from "../api/Queries";
@@ -6,6 +7,10 @@ import { USER_QUERY } from "../api/Queries";
 const UserContext = React.createContext();
 
 class Provider extends Component {
+  static propTypes = {
+    client: PropTypes.object.isRequired,
+    children: PropTypes.any
+  };
   state = {
     userName: "username",
     accountConfirmed: true,
