@@ -42,6 +42,12 @@
     "app.page.form.content.view.description": "Created in",
     "app.page.form.details.action.copy.endpoint": "Endpoint",
     "app.page.form.details.text.disable": "This form is disabled",
+
+    "app.page.form.details.security.honey.title": "Honey Pot",
+    "app.page.form.details.security.honey.description": "Honey Pot is a pattern and by adding an invisible field to your forms that only spam robots can see. With this pattern, we can avoid spam, we do this by checking in the submission if the field has value or not.",
+    "app.page.form.details.security.honey.input": "Custom fieldname",
+    "app.page.form.details.security.action.text": "Save",
+
     "app.page.profile.action.update": "Update profile",
     "app.page.profile.text.statistics": "Statistics",
     "app.page.profile.text.statistics.forms.count": "forms created",
@@ -164,6 +170,12 @@
     "app.page.form.content.view.description": "Criado em",
     "app.page.form.details.action.copy.endpoint": "Endpoint",
     "app.page.form.details.text.disable": "Este formulário está desativado",
+
+    "app.page.form.details.security.honey.title": "Honey Pot",
+    "app.page.form.details.security.honey.description": "O Honey Pot é um padrão e ao adicionar um campo invisível aos seus formulários que apenas os robôs de spam podem ver. Com este padrão, podemos evitar o spam, fazemos isso verificando no envio se o campo têm ou não valor",
+    "app.page.form.details.security.honey.input": "Nome do campo personalizado",
+    "app.page.form.details.security.action.text": "Guardar",
+
     "app.page.profile.action.update": "Atualizar perfil",
     "app.page.profile.text.statistics": "Estatisticas",
     "app.page.profile.text.statistics.forms.count": "formulários criados",

@@ -11,7 +11,6 @@ import { default as Confirmation } from "./Confirmation/index";
 import { default as NoMatch } from "./NoMatch/index";
 import { default as Loader } from "./Loader/index";
 
-
 export {
   Card,
   CardHeader,

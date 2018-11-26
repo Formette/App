@@ -4,9 +4,17 @@ import { graphql, compose } from "react-apollo";
 //Containers
 import Tools from "../FormsList/Tools";
 import Table from "./Table";
+import TemplatesContainer from "./Templates";
+import SecurityContainer from "./Security";
 //Components
 import CopyToClipboard from "react-copy-to-clipboard";
-import { Button, Icon } from "../../../components/atoms";
+import {
+  Button,
+  Icon,
+  Tabs,
+  TabHeader,
+  TabContent
+} from "../../../components/atoms";
 import {
   Card,
   HorizontalList,
@@ -210,8 +218,11 @@ export class FormDetails extends PureComponent {
       description,
       endpoint,
       contents,
-      isDisabled
+      isDisabled,
+      enableHoney,
+      honeyField
     } = this.props.formDataQuery.Forms;
+    const securityProps = { enableHoney, honeyField };
     const point = endpoint.split("/");
     const { onConfirmation, url } = this.state;
     const { intl, user, alert, match } = this.props;
@@ -325,18 +336,45 @@ export class FormDetails extends PureComponent {
         </Tools>
         <div className="row">
           <div className="col-md-12">
-            <Card>
-              <div className="card-body">
-                <Table
+            <Tabs>
+              <TabHeader id="tab1" group="tabs" iconName="fas fa-database">
+                Submissions
+              </TabHeader>
+              <TabHeader
+                id="tab2"
+                group="tabs"
+                iconName="fas fa-shield-alt"
+                defaultChecked
+              >
+                Security
+              </TabHeader>
+              <TabHeader id="tab3" group="tabs" iconName="fas fa-code">
+                Templates
+              </TabHeader>
+              <TabContent id="content1">
+                <Card>
+                  <div className="card-body">
+                    <Table
+                      formId={match.params.id}
+                      data={contents}
+                      emptyText={intl.formatMessage(messages.FormEmptyTitle)}
+                      emptyDescription={intl.formatMessage(
+                        messages.FormEmptyDescription
+                      )}
+                    />
+                  </div>
+                </Card>
+              </TabContent>
+              <TabContent id="content2">
+                <SecurityContainer
                   formId={match.params.id}
-                  data={contents}
-                  emptyText={intl.formatMessage(messages.FormEmptyTitle)}
-                  emptyDescription={intl.formatMessage(
-                    messages.FormEmptyDescription
-                  )}
+                  {...securityProps}
                 />
-              </div>
-            </Card>
+              </TabContent>
+              <TabContent id="content3">
+                <TemplatesContainer />
+              </TabContent>
+            </Tabs>
           </div>
         </div>
       </Layout>

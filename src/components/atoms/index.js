@@ -16,6 +16,9 @@ import { default as Alert } from "./Alert/index";
 import { default as Accordion } from "./Accordion/index";
 import { default as AccordionItem } from "./Accordion/AccordionItem";
 import { default as AccordionContent } from "./Accordion/AccordionContent";
+import { default as Tabs } from "./Tabs";
+import { default as TabContent } from "./Tabs/TabContent";
+import { default as TabHeader } from "./Tabs/TabHeader";
 
 export {
   Button,
@@ -34,5 +37,8 @@ export {
   Alert,
   Accordion,
   AccordionItem,
-  AccordionContent
+  AccordionContent,
+  Tabs,
+  TabHeader,
+  TabContent
 };

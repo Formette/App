@@ -29,6 +29,8 @@ const ALL_FORM_FIELDS_FRAGMENT = gql`
       data
       createdAt
     }
+    enableHoney
+    honeyField
     createdAt
   }
 `;

@@ -31,6 +31,10 @@ const PagesMessages = {
     id: "app.page.form.details.description",
     defaultMessage: "This form has no description"
   },
+  PageFormSecurityHoneyInput: {
+    id: "app.page.form.details.security.honey.input",
+    defaultMessage: "Custom fieldname"
+  },
   PageFormCardActions: {
     id: "app.page.form.card.action.actions",
     defaultMessage: "Actions"

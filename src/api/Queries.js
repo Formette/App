@@ -72,11 +72,22 @@ const FORM_CONTENT_DATA_QUERY = gql`
   }
 `;
 
+//get a specific security for a form
+const FORM_SECURITY_DATA_QUERY = gql`
+  query formSecurity($id: ID!) {
+    Security: Forms(id: $id) {
+      enableHoney
+      honeyField
+    }
+  }
+`;
+
 export {
   USER_QUERY,
   USERNAME_QUERY,
   USERNAME_VALIDATION_QUERY,
   ALL_FORMS_QUERY,
   FORM_DATA_QUERY,
-  FORM_CONTENT_DATA_QUERY
+  FORM_CONTENT_DATA_QUERY,
+  FORM_SECURITY_DATA_QUERY
 };

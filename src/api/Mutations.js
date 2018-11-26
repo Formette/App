@@ -143,6 +143,17 @@ const DELETE_FORM_CONTENT_MUTATION = gql`
   }
 `;
 
+// FORM SECURITY
+
+//this enables and updates the honey pot for the form
+const ENABLE_OR_UPDATE_FORM_HONEY_POT_MUTATION = gql`
+  mutation($id: ID!, $enableHoney: Boolean, $honeyField: String) {
+    updateForms(id: $id, enableHoney: $enableHoney, honeyField: $honeyField) {
+      id
+    }
+  }
+`;
+
 export {
   SIGIN_USER_MUTATION,
   CREATE_USER_MUTATION,
@@ -152,5 +163,6 @@ export {
   CREATE_FORM_MUTATION,
   UPDATE_FORM_MUTATION,
   DELETE_FORM_MUTATION,
-  DELETE_FORM_CONTENT_MUTATION
+  DELETE_FORM_CONTENT_MUTATION,
+  ENABLE_OR_UPDATE_FORM_HONEY_POT_MUTATION
 };

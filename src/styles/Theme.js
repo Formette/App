@@ -6,6 +6,7 @@ const globals = {
     background: "#E6EBF1",
     border: "#E6EBF1",
     red: "#fa5252",
+    gray: "#abc",
     yellow: "#fab005",
     orange: "#fd7e14",
     blue: "#228ae6",
