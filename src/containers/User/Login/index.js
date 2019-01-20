@@ -2,10 +2,7 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 //Components
-import AuthLayout from "../../../components/organisms/AuthLayout";
-import { Input, Button, Link } from "../../../components/atoms";
-import Error from "../../../components/molecules/Error";
-import { Footer } from "../../../components/organisms";
+import Auth, { SignIn } from "vantage-auth";
 //hocs
 import { withUser } from "../../../hocs";
 //API
@@ -15,7 +12,7 @@ import { userSignIn } from "../../../api/Functions";
 import LogRocket from "logrocket";
 import { _isLoggedIn } from "../../../services/utilities";
 //locales
-import { FormattedMessage, injectIntl } from "react-intl";
+import { injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 class LoginUser extends React.PureComponent {
   static propTypes = {
@@ -30,37 +27,26 @@ class LoginUser extends React.PureComponent {
     }
   }
   state = {
-    email: "",
-    password: "",
     error: false,
-    errorMsg: ""
+    errorMsg: "",
+    isSubmiting: false
   };
-  _onSignIn = async () => {
-    const { email, password } = this.state;
+  _onSignIn = async ({ email, password }) => {
     const { intl, user, history } = this.props;
-    //Verifies if the inputs are empty or not
-    if (email && password) {
-      //logs in the user
-      const response = await userSignIn(email, password, this.props.signinUser);
-      if (response.status) {
-        LogRocket.track("Signed In");
-        user.updateUser(response.rest);
-        //sends to the dashboard
-        history.push("/");
-      } else {
-        LogRocket.log("Ops! Invalid Email or password.");
-        this.setState({
-          error: true,
-          errorMsg: intl.formatMessage(messages.UserLoginInvalid)
-        });
-      }
+    this.setState({ isSubmiting: true });
+    //logs in the user
+    const response = await userSignIn(email, password, this.props.signinUser);
+    if (response.status) {
+      LogRocket.track("Signed In");
+      user.updateUser(response.rest);
+      //sends to the dashboard
+      history.push("/");
     } else {
-      LogRocket.info(
-        "This form is feeling lonely, needs affection, needs data."
-      );
+      LogRocket.log("Ops! Invalid Email or password.");
       this.setState({
+        isSubmiting: false,
         error: true,
-        errorMsg: intl.formatMessage(messages.UserCreateFormEmpty)
+        errorMsg: intl.formatMessage(messages.UserLoginInvalid)
       });
     }
   };
@@ -70,82 +56,40 @@ class LoginUser extends React.PureComponent {
     }
   };
   render() {
-    const { email, password, error, errorMsg } = this.state;
-    const { history, intl } = this.props;
+    const { error, errorMsg, isSubmiting } = this.state;
+    const { intl } = this.props;
+    const signInConfig = {
+      title: intl.formatMessage(messages.UserLoginTitle),
+      description: intl.formatMessage(messages.UserLoginDescription),
+      submitText: intl.formatMessage(messages.UserLoginTitle),
+      boxText: intl.formatMessage(messages.UserLoginBoxText),
+      boxAction: intl.formatMessage(messages.UserLoginBoxAction),
+      boxUrl: "#/signup",
+      validationMgs: {
+        email: {
+          invalid: intl.formatMessage(messages.ErrorEmailPlaceholderInvalid),
+          required: intl.formatMessage(messages.ErrorEmailPlaceholderRequired)
+        },
+        password: {
+          min: intl.formatMessage(messages.ErrorPasswordPlaceholderMin),
+          max: intl.formatMessage(messages.ErrorPasswordPlaceholderMax),
+          required: intl.formatMessage(
+            messages.ErrorPasswordPlaceholderRequired
+          )
+        }
+      }
+    };
     return (
       <Fragment>
-        <AuthLayout
-          description={intl.formatMessage(messages.UserLoginDescription)}
-        >
-          <label htmlFor="signinEmail" className="sr-only">
-            <FormattedMessage
-              id="user.account.create.text.email"
-              defaultMessage={"Email address"}
-            />
-          </label>
-          <Input
-            id="signinEmail"
-            type="email"
-            value={email}
-            onChange={e =>
-              this.setState({ email: e.target.value, error: false })
-            }
-            onKeyPress={this._handleKeyEnter}
-            className={`form-control ${error && "is-invalid"}`}
-            placeholder={intl.formatMessage(messages.UserCreateTextEmail)}
-            required
-            autoFocus
+        <Auth>
+          <SignIn
+            handleSubmit={this._onSignIn}
+            customError={error}
+            customErrorMsg={errorMsg}
+            isSubmiting={isSubmiting}
+            {...signInConfig}
           />
-
-          <label htmlFor="signinPassword" className="sr-only">
-            <FormattedMessage
-              id="user.account.create.text.password"
-              defaultMessage={"Password"}
-            />
-          </label>
-          <Input
-            id="signinPassword"
-            type="password"
-            value={password}
-            onChange={e =>
-              this.setState({ password: e.target.value, error: false })
-            }
-            onKeyPress={this._handleKeyEnter}
-            className={`form-control ${error && "is-invalid"}`}
-            placeholder={intl.formatMessage(messages.UserCreateTextPassword)}
-            required
-            autoFocus
-          />
-
-          <Button
-            className="btn btn-lg btn-block"
-            onClick={this._onSignIn}
-            style={{ marginTop: 10, marginBottom: 10 }}
-            primary
-          >
-            <FormattedMessage
-              id="user.account.create.action.signin"
-              defaultMessage={"Sign In"}
-            />
-          </Button>
-
-          <Link onClick={() => history.push("/signup")}>
-            <FormattedMessage
-              id="user.account.login.placeholder.create"
-              defaultMessage={"Do not have an account yet? Omg is free."}
-            />{" "}
-            <u>
-              <strong>
-                <FormattedMessage
-                  id="user.account.login.action.create"
-                  defaultMessage={"Create here!"}
-                />
-              </strong>
-            </u>
-          </Link>
-          <Error show={error}>{errorMsg}</Error>
-        </AuthLayout>
-        <Footer />
+        </Auth>
       </Fragment>
     );
   }

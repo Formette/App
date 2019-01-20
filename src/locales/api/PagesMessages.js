@@ -78,6 +78,18 @@ const PagesMessages = {
   PageFormDetailsDisableText: {
     id: "app.page.form.details.text.disable",
     defaultMessage: "This form is disabled"
+  },
+  PageNavMenuSetting: {
+    id: "app.page.nav.menu.settings",
+    defaultMessage: "User Settings"
+  },
+  PageNavMenuHelp: {
+    id: "app.page.nav.menu.help",
+    defaultMessage: "Help & Docs"
+  },
+  PageNavMenuActions: {
+    id: "app.page.nav.menu.actions",
+    defaultMessage: "Actions"
   }
 };
 

@@ -37,6 +37,22 @@ const UserMessages = {
     id: "user.account.create.text.password",
     defaultMessage: "Password"
   },
+  UserCreateTitle: {
+    id: "user.account.create.title",
+    defaultMessage: "Sign Up"
+  },
+  UserCreateAccount: {
+    id: "user.account.create.action.create",
+    defaultMessage: "Create Account"
+  },
+  UserCreateBoxText: {
+    id: "user.account.create.text.has.account",
+    defaultMessage: "Already have an account?"
+  },
+  UserCreateBoxAction: {
+    id: "user.account.create.action.signin",
+    defaultMessage: "Sign In"
+  },
   UserCreateEmailVerificationInvalid: {
     id: "user.account.create.email.verification.invalid",
     defaultMessage: "Email entered is not valid."
@@ -71,6 +87,18 @@ const UserMessages = {
   UserLoginDescription: {
     id: "user.account.login.description",
     defaultMessage: "Welcome back, Come quick! Your forms are waiting for you"
+  },
+  UserLoginTitle: {
+    id: "user.account.login.title",
+    defaultMessage: "Sign In"
+  },
+  UserLoginBoxText: {
+    id: "user.account.login.UserLogin.box.text",
+    defaultMessage: "Do not have an account yet?"
+  },
+  UserLoginBoxAction: {
+    id: "user.account.login.box.action",
+    defaultMessage: "Sign Up"
   },
   UserLoginInvalid: {
     id: "user.account.login.invalid",

@@ -49,6 +49,8 @@ export class MyForms extends Component {
   };
   _onSearchFilter() {
     clearTimeout(this.state.timeoutSearchFilter);
+    //disables search if the input is empty
+    if (!this.state.searchQuery) return;
     this.setState({
       isSearching: true,
       timeoutSearchFilter: setTimeout(() => {

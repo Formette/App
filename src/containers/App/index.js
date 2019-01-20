@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 import { compose } from "react-apollo";
 //Components
 import { Alert } from "../../components/atoms";
-import { Footer } from "../../components/organisms";
 import Navbar from "./Navigation";
 import MobileNavbar from "./MobileNavigation";
 //Context
@@ -49,7 +48,6 @@ class App extends PureComponent {
         <div className="container-fluid content">
           <Router />
         </div>
-        <Footer />
         <MobileNavbar />
       </div>
     );

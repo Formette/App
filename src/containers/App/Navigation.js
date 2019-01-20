@@ -2,15 +2,22 @@ import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "react-apollo";
 import { NavLink, withRouter } from "react-router-dom";
+//Components
+import { Icon } from "../../components/atoms";
+import Dropdown, {
+  DropdownItemGroup,
+  DropdownItem
+} from "@atlaskit/dropdown-menu";
 //Styles
 import styled, { withTheme } from "styled-components";
 import { darken } from "polished";
 //Utilities
 import { _logout } from "../../services/utilities";
 //locales
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, injectIntl } from "react-intl";
+import { globals as messages } from "../../locales/api";
 
-const Navbar = ({ className, username }) => {
+const Navbar = ({ className, username, intl }) => {
   return (
     <nav className={`navbar navbar-expand-sm fixed-top ${className}`}>
       <a className="navbar-brand" href="#/">
@@ -29,30 +36,83 @@ const Navbar = ({ className, username }) => {
           </li>
         </ul>
         <ul className="navbar-nav">
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/signin" onClick={_logout}>
-              <i className="fas fa-sign-out-alt" />
-              <FormattedMessage
-                id="app.navigation.logout"
-                defaultMessage={"Log Out"}
-              />
-            </NavLink>
-          </li>
-
-          <li className="nav-item">
-            <NavLink
-              className="nav-link"
-              activeClassName="active"
-              to="/profile"
+          <Dropdown
+            trigger={
+              <li className="nav-item">
+                <a className="nav-link">
+                  <Icon name="fas fa-bars" />
+                  <FormattedMessage
+                    id="app.navigation.greetings"
+                    defaultMessage={"Hello,"}
+                  />{" "}
+                  <span>{username}</span>
+                </a>
+              </li>
+            }
+            isMenuFixed={true}
+            position="bottom right"
+          >
+            <DropdownItemGroup
+              title={intl.formatMessage(messages.PageNavMenuSetting)}
             >
-              <i className="fas fa-user-circle" />
-              <FormattedMessage
-                id="app.navigation.greetings"
-                defaultMessage={"Hello,"}
-              />{" "}
-              <span>{username}</span>
-            </NavLink>
-          </li>
+              <DropdownItem href={`#/profile`}>
+                <Icon name="fas fa-user-circle" />{" "}
+                <FormattedMessage
+                  id="app.navigation.profile"
+                  defaultMessage={"Profile"}
+                />
+              </DropdownItem>
+            </DropdownItemGroup>
+            <DropdownItemGroup
+              title={intl.formatMessage(messages.PageNavMenuHelp)}
+            >
+              <DropdownItem href={`http://bit.ly/formetteDocs`} target="_blank">
+                <Icon name="fas fa-book" />{" "}
+                <FormattedMessage
+                  id="app.page.footer.link.docs"
+                  defaultMessage={"Docs"}
+                />
+              </DropdownItem>
+              <DropdownItem
+                href="http://bit.ly/formetteprivacy"
+                target="_blank"
+              >
+                <Icon name="fas fa-lock" />{" "}
+                <FormattedMessage
+                  id="app.page.footer.link.terms"
+                  defaultMessage={"Terms & Privacy Policy"}
+                />
+              </DropdownItem>
+              <DropdownItem href="http://bit.ly/formetteStatus" target="_blank">
+                <Icon name="fas fa-server" />{" "}
+                <FormattedMessage
+                  id="app.page.footer.link.status"
+                  defaultMessage={"Status"}
+                />
+              </DropdownItem>
+              <DropdownItem
+                href="http://bit.ly/formettethirdpartysoftware"
+                target="_blank"
+              >
+                <Icon name="fas fa-code" />{" "}
+                <FormattedMessage
+                  id="app.page.footer.link.software"
+                  defaultMessage={"Third-party Software"}
+                />
+              </DropdownItem>
+            </DropdownItemGroup>
+            <DropdownItemGroup
+              title={intl.formatMessage(messages.PageNavMenuActions)}
+            >
+              <DropdownItem onClick={_logout}>
+                <Icon name="fas fa-sign-out-alt" />{" "}
+                <FormattedMessage
+                  id="app.navigation.logout"
+                  defaultMessage={"Log Out"}
+                />
+              </DropdownItem>
+            </DropdownItemGroup>
+          </Dropdown>
         </ul>
       </div>
     </nav>
@@ -89,6 +149,7 @@ const NavbarWithStyles = styled(Navbar)`
       top: 5px;
     }
   }
+  a.nav-link,
   .nav-link {
     font-size: ${props => props.theme.navbar.link.fontSize};
     color: ${props => props.theme.navbar.link.color};
@@ -99,6 +160,7 @@ const NavbarWithStyles = styled(Navbar)`
       border-radius: ${props => props.theme.navbar.link.borderRadius};
       color: ${props => props.theme.navbar.link.color};
       opacity: 1;
+      cursor: pointer;
     }
     i {
       margin-right: ${props => props.theme.navbar.link.marginRight};
@@ -108,5 +170,6 @@ const NavbarWithStyles = styled(Navbar)`
 
 export default compose(
   withTheme,
+  injectIntl,
   withRouter
 )(NavbarWithStyles);
