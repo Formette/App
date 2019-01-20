@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 //Components
-import AuthLayout from "../../../components/organisms/AuthLayout/index";
 import { Input, Button, Link } from "../../../components/atoms/index";
 import { Error } from "../../../components/molecules/index";
 //hocs
@@ -101,7 +100,7 @@ export class ConfirmUser extends React.PureComponent {
     const { confirmToken, error, errorMsg } = this.state;
     const { intl } = this.props;
     return (
-      <AuthLayout
+      <div
         title={intl.formatMessage(messages.UserVerificationTitle)}
         description={intl.formatMessage(messages.UserVerificationDescription)}
       >
@@ -141,7 +140,7 @@ export class ConfirmUser extends React.PureComponent {
           />
         </Link>
         <Error show={error}>{errorMsg}</Error>
-      </AuthLayout>
+      </div>
     );
   }
 }

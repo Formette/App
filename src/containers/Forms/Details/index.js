@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 //Containers
-import Tools from "../FormsList/Tools";
+import DetailsActions from "./DetailsActions";
 import Table from "./Table";
 import TemplatesContainer from "./Templates";
 import SecurityContainer from "./Security";
@@ -243,7 +243,7 @@ export class FormDetails extends PureComponent {
           onConfirmation={this._onDeleteForm}
           actionProps={{ danger: true }}
         />
-        <Tools
+        <DetailsActions
           title={name || intl.formatMessage(messages.PageFormDetailsTitle)}
           description={
             description ||
@@ -333,7 +333,7 @@ export class FormDetails extends PureComponent {
               </li>
             </HorizontalList>
           </div>
-        </Tools>
+        </DetailsActions>
         <div className="row">
           <div className="col-md-12">
             <Tabs>

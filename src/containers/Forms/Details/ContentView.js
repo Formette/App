@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 //Containers
-import Tools from "../FormsList/Tools";
+import DetailsActions from "./DetailsActions";
 //Components
 import { Icon, Button, Text } from "../../../components/atoms";
 import {
@@ -150,7 +150,7 @@ class ContentView extends PureComponent {
     const { createdAt } = this.state;
     return (
       <Layout>
-        <Tools
+        <DetailsActions
           title={`${intl.formatMessage(messages.PageContentViewTitle)} ${
             match.params.id
           }`}
@@ -204,7 +204,8 @@ class ContentView extends PureComponent {
               </li>
             </HorizontalList>
           </div>
-        </Tools>
+        </DetailsActions>
+
         <div className="row">
           <div className="col-md-12">
             <Card>
