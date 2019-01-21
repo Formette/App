@@ -77,6 +77,10 @@ class LoginUser extends React.PureComponent {
             messages.ErrorPasswordPlaceholderRequired
           )
         }
+      },
+      placeholders: {
+        email: intl.formatMessage(messages.UserCreateTextEmail),
+        password: intl.formatMessage(messages.UserCreateTextPassword)
       }
     };
     return (

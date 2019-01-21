@@ -78,6 +78,10 @@ const UserMessages = {
     defaultMessage:
       "To continue you must read and accept the Terms and Privacy Policy."
   },
+  UserCreatePolicyVerificationPlaceholder: {
+    id: "user.account.create.policy.placeholder",
+    defaultMessage: "Accept the Terms and Privacy Policy"
+  },
   UserCreateEmailNotSupported: {
     id: "user.account.create.email.not.supported",
     defaultMessage: "Sorry, we do not support this email service."

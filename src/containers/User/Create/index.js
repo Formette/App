@@ -143,6 +143,9 @@ export class CreateUser extends React.PureComponent {
       boxAction: intl.formatMessage(messages.UserCreateBoxAction), // "Sign In",
       boxUrl: "#/signin",
       privacyUrl: "http://bit.ly/formetteprivacy",
+      privacyText: intl.formatMessage(
+        messages.UserCreatePolicyVerificationPlaceholder
+      ),
       validationMgs: {
         username: {
           lowercase: intl.formatMessage(
@@ -168,6 +171,11 @@ export class CreateUser extends React.PureComponent {
         approvePrivacy: {
           required: intl.formatMessage(messages.ErrorApprovePrivacyRequired)
         }
+      },
+      placeholders: {
+        username: intl.formatMessage(messages.UserCreateTextUsername),
+        email: intl.formatMessage(messages.UserCreateTextEmail),
+        password: intl.formatMessage(messages.UserCreateTextPassword)
       }
     };
     return (
