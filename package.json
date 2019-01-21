@@ -39,7 +39,7 @@
     "styled-components": "^3.4.9",
     "subscriptions-transport-ws": "^0.8.2",
     "toastify-js": "^1.3.1",
-    "vantage-auth": "^0.1.5"
+    "vantage-auth": "^0.1.6"
   },
   "scripts": {
     "start": "react-scripts start --env",

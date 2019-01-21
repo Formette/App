@@ -1,9 +1,8 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { graphql, compose } from "react-apollo";
 //Components
-import { Input, Button, Link } from "../../../components/atoms/index";
-import { Error } from "../../../components/molecules/index";
+import Auth, { CodeVerification } from "vantage-auth";
 //hocs
 import { withUser } from "../../../hocs";
 //API
@@ -17,7 +16,7 @@ import { getUrlParam } from "@vacom/vantage";
 import LogRocket from "logrocket";
 import { withAlert } from "react-alert";
 //locales
-import { FormattedMessage, injectIntl } from "react-intl";
+import { injectIntl } from "react-intl";
 import { globals as messages } from "../../../locales/api";
 export class ConfirmUser extends React.PureComponent {
   static propTypes = {
@@ -31,7 +30,8 @@ export class ConfirmUser extends React.PureComponent {
   state = {
     confirmToken: "",
     error: false,
-    errorMsg: ""
+    errorMsg: "",
+    isSubmiting: false
   };
   componentDidMount() {
     const { user, history } = this.props;
@@ -55,11 +55,11 @@ export class ConfirmUser extends React.PureComponent {
       }
     }
   }
-  _onSendConfirmationCode = async () => {
+  _onSendConfirmationCode = async ({ code: confirmToken }) => {
     //verifies the user and saves in the DB
     const { intl, user } = this.props;
+
     try {
-      const { confirmToken } = this.state;
       await this.props.confirmEmail({
         variables: {
           confirmToken
@@ -97,50 +97,36 @@ export class ConfirmUser extends React.PureComponent {
     }
   };
   render() {
-    const { confirmToken, error, errorMsg } = this.state;
+    const { error, errorMsg, isSubmiting } = this.state;
     const { intl } = this.props;
+    const codeVerificationConfig = {
+      title: intl.formatMessage(messages.UserVerificationTitle),
+      description: intl.formatMessage(messages.UserVerificationDescription),
+      submitText: intl.formatMessage(messages.UserVerificationConfirm),
+      boxText: intl.formatMessage(messages.UserVerificationResend),
+      boxAction: intl.formatMessage(messages.UserVerificationResendSubmit),
+      validationMgs: {
+        code: {
+          required: intl.formatMessage(messages.UserVerificationRequired)
+        }
+      },
+      placeholders: {
+        code: intl.formatMessage(messages.UserVerificationConfirmPlaceholder)
+      }
+    };
     return (
-      <div
-        title={intl.formatMessage(messages.UserVerificationTitle)}
-        description={intl.formatMessage(messages.UserVerificationDescription)}
-      >
-        <label htmlFor="confirmToken" className="sr-only">
-          <FormattedMessage
-            id="user.account.verification.text.confirm"
-            defaultMessage={"Confirmation Code"}
+      <Fragment>
+        <Auth>
+          <CodeVerification
+            handleBoxAction={this._onResendConfirmationCode}
+            handleSubmit={this._onSendConfirmationCode}
+            customError={error}
+            customErrorMsg={errorMsg}
+            isSubmiting={isSubmiting}
+            {...codeVerificationConfig}
           />
-        </label>
-        <Input
-          id="confirmToken"
-          value={confirmToken}
-          onChange={e => this.setState({ confirmToken: e.target.value })}
-          className="form-control"
-          placeholder={intl.formatMessage(
-            messages.UserVerificationConfirmPlaceholder
-          )}
-          required
-          autoFocus
-        />
-
-        <Button
-          className="btn btn-lg  btn-block"
-          style={{ marginTop: 10, marginBottom: 10 }}
-          onClick={this._onSendConfirmationCode}
-          primary
-        >
-          <FormattedMessage
-            id="user.account.verification.action.confirm"
-            defaultMessage={"Confirm Account"}
-          />
-        </Button>
-        <Link onClick={this._onResendConfirmationCode}>
-          <FormattedMessage
-            id="user.account.verification.action.resend"
-            defaultMessage={" Resend confirmation code?"}
-          />
-        </Link>
-        <Error show={error}>{errorMsg}</Error>
-      </div>
+        </Auth>
+      </Fragment>
     );
   }
 }

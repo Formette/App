@@ -12,6 +12,22 @@ const UserMessages = {
     defaultMessage:
       "We like real people, we need to know if it's not a ghost of the internet."
   },
+  UserVerificationConfirm: {
+    id: "user.account.verification.action.confirm",
+    defaultMessage: "Confirm Account"
+  },
+  UserVerificationResend: {
+    id: "user.account.verification.action.resend",
+    defaultMessage: "Resend confirmation code?"
+  },
+  UserVerificationRequired: {
+    id: "user.account.verification.required",
+    defaultMessage: "The verification code required"
+  },
+  UserVerificationResendSubmit: {
+    id: "user.account.verification.action.resend.submit",
+    defaultMessage: "Resend"
+  },
   UserVerificationInvalid: {
     id: "user.account.verification.invalid",
     defaultMessage: "The verification code is invalid."

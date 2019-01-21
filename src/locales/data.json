@@ -146,6 +146,8 @@
     "user.account.verification.text.confirm": "Confirmation Code",
     "user.account.verification.action.confirm": "Confirm Account",
     "user.account.verification.action.resend": "Resend confirmation code?",
+    "user.account.verification.required": "The verification code required",
+    "user.account.verification.action.resend.submit": "Resend",
     "user.account.verification.code.send": "Your code has been sent, check your email.",
     "user.account.verification.invalid": "The verification code is invalid."
   },
@@ -294,6 +296,8 @@
     "user.account.verification.text.confirm": "Código de confirmação",
     "user.account.verification.action.confirm": "Confirmar conta",
     "user.account.verification.action.resend": "Reenviar o código de confirmação?",
+    "user.account.verification.required": "O código de verificação obrigatório!",
+    "user.account.verification.action.resend.submit": "Reenviar",
     "user.account.verification.code.send": "Seu código foi enviado, verifique seu e-mail.",
     "user.account.verification.invalid": "O código de verificação é inválido."
   }
