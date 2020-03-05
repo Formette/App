@@ -1,0 +1,47 @@
+﻿type File @model {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type User @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+  email: String @isUnique
+  formses: [Forms!]! @relation(name: "FormsOnUser")
+  password: String
+  userName: String! @isUnique
+  confirmExpires: DateTime
+  confirmToken: String @isUnique
+  confirmed: Boolean @defaultValue(value: false)
+  approvedPrivacy: Boolean @defaultValue(value: false)
+}
+
+type Content @model {
+  data: [Json!]
+  forms: Forms @relation(name: "ContentOnForms")
+  id: ID! @isUnique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Forms @model {
+  contents: [Content!]! @relation(name: "ContentOnForms")
+  createdAt: DateTime!
+  description: String
+  endpoint: String! @isUnique
+  id: ID! @isUnique
+  isDisabled: Boolean! @defaultValue(value: false)
+  name: String!
+  updatedAt: DateTime!
+  user: User @relation(name: "FormsOnUser")
+  enableHoney: Boolean @defaultValue(value: false)
+  honeyField: String @defaultValue(value: "")
+  redirect: String @defaultValue(value: "https://formette.com/thanks")
+}

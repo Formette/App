@@ -1,0 +1,1783 @@
+﻿input AddToContentOnFormsContentInput {
+  formsFormsId: ID!
+  contentsContentId: ID!
+  clientMutationId: String!
+}
+
+type AddToContentOnFormsPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  contentsContent: Content
+  formsForms: Forms
+  contentsContentEdge: ContentEdge
+  formsFormsEdge: FormsEdge
+}
+
+input AddToFormsOnUserFormsInput {
+  userUserId: ID!
+  formsesFormsId: ID!
+  clientMutationId: String!
+}
+
+type AddToFormsOnUserPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  formsesForms: Forms
+  userUser: User
+  formsesFormsEdge: FormsEdge
+  userUserEdge: UserEdge
+}
+
+input AUTH_PROVIDER_EMAIL {
+  email: String!
+  password: String!
+}
+
+input AuthProviderSignupData {
+  email: AUTH_PROVIDER_EMAIL
+}
+
+# ConfirmEmailPayload
+type ConfirmEmailPayload {
+  id: ID!
+}
+
+# The data submission from the form
+type Content implements Node {
+  createdAt: DateTime!
+  data: [Json!]
+  forms(filter: FormsFilter): Forms
+  id: ID!
+  updatedAt: DateTime!
+}
+
+# A connection to a list of items.
+type ContentConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ContentEdge]
+
+  # Count of filtered result set without considering pagination arguments
+  count: Int!
+}
+
+# An edge in a connection.
+type ContentEdge {
+  # The item at the end of the edge.
+  node: Content!
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+input ContentFilter {
+  # Logical AND on all given filters.
+  AND: [ContentFilter!]
+
+  # Logical OR on all given filters.
+  OR: [ContentFilter!]
+  createdAt: DateTime
+
+  # All values that are not equal to given value.
+  createdAt_not: DateTime
+
+  # All values that are contained in given list.
+  createdAt_in: [DateTime!]
+
+  # All values that are not contained in given list.
+  createdAt_not_in: [DateTime!]
+
+  # All values less than the given value.
+  createdAt_lt: DateTime
+
+  # All values less than or equal the given value.
+  createdAt_lte: DateTime
+
+  # All values greater than the given value.
+  createdAt_gt: DateTime
+
+  # All values greater than or equal the given value.
+  createdAt_gte: DateTime
+  id: ID
+
+  # All values that are not equal to given value.
+  id_not: ID
+
+  # All values that are contained in given list.
+  id_in: [ID!]
+
+  # All values that are not contained in given list.
+  id_not_in: [ID!]
+
+  # All values less than the given value.
+  id_lt: ID
+
+  # All values less than or equal the given value.
+  id_lte: ID
+
+  # All values greater than the given value.
+  id_gt: ID
+
+  # All values greater than or equal the given value.
+  id_gte: ID
+
+  # All values containing the given string.
+  id_contains: ID
+
+  # All values not containing the given string.
+  id_not_contains: ID
+
+  # All values starting with the given string.
+  id_starts_with: ID
+
+  # All values not starting with the given string.
+  id_not_starts_with: ID
+
+  # All values ending with the given string.
+  id_ends_with: ID
+
+  # All values not ending with the given string.
+  id_not_ends_with: ID
+  updatedAt: DateTime
+
+  # All values that are not equal to given value.
+  updatedAt_not: DateTime
+
+  # All values that are contained in given list.
+  updatedAt_in: [DateTime!]
+
+  # All values that are not contained in given list.
+  updatedAt_not_in: [DateTime!]
+
+  # All values less than the given value.
+  updatedAt_lt: DateTime
+
+  # All values less than or equal the given value.
+  updatedAt_lte: DateTime
+
+  # All values greater than the given value.
+  updatedAt_gt: DateTime
+
+  # All values greater than or equal the given value.
+  updatedAt_gte: DateTime
+  forms: FormsFilter
+}
+
+input ContentformsForms {
+  # A short description of the form
+  description: String
+  enableHoney: Boolean
+
+  # The unique address to send and receive form data
+  endpoint: String!
+  honeyField: String
+
+  # If the form is active or not to receive data submissions
+  isDisabled: Boolean
+
+  # The name to identify the form
+  name: String!
+
+  # custom url redirect for after form submission 
+  redirect: String
+  userId: ID
+  contentsIds: [ID!]
+  contents: [FormscontentsContent!]
+}
+
+enum ContentOrderBy {
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+input CreateContent {
+  data: [Json!]
+  formsId: ID
+  forms: ContentformsForms
+}
+
+input CreateContentInput {
+  data: [Json!]
+  formsId: ID
+  forms: ContentformsForms
+  clientMutationId: String!
+}
+
+type CreateContentPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  content: Content
+  edge: ContentEdge
+  forms: Forms
+}
+
+input CreateFile {
+  name: String!
+}
+
+input CreateFileInput {
+  name: String!
+  clientMutationId: String!
+}
+
+type CreateFilePayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  file: File
+  edge: FileEdge
+}
+
+input CreateForms {
+  # A short description of the form
+  description: String
+  enableHoney: Boolean
+
+  # The unique address to send and receive form data
+  endpoint: String!
+  honeyField: String
+
+  # If the form is active or not to receive data submissions
+  isDisabled: Boolean
+
+  # The name to identify the form
+  name: String!
+
+  # custom url redirect for after form submission 
+  redirect: String
+  userId: ID
+  contentsIds: [ID!]
+  contents: [FormscontentsContent!]
+}
+
+input CreateFormsInput {
+  # A short description of the form
+  description: String
+  enableHoney: Boolean
+
+  # The unique address to send and receive form data
+  endpoint: String!
+  honeyField: String
+
+  # If the form is active or not to receive data submissions
+  isDisabled: Boolean
+
+  # The name to identify the form
+  name: String!
+
+  # custom url redirect for after form submission 
+  redirect: String
+  userId: ID
+  contentsIds: [ID!]
+  contents: [FormscontentsContent!]
+  clientMutationId: String!
+}
+
+type CreateFormsPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  forms: Forms
+  edge: FormsEdge
+  user: User
+}
+
+input CreateUser {
+  # if the policy and privacy are approved by the user
+  approvedPrivacy: Boolean
+  confirmed: Boolean
+  confirmExpires: DateTime
+  confirmToken: String
+
+  # The username from the user
+  userName: String!
+  formsesIds: [ID!]
+  formses: [UserformsesForms!]
+}
+
+# If authentication was successful the payload contains the user and a token. If unsuccessful this payload is null.
+type CreateUserPayload {
+  user: User
+  clientMutationId: String
+  viewer: Viewer!
+}
+
+scalar DateTime
+
+input DeleteContentInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeleteContentPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  content: Content
+  edge: ContentEdge
+  forms: Forms
+  deletedId: ID
+}
+
+input DeleteFileInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeleteFilePayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  file: File
+  edge: FileEdge
+  deletedId: ID
+}
+
+input DeleteFormsInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeleteFormsPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  forms: Forms
+  edge: FormsEdge
+  user: User
+  deletedId: ID
+}
+
+input DeleteUserInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeleteUserPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  user: User
+  edge: UserEdge
+  deletedId: ID
+}
+
+type File implements Node {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  secret: String!
+  size: Int!
+  updatedAt: DateTime!
+  url: String!
+}
+
+# A connection to a list of items.
+type FileConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FileEdge]
+
+  # Count of filtered result set without considering pagination arguments
+  count: Int!
+}
+
+# An edge in a connection.
+type FileEdge {
+  # The item at the end of the edge.
+  node: File!
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+input FileFilter {
+  # Logical AND on all given filters.
+  AND: [FileFilter!]
+
+  # Logical OR on all given filters.
+  OR: [FileFilter!]
+  contentType: String
+
+  # All values that are not equal to given value.
+  contentType_not: String
+
+  # All values that are contained in given list.
+  contentType_in: [String!]
+
+  # All values that are not contained in given list.
+  contentType_not_in: [String!]
+
+  # All values less than the given value.
+  contentType_lt: String
+
+  # All values less than or equal the given value.
+  contentType_lte: String
+
+  # All values greater than the given value.
+  contentType_gt: String
+
+  # All values greater than or equal the given value.
+  contentType_gte: String
+
+  # All values containing the given string.
+  contentType_contains: String
+
+  # All values not containing the given string.
+  contentType_not_contains: String
+
+  # All values starting with the given string.
+  contentType_starts_with: String
+
+  # All values not starting with the given string.
+  contentType_not_starts_with: String
+
+  # All values ending with the given string.
+  contentType_ends_with: String
+
+  # All values not ending with the given string.
+  contentType_not_ends_with: String
+  createdAt: DateTime
+
+  # All values that are not equal to given value.
+  createdAt_not: DateTime
+
+  # All values that are contained in given list.
+  createdAt_in: [DateTime!]
+
+  # All values that are not contained in given list.
+  createdAt_not_in: [DateTime!]
+
+  # All values less than the given value.
+  createdAt_lt: DateTime
+
+  # All values less than or equal the given value.
+  createdAt_lte: DateTime
+
+  # All values greater than the given value.
+  createdAt_gt: DateTime
+
+  # All values greater than or equal the given value.
+  createdAt_gte: DateTime
+  id: ID
+
+  # All values that are not equal to given value.
+  id_not: ID
+
+  # All values that are contained in given list.
+  id_in: [ID!]
+
+  # All values that are not contained in given list.
+  id_not_in: [ID!]
+
+  # All values less than the given value.
+  id_lt: ID
+
+  # All values less than or equal the given value.
+  id_lte: ID
+
+  # All values greater than the given value.
+  id_gt: ID
+
+  # All values greater than or equal the given value.
+  id_gte: ID
+
+  # All values containing the given string.
+  id_contains: ID
+
+  # All values not containing the given string.
+  id_not_contains: ID
+
+  # All values starting with the given string.
+  id_starts_with: ID
+
+  # All values not starting with the given string.
+  id_not_starts_with: ID
+
+  # All values ending with the given string.
+  id_ends_with: ID
+
+  # All values not ending with the given string.
+  id_not_ends_with: ID
+  name: String
+
+  # All values that are not equal to given value.
+  name_not: String
+
+  # All values that are contained in given list.
+  name_in: [String!]
+
+  # All values that are not contained in given list.
+  name_not_in: [String!]
+
+  # All values less than the given value.
+  name_lt: String
+
+  # All values less than or equal the given value.
+  name_lte: String
+
+  # All values greater than the given value.
+  name_gt: String
+
+  # All values greater than or equal the given value.
+  name_gte: String
+
+  # All values containing the given string.
+  name_contains: String
+
+  # All values not containing the given string.
+  name_not_contains: String
+
+  # All values starting with the given string.
+  name_starts_with: String
+
+  # All values not starting with the given string.
+  name_not_starts_with: String
+
+  # All values ending with the given string.
+  name_ends_with: String
+
+  # All values not ending with the given string.
+  name_not_ends_with: String
+  secret: String
+
+  # All values that are not equal to given value.
+  secret_not: String
+
+  # All values that are contained in given list.
+  secret_in: [String!]
+
+  # All values that are not contained in given list.
+  secret_not_in: [String!]
+
+  # All values less than the given value.
+  secret_lt: String
+
+  # All values less than or equal the given value.
+  secret_lte: String
+
+  # All values greater than the given value.
+  secret_gt: String
+
+  # All values greater than or equal the given value.
+  secret_gte: String
+
+  # All values containing the given string.
+  secret_contains: String
+
+  # All values not containing the given string.
+  secret_not_contains: String
+
+  # All values starting with the given string.
+  secret_starts_with: String
+
+  # All values not starting with the given string.
+  secret_not_starts_with: String
+
+  # All values ending with the given string.
+  secret_ends_with: String
+
+  # All values not ending with the given string.
+  secret_not_ends_with: String
+  size: Int
+
+  # All values that are not equal to given value.
+  size_not: Int
+
+  # All values that are contained in given list.
+  size_in: [Int!]
+
+  # All values that are not contained in given list.
+  size_not_in: [Int!]
+
+  # All values less than the given value.
+  size_lt: Int
+
+  # All values less than or equal the given value.
+  size_lte: Int
+
+  # All values greater than the given value.
+  size_gt: Int
+
+  # All values greater than or equal the given value.
+  size_gte: Int
+  updatedAt: DateTime
+
+  # All values that are not equal to given value.
+  updatedAt_not: DateTime
+
+  # All values that are contained in given list.
+  updatedAt_in: [DateTime!]
+
+  # All values that are not contained in given list.
+  updatedAt_not_in: [DateTime!]
+
+  # All values less than the given value.
+  updatedAt_lt: DateTime
+
+  # All values less than or equal the given value.
+  updatedAt_lte: DateTime
+
+  # All values greater than the given value.
+  updatedAt_gt: DateTime
+
+  # All values greater than or equal the given value.
+  updatedAt_gte: DateTime
+  url: String
+
+  # All values that are not equal to given value.
+  url_not: String
+
+  # All values that are contained in given list.
+  url_in: [String!]
+
+  # All values that are not contained in given list.
+  url_not_in: [String!]
+
+  # All values less than the given value.
+  url_lt: String
+
+  # All values less than or equal the given value.
+  url_lte: String
+
+  # All values greater than the given value.
+  url_gt: String
+
+  # All values greater than or equal the given value.
+  url_gte: String
+
+  # All values containing the given string.
+  url_contains: String
+
+  # All values not containing the given string.
+  url_not_contains: String
+
+  # All values starting with the given string.
+  url_starts_with: String
+
+  # All values not starting with the given string.
+  url_not_starts_with: String
+
+  # All values ending with the given string.
+  url_ends_with: String
+
+  # All values not ending with the given string.
+  url_not_ends_with: String
+}
+
+enum FileOrderBy {
+  contentType_ASC
+  contentType_DESC
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  secret_ASC
+  secret_DESC
+  size_ASC
+  size_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  url_ASC
+  url_DESC
+}
+
+# All forms created by users
+type Forms implements Node {
+  contents(filter: ContentFilter, orderBy: ContentOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): ContentConnection
+  createdAt: DateTime!
+
+  # A short description of the form
+  description: String
+  enableHoney: Boolean
+
+  # The unique address to send and receive form data
+  endpoint: String!
+  honeyField: String
+  id: ID!
+
+  # If the form is active or not to receive data submissions
+  isDisabled: Boolean!
+
+  # The name to identify the form
+  name: String!
+
+  # custom url redirect for after form submission 
+  redirect: String
+  updatedAt: DateTime!
+  user(filter: UserFilter): User
+}
+
+# A connection to a list of items.
+type FormsConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FormsEdge]
+
+  # Count of filtered result set without considering pagination arguments
+  count: Int!
+}
+
+input FormscontentsContent {
+  data: [Json!]
+}
+
+# An edge in a connection.
+type FormsEdge {
+  # The item at the end of the edge.
+  node: Forms!
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+input FormsFilter {
+  # Logical AND on all given filters.
+  AND: [FormsFilter!]
+
+  # Logical OR on all given filters.
+  OR: [FormsFilter!]
+  createdAt: DateTime
+
+  # All values that are not equal to given value.
+  createdAt_not: DateTime
+
+  # All values that are contained in given list.
+  createdAt_in: [DateTime!]
+
+  # All values that are not contained in given list.
+  createdAt_not_in: [DateTime!]
+
+  # All values less than the given value.
+  createdAt_lt: DateTime
+
+  # All values less than or equal the given value.
+  createdAt_lte: DateTime
+
+  # All values greater than the given value.
+  createdAt_gt: DateTime
+
+  # All values greater than or equal the given value.
+  createdAt_gte: DateTime
+  description: String
+
+  # All values that are not equal to given value.
+  description_not: String
+
+  # All values that are contained in given list.
+  description_in: [String!]
+
+  # All values that are not contained in given list.
+  description_not_in: [String!]
+
+  # All values less than the given value.
+  description_lt: String
+
+  # All values less than or equal the given value.
+  description_lte: String
+
+  # All values greater than the given value.
+  description_gt: String
+
+  # All values greater than or equal the given value.
+  description_gte: String
+
+  # All values containing the given string.
+  description_contains: String
+
+  # All values not containing the given string.
+  description_not_contains: String
+
+  # All values starting with the given string.
+  description_starts_with: String
+
+  # All values not starting with the given string.
+  description_not_starts_with: String
+
+  # All values ending with the given string.
+  description_ends_with: String
+
+  # All values not ending with the given string.
+  description_not_ends_with: String
+  enableHoney: Boolean
+
+  # All values that are not equal to given value.
+  enableHoney_not: Boolean
+  endpoint: String
+
+  # All values that are not equal to given value.
+  endpoint_not: String
+
+  # All values that are contained in given list.
+  endpoint_in: [String!]
+
+  # All values that are not contained in given list.
+  endpoint_not_in: [String!]
+
+  # All values less than the given value.
+  endpoint_lt: String
+
+  # All values less than or equal the given value.
+  endpoint_lte: String
+
+  # All values greater than the given value.
+  endpoint_gt: String
+
+  # All values greater than or equal the given value.
+  endpoint_gte: String
+
+  # All values containing the given string.
+  endpoint_contains: String
+
+  # All values not containing the given string.
+  endpoint_not_contains: String
+
+  # All values starting with the given string.
+  endpoint_starts_with: String
+
+  # All values not starting with the given string.
+  endpoint_not_starts_with: String
+
+  # All values ending with the given string.
+  endpoint_ends_with: String
+
+  # All values not ending with the given string.
+  endpoint_not_ends_with: String
+  honeyField: String
+
+  # All values that are not equal to given value.
+  honeyField_not: String
+
+  # All values that are contained in given list.
+  honeyField_in: [String!]
+
+  # All values that are not contained in given list.
+  honeyField_not_in: [String!]
+
+  # All values less than the given value.
+  honeyField_lt: String
+
+  # All values less than or equal the given value.
+  honeyField_lte: String
+
+  # All values greater than the given value.
+  honeyField_gt: String
+
+  # All values greater than or equal the given value.
+  honeyField_gte: String
+
+  # All values containing the given string.
+  honeyField_contains: String
+
+  # All values not containing the given string.
+  honeyField_not_contains: String
+
+  # All values starting with the given string.
+  honeyField_starts_with: String
+
+  # All values not starting with the given string.
+  honeyField_not_starts_with: String
+
+  # All values ending with the given string.
+  honeyField_ends_with: String
+
+  # All values not ending with the given string.
+  honeyField_not_ends_with: String
+  id: ID
+
+  # All values that are not equal to given value.
+  id_not: ID
+
+  # All values that are contained in given list.
+  id_in: [ID!]
+
+  # All values that are not contained in given list.
+  id_not_in: [ID!]
+
+  # All values less than the given value.
+  id_lt: ID
+
+  # All values less than or equal the given value.
+  id_lte: ID
+
+  # All values greater than the given value.
+  id_gt: ID
+
+  # All values greater than or equal the given value.
+  id_gte: ID
+
+  # All values containing the given string.
+  id_contains: ID
+
+  # All values not containing the given string.
+  id_not_contains: ID
+
+  # All values starting with the given string.
+  id_starts_with: ID
+
+  # All values not starting with the given string.
+  id_not_starts_with: ID
+
+  # All values ending with the given string.
+  id_ends_with: ID
+
+  # All values not ending with the given string.
+  id_not_ends_with: ID
+  isDisabled: Boolean
+
+  # All values that are not equal to given value.
+  isDisabled_not: Boolean
+  name: String
+
+  # All values that are not equal to given value.
+  name_not: String
+
+  # All values that are contained in given list.
+  name_in: [String!]
+
+  # All values that are not contained in given list.
+  name_not_in: [String!]
+
+  # All values less than the given value.
+  name_lt: String
+
+  # All values less than or equal the given value.
+  name_lte: String
+
+  # All values greater than the given value.
+  name_gt: String
+
+  # All values greater than or equal the given value.
+  name_gte: String
+
+  # All values containing the given string.
+  name_contains: String
+
+  # All values not containing the given string.
+  name_not_contains: String
+
+  # All values starting with the given string.
+  name_starts_with: String
+
+  # All values not starting with the given string.
+  name_not_starts_with: String
+
+  # All values ending with the given string.
+  name_ends_with: String
+
+  # All values not ending with the given string.
+  name_not_ends_with: String
+  redirect: String
+
+  # All values that are not equal to given value.
+  redirect_not: String
+
+  # All values that are contained in given list.
+  redirect_in: [String!]
+
+  # All values that are not contained in given list.
+  redirect_not_in: [String!]
+
+  # All values less than the given value.
+  redirect_lt: String
+
+  # All values less than or equal the given value.
+  redirect_lte: String
+
+  # All values greater than the given value.
+  redirect_gt: String
+
+  # All values greater than or equal the given value.
+  redirect_gte: String
+
+  # All values containing the given string.
+  redirect_contains: String
+
+  # All values not containing the given string.
+  redirect_not_contains: String
+
+  # All values starting with the given string.
+  redirect_starts_with: String
+
+  # All values not starting with the given string.
+  redirect_not_starts_with: String
+
+  # All values ending with the given string.
+  redirect_ends_with: String
+
+  # All values not ending with the given string.
+  redirect_not_ends_with: String
+  updatedAt: DateTime
+
+  # All values that are not equal to given value.
+  updatedAt_not: DateTime
+
+  # All values that are contained in given list.
+  updatedAt_in: [DateTime!]
+
+  # All values that are not contained in given list.
+  updatedAt_not_in: [DateTime!]
+
+  # All values less than the given value.
+  updatedAt_lt: DateTime
+
+  # All values less than or equal the given value.
+  updatedAt_lte: DateTime
+
+  # All values greater than the given value.
+  updatedAt_gt: DateTime
+
+  # All values greater than or equal the given value.
+  updatedAt_gte: DateTime
+  contents_every: ContentFilter
+  contents_some: ContentFilter
+  contents_none: ContentFilter
+  user: UserFilter
+}
+
+enum FormsOrderBy {
+  createdAt_ASC
+  createdAt_DESC
+  description_ASC
+  description_DESC
+  enableHoney_ASC
+  enableHoney_DESC
+  endpoint_ASC
+  endpoint_DESC
+  honeyField_ASC
+  honeyField_DESC
+  id_ASC
+  id_DESC
+  isDisabled_ASC
+  isDisabled_DESC
+  name_ASC
+  name_DESC
+  redirect_ASC
+  redirect_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+input InvokeFunctionInput {
+  name: String!
+  input: String!
+  clientMutationId: String
+}
+
+type InvokeFunctionPayload {
+  result: String!
+  clientMutationId: String
+}
+
+# Raw JSON value
+scalar Json
+
+type Mutation {
+  createContent(input: CreateContentInput!): CreateContentPayload
+  createFile(input: CreateFileInput!): CreateFilePayload
+  createForms(input: CreateFormsInput!): CreateFormsPayload
+  updateContent(input: UpdateContentInput!): UpdateContentPayload
+  updateFile(input: UpdateFileInput!): UpdateFilePayload
+  updateForms(input: UpdateFormsInput!): UpdateFormsPayload
+  updateUser(input: UpdateUserInput!): UpdateUserPayload
+  updateOrCreateContent(input: UpdateOrCreateContentInput!): UpdateOrCreateContentPayload
+  updateOrCreateFile(input: UpdateOrCreateFileInput!): UpdateOrCreateFilePayload
+  updateOrCreateForms(input: UpdateOrCreateFormsInput!): UpdateOrCreateFormsPayload
+  updateOrCreateUser(input: UpdateOrCreateUserInput!): UpdateOrCreateUserPayload
+  deleteContent(input: DeleteContentInput!): DeleteContentPayload
+  deleteFile(input: DeleteFileInput!): DeleteFilePayload
+  deleteForms(input: DeleteFormsInput!): DeleteFormsPayload
+  deleteUser(input: DeleteUserInput!): DeleteUserPayload
+  addToContentOnForms(input: AddToContentOnFormsContentInput!): AddToContentOnFormsPayload
+  addToFormsOnUser(input: AddToFormsOnUserFormsInput!): AddToFormsOnUserPayload
+  removeFromContentOnForms(input: RemoveFromContentOnFormsContentInput!): RemoveFromContentOnFormsPayload
+  removeFromFormsOnUser(input: RemoveFromFormsOnUserFormsInput!): RemoveFromFormsOnUserPayload
+  signinUser(input: SigninUserInput!): SigninPayload!
+  createUser(input: SignupUserInput!): CreateUserPayload!
+
+  # confirm
+  confirmEmail(confirmToken: String!): ConfirmEmailPayload
+
+  # updateUserConfirmToken
+  resendConfirmation(email: String!): ResendConfirmationPayload
+  invokeFunction(input: InvokeFunctionInput!): InvokeFunctionPayload
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+type Query {
+  viewer: Viewer!
+
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
+}
+
+input RemoveFromContentOnFormsContentInput {
+  formsFormsId: ID!
+  contentsContentId: ID!
+  clientMutationId: String!
+}
+
+type RemoveFromContentOnFormsPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  contentsContent: Content
+  formsForms: Forms
+  contentsContentEdge: ContentEdge
+  formsFormsEdge: FormsEdge
+}
+
+input RemoveFromFormsOnUserFormsInput {
+  userUserId: ID!
+  formsesFormsId: ID!
+  clientMutationId: String!
+}
+
+type RemoveFromFormsOnUserPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  formsesForms: Forms
+  userUser: User
+  formsesFormsEdge: FormsEdge
+  userUserEdge: UserEdge
+}
+
+# ResendConfirmationPayload
+type ResendConfirmationPayload {
+  id: ID!
+}
+
+# If authentication was successful the payload contains the user and a token. If unsuccessful this payload is null.
+type SigninPayload {
+  token: String
+  user: User
+  clientMutationId: String
+  viewer: Viewer!
+}
+
+input SigninUserInput {
+  email: AUTH_PROVIDER_EMAIL
+  clientMutationId: String!
+}
+
+input SignupUserInput {
+  # if the policy and privacy are approved by the user
+  approvedPrivacy: Boolean
+  confirmed: Boolean
+  confirmExpires: DateTime
+  confirmToken: String
+
+  # The username from the user
+  userName: String!
+  formsesIds: [ID!]
+  formses: [UserformsesForms!]
+  clientMutationId: String!
+  authProvider: AuthProviderSignupData!
+}
+
+input UpdateContent {
+  data: [Json!]
+  id: ID!
+  formsId: ID
+  forms: ContentformsForms
+}
+
+input UpdateContentInput {
+  data: [Json!]
+  id: ID!
+  formsId: ID
+  forms: ContentformsForms
+  clientMutationId: String!
+}
+
+type UpdateContentPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  content: Content
+  edge: ContentEdge
+  forms: Forms
+}
+
+input UpdateFile {
+  id: ID!
+  name: String
+}
+
+input UpdateFileInput {
+  id: ID!
+  name: String
+  clientMutationId: String!
+}
+
+type UpdateFilePayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  file: File
+  edge: FileEdge
+}
+
+input UpdateForms {
+  # A short description of the form
+  description: String
+  enableHoney: Boolean
+
+  # The unique address to send and receive form data
+  endpoint: String
+  honeyField: String
+  id: ID!
+
+  # If the form is active or not to receive data submissions
+  isDisabled: Boolean
+
+  # The name to identify the form
+  name: String
+
+  # custom url redirect for after form submission 
+  redirect: String
+  userId: ID
+  contentsIds: [ID!]
+  contents: [FormscontentsContent!]
+}
+
+input UpdateFormsInput {
+  # A short description of the form
+  description: String
+  enableHoney: Boolean
+
+  # The unique address to send and receive form data
+  endpoint: String
+  honeyField: String
+  id: ID!
+
+  # If the form is active or not to receive data submissions
+  isDisabled: Boolean
+
+  # The name to identify the form
+  name: String
+
+  # custom url redirect for after form submission 
+  redirect: String
+  userId: ID
+  contentsIds: [ID!]
+  contents: [FormscontentsContent!]
+  clientMutationId: String!
+}
+
+type UpdateFormsPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  forms: Forms
+  edge: FormsEdge
+  user: User
+}
+
+input UpdateOrCreateContentInput {
+  update: UpdateContent!
+  create: CreateContent!
+  clientMutationId: String!
+}
+
+type UpdateOrCreateContentPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  content: Content
+  edge: ContentEdge
+  forms: Forms
+}
+
+input UpdateOrCreateFileInput {
+  update: UpdateFile!
+  create: CreateFile!
+  clientMutationId: String!
+}
+
+type UpdateOrCreateFilePayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  file: File
+  edge: FileEdge
+}
+
+input UpdateOrCreateFormsInput {
+  update: UpdateForms!
+  create: CreateForms!
+  clientMutationId: String!
+}
+
+type UpdateOrCreateFormsPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  forms: Forms
+  edge: FormsEdge
+  user: User
+}
+
+input UpdateOrCreateUserInput {
+  update: UpdateUser!
+  create: CreateUser!
+  clientMutationId: String!
+}
+
+type UpdateOrCreateUserPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  user: User
+  edge: UserEdge
+}
+
+input UpdateUser {
+  # if the policy and privacy are approved by the user
+  approvedPrivacy: Boolean
+  confirmed: Boolean
+  confirmExpires: DateTime
+  confirmToken: String
+  id: ID!
+
+  # The username from the user
+  userName: String
+  formsesIds: [ID!]
+  formses: [UserformsesForms!]
+}
+
+input UpdateUserInput {
+  # if the policy and privacy are approved by the user
+  approvedPrivacy: Boolean
+  confirmed: Boolean
+  confirmExpires: DateTime
+  confirmToken: String
+  id: ID!
+
+  # The username from the user
+  userName: String
+  formsesIds: [ID!]
+  formses: [UserformsesForms!]
+  clientMutationId: String!
+}
+
+type UpdateUserPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  user: User
+  edge: UserEdge
+}
+
+type User implements Node {
+  # if the policy and privacy are approved by the user
+  approvedPrivacy: Boolean
+  confirmed: Boolean
+  confirmExpires: DateTime
+  confirmToken: String
+  createdAt: DateTime!
+  email: String
+  formses(filter: FormsFilter, orderBy: FormsOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): FormsConnection
+  id: ID!
+  password: String
+  updatedAt: DateTime!
+
+  # The username from the user
+  userName: String!
+}
+
+# A connection to a list of items.
+type UserConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [UserEdge]
+
+  # Count of filtered result set without considering pagination arguments
+  count: Int!
+}
+
+# An edge in a connection.
+type UserEdge {
+  # The item at the end of the edge.
+  node: User!
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+input UserFilter {
+  # Logical AND on all given filters.
+  AND: [UserFilter!]
+
+  # Logical OR on all given filters.
+  OR: [UserFilter!]
+  approvedPrivacy: Boolean
+
+  # All values that are not equal to given value.
+  approvedPrivacy_not: Boolean
+  confirmed: Boolean
+
+  # All values that are not equal to given value.
+  confirmed_not: Boolean
+  confirmExpires: DateTime
+
+  # All values that are not equal to given value.
+  confirmExpires_not: DateTime
+
+  # All values that are contained in given list.
+  confirmExpires_in: [DateTime!]
+
+  # All values that are not contained in given list.
+  confirmExpires_not_in: [DateTime!]
+
+  # All values less than the given value.
+  confirmExpires_lt: DateTime
+
+  # All values less than or equal the given value.
+  confirmExpires_lte: DateTime
+
+  # All values greater than the given value.
+  confirmExpires_gt: DateTime
+
+  # All values greater than or equal the given value.
+  confirmExpires_gte: DateTime
+  confirmToken: String
+
+  # All values that are not equal to given value.
+  confirmToken_not: String
+
+  # All values that are contained in given list.
+  confirmToken_in: [String!]
+
+  # All values that are not contained in given list.
+  confirmToken_not_in: [String!]
+
+  # All values less than the given value.
+  confirmToken_lt: String
+
+  # All values less than or equal the given value.
+  confirmToken_lte: String
+
+  # All values greater than the given value.
+  confirmToken_gt: String
+
+  # All values greater than or equal the given value.
+  confirmToken_gte: String
+
+  # All values containing the given string.
+  confirmToken_contains: String
+
+  # All values not containing the given string.
+  confirmToken_not_contains: String
+
+  # All values starting with the given string.
+  confirmToken_starts_with: String
+
+  # All values not starting with the given string.
+  confirmToken_not_starts_with: String
+
+  # All values ending with the given string.
+  confirmToken_ends_with: String
+
+  # All values not ending with the given string.
+  confirmToken_not_ends_with: String
+  createdAt: DateTime
+
+  # All values that are not equal to given value.
+  createdAt_not: DateTime
+
+  # All values that are contained in given list.
+  createdAt_in: [DateTime!]
+
+  # All values that are not contained in given list.
+  createdAt_not_in: [DateTime!]
+
+  # All values less than the given value.
+  createdAt_lt: DateTime
+
+  # All values less than or equal the given value.
+  createdAt_lte: DateTime
+
+  # All values greater than the given value.
+  createdAt_gt: DateTime
+
+  # All values greater than or equal the given value.
+  createdAt_gte: DateTime
+  email: String
+
+  # All values that are not equal to given value.
+  email_not: String
+
+  # All values that are contained in given list.
+  email_in: [String!]
+
+  # All values that are not contained in given list.
+  email_not_in: [String!]
+
+  # All values less than the given value.
+  email_lt: String
+
+  # All values less than or equal the given value.
+  email_lte: String
+
+  # All values greater than the given value.
+  email_gt: String
+
+  # All values greater than or equal the given value.
+  email_gte: String
+
+  # All values containing the given string.
+  email_contains: String
+
+  # All values not containing the given string.
+  email_not_contains: String
+
+  # All values starting with the given string.
+  email_starts_with: String
+
+  # All values not starting with the given string.
+  email_not_starts_with: String
+
+  # All values ending with the given string.
+  email_ends_with: String
+
+  # All values not ending with the given string.
+  email_not_ends_with: String
+  id: ID
+
+  # All values that are not equal to given value.
+  id_not: ID
+
+  # All values that are contained in given list.
+  id_in: [ID!]
+
+  # All values that are not contained in given list.
+  id_not_in: [ID!]
+
+  # All values less than the given value.
+  id_lt: ID
+
+  # All values less than or equal the given value.
+  id_lte: ID
+
+  # All values greater than the given value.
+  id_gt: ID
+
+  # All values greater than or equal the given value.
+  id_gte: ID
+
+  # All values containing the given string.
+  id_contains: ID
+
+  # All values not containing the given string.
+  id_not_contains: ID
+
+  # All values starting with the given string.
+  id_starts_with: ID
+
+  # All values not starting with the given string.
+  id_not_starts_with: ID
+
+  # All values ending with the given string.
+  id_ends_with: ID
+
+  # All values not ending with the given string.
+  id_not_ends_with: ID
+  password: String
+
+  # All values that are not equal to given value.
+  password_not: String
+
+  # All values that are contained in given list.
+  password_in: [String!]
+
+  # All values that are not contained in given list.
+  password_not_in: [String!]
+
+  # All values less than the given value.
+  password_lt: String
+
+  # All values less than or equal the given value.
+  password_lte: String
+
+  # All values greater than the given value.
+  password_gt: String
+
+  # All values greater than or equal the given value.
+  password_gte: String
+
+  # All values containing the given string.
+  password_contains: String
+
+  # All values not containing the given string.
+  password_not_contains: String
+
+  # All values starting with the given string.
+  password_starts_with: String
+
+  # All values not starting with the given string.
+  password_not_starts_with: String
+
+  # All values ending with the given string.
+  password_ends_with: String
+
+  # All values not ending with the given string.
+  password_not_ends_with: String
+  updatedAt: DateTime
+
+  # All values that are not equal to given value.
+  updatedAt_not: DateTime
+
+  # All values that are contained in given list.
+  updatedAt_in: [DateTime!]
+
+  # All values that are not contained in given list.
+  updatedAt_not_in: [DateTime!]
+
+  # All values less than the given value.
+  updatedAt_lt: DateTime
+
+  # All values less than or equal the given value.
+  updatedAt_lte: DateTime
+
+  # All values greater than the given value.
+  updatedAt_gt: DateTime
+
+  # All values greater than or equal the given value.
+  updatedAt_gte: DateTime
+  userName: String
+
+  # All values that are not equal to given value.
+  userName_not: String
+
+  # All values that are contained in given list.
+  userName_in: [String!]
+
+  # All values that are not contained in given list.
+  userName_not_in: [String!]
+
+  # All values less than the given value.
+  userName_lt: String
+
+  # All values less than or equal the given value.
+  userName_lte: String
+
+  # All values greater than the given value.
+  userName_gt: String
+
+  # All values greater than or equal the given value.
+  userName_gte: String
+
+  # All values containing the given string.
+  userName_contains: String
+
+  # All values not containing the given string.
+  userName_not_contains: String
+
+  # All values starting with the given string.
+  userName_starts_with: String
+
+  # All values not starting with the given string.
+  userName_not_starts_with: String
+
+  # All values ending with the given string.
+  userName_ends_with: String
+
+  # All values not ending with the given string.
+  userName_not_ends_with: String
+  formses_every: FormsFilter
+  formses_some: FormsFilter
+  formses_none: FormsFilter
+}
+
+input UserformsesForms {
+  # A short description of the form
+  description: String
+  enableHoney: Boolean
+
+  # The unique address to send and receive form data
+  endpoint: String!
+  honeyField: String
+
+  # If the form is active or not to receive data submissions
+  isDisabled: Boolean
+
+  # The name to identify the form
+  name: String!
+
+  # custom url redirect for after form submission 
+  redirect: String
+  contentsIds: [ID!]
+  contents: [FormscontentsContent!]
+}
+
+enum UserOrderBy {
+  approvedPrivacy_ASC
+  approvedPrivacy_DESC
+  confirmed_ASC
+  confirmed_DESC
+  confirmExpires_ASC
+  confirmExpires_DESC
+  confirmToken_ASC
+  confirmToken_DESC
+  createdAt_ASC
+  createdAt_DESC
+  email_ASC
+  email_DESC
+  id_ASC
+  id_DESC
+  password_ASC
+  password_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  userName_ASC
+  userName_DESC
+}
+
+# This is the famous Relay viewer object
+type Viewer {
+  allContents(filter: ContentFilter, orderBy: ContentOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): ContentConnection!
+  allFiles(filter: FileFilter, orderBy: FileOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
+  allFormses(filter: FormsFilter, orderBy: FormsOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): FormsConnection!
+  allUsers(filter: UserFilter, orderBy: UserOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  user: User
+  Content(id: ID): Content
+  File(id: ID, secret: String, url: String): File
+  Forms(
+    # The unique address to send and receive form data
+    endpoint: String
+    id: ID
+  ): Forms
+  User(
+    confirmToken: String
+    email: String
+    id: ID
+
+    # The username from the user
+    userName: String
+  ): User
+  id: ID!
+}
