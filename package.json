@@ -19,7 +19,7 @@
     "apollo-client": "^1.7.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "graphql-tag": "^2.4.2",
-    "jspdf": "^1.4.1",
+    "jspdf": "^2.3.1",
     "jspdf-autotable": "^2.3.5",
     "logrocket": "^0.6.17",
     "moment": "^2.22.2",
