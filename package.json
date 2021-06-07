@@ -23,7 +23,7 @@
     "jspdf-autotable": "^2.3.5",
     "logrocket": "^0.6.17",
     "moment": "^2.22.2",
-    "polished": "^2.3.0",
+    "polished": "^3.7.2",
     "prop-types": "^15.5.10",
     "react": "^16.4.1",
     "react-alert": "^4.0.4",
