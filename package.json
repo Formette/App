@@ -22,7 +22,7 @@
     "jspdf": "^1.4.1",
     "jspdf-autotable": "^2.3.5",
     "logrocket": "^0.6.17",
-    "moment": "^2.22.2",
+    "moment": "^2.29.2",
     "polished": "^2.3.0",
     "prop-types": "^15.5.10",
     "react": "^16.4.1",
